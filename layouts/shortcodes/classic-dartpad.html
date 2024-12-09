@@ -1,0 +1,2 @@
+{{ $source := resources.Get "js/inject_embed.dart.js" }}
+<script type="text/javascript" src="{{ $source.Permalink }}" defer></script>
