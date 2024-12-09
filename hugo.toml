@@ -1,3 +1,16 @@
 baseURL = 'https://example.org/'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
+title = 'Fluttered'
+description = 'Mobile development using Flutter'
+theme = 'hugo-book'
+
+[params]
+BookTheme = 'auto'
+
+[markup]
+defaultMarkdownHandler = 'goldmark'
+[markup.goldmark.renderer]
+unsafe = true
+
+[outputs]
+home = ["HTML", "RSS", "JSON"]
