@@ -1,5 +1,6 @@
 ---
 title: Object trees
+weight: 3
 ---
 
 # Building object trees

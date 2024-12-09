@@ -1,5 +1,6 @@
 ---
 title: Objects
+weight: 2
 ---
 
 {{< classic-dartpad >}}

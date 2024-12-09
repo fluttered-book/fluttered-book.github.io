@@ -1,5 +1,6 @@
 ---
 title: Windows
+weight: 1
 ---
 
 # Install on Windows

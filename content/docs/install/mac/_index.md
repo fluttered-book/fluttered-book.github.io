@@ -1,5 +1,6 @@
 ---
 title: macOS
+weight: 2
 ---
 
 # Instructions

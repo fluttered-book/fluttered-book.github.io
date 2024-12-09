@@ -1,5 +1,6 @@
 ---
 title: The basics
+weight: 1
 ---
 
 # The basics
