@@ -1,6 +1,5 @@
 ---
 title: Linux
-layout: default
 ---
 
 # Install on Linux
