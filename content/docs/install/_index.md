@@ -3,6 +3,7 @@ title: Install
 description: >-
   Instructions on how to setup a development environment for Flutter on
   various operating systems.
+weight: 1
 ---
 
 # Setup development environment for Flutter
