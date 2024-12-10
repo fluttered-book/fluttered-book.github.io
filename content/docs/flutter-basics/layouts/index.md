@@ -406,7 +406,7 @@ void main() {
 In which case you will see diagonal stripes alternating between yellow and black.
 Like this:
 
-![Overflow warning](../overflow.png)
+![Overflow warning](images/overflow.png)
 
 That is something you should try to avoid.
 
