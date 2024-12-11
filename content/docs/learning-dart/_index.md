@@ -6,12 +6,33 @@ description: >-
 weight: 2
 ---
 
+# Learning Dart
+
+Dart is the programming language used for writing apps with Flutter.
+Though it might seem excessive to have to learn an entire new programming
+language just to use a GUI framework, it isn't that bad since most should look
+familiar to you already.
+Dart has a number of features that makes it convenient for client side
+programming.
+
+![Dart logo](images/lockup_dart_horizontal.svg)
+
 ## Introduction
 
 - [The basics](basics)
-- [Objects in Dart](objects)
+
+## Objects
+
+- [Constructors](constructors)
 - [Building object trees](object-trees)
+
+## Collections
+
+- [Iterables](iterables)
+- [Acronym generator](acronym)
+- [Reverse Polish notation](rpn)
 
 ## Advanced
 
 - [Patterns](patterns)
+- [Generators](generators)

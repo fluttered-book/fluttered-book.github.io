@@ -1,11 +1,11 @@
 ---
-title: Objects
+title: Constructors
 weight: 2
 ---
 
 {{< classic-dartpad >}}
 
-# Objects in Dart
+# Constructors in Dart
 
 This tutorial is aimed at teaching you the basics of OOP in Dart.
 

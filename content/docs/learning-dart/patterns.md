@@ -1,6 +1,6 @@
 ---
 title: Patterns
-weight: 4
+weight: 7
 ---
 
 {{< classic-dartpad >}}
