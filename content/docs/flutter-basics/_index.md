@@ -11,6 +11,8 @@ weight: 3
 Now that you've gotten a taste of Dart, it's time to dive into the GUI
 framework Flutter.
 
+![Flutter logo](images/lockup_flutter_horizontal.svg)
+
 The basic building block in Flutter is a widget.
 Widget in Flutter are comparable to components in popular web frameworks such as React, Angular and Vue.js.
 

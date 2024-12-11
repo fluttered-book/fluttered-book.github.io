@@ -6,8 +6,8 @@ description: >-
 
 # Introduction to Fluttered
 
-Welcome to **_Fluttered_**, a free online, interactive, exercise-driven textbook on
-cross-platform mobile app development with Flutter.
+Welcome to **_Fluttered_**, a free online, interactive, exercise-driven
+textbook on cross-platform mobile app development with Flutter.
 
 ## What is Flutter?
 
@@ -37,3 +37,6 @@ how to work with collections, you are ready to start.
 The target audience is CS students and entry-level programmers.
 However, experienced developers can also use it to gain insight into best
 practices, patterns and architecture.
+
+_Flutter and the related logo are trademarks of Google LLC. We are not endorsed by or affiliated with Google LLC._
+_Dart and the related logo are trademarks of Google LLC. We are not endorsed by or affiliated with Google LLC._
