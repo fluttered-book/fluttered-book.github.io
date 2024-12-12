@@ -27,7 +27,7 @@ These are examples of some of the apps you'll make.
 ![Screenshot of Jokes app](images/jokes-app.jpg "Jokes app")
 ![Screenshot of Weather-forecast app](images/weather-app.jpg "Weather app")
 
-## Who Is This Book For?
+## Who is this book for?
 
 This book assumes basic programming knowledge but does not require any prior
 experience with Flutter or mobile development.
