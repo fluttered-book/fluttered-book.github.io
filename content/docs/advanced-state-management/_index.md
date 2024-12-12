@@ -10,4 +10,3 @@ weight: 7
 - [Immutability](immutability)
 - [BLoC](bloc)
 - [Password Manager](password-manager)
-
