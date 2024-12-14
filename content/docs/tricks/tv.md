@@ -1,5 +1,6 @@
 ---
 title: Port to TV
+weight: 4
 ---
 
 # Port to TV
@@ -53,4 +54,3 @@ Then change your `android/app/src/main/AndroidManifest.xml` to include:
 ```
 
 Where banner is a 320x180px PNG located at `android/app/src/main/res/drawable/banner.png`.
-

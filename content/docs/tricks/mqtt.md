@@ -2,7 +2,7 @@
 title: MQTT
 description: >-
   Example of controlling a IoT device over MQTT v3
-layout: default
+weight: 11
 ---
 
 # MQTT
@@ -19,9 +19,9 @@ Doesn't work with MQTT v5
   <source src="../images/mqtt_light_demo.webm" type="video/webm">
 </video>
 
-# Project
+## Project
 
-## [Link](https://github.com/rpede/flutter_mqtt)
+### [Link](https://github.com/rpede/flutter_mqtt)
 
 There are 3 projects in the repository.
 
@@ -50,12 +50,12 @@ Contains protocol code shared between **iot_light** and **light_controller**.
 
 ---
 
-# Getting started
+## Getting started
 
 The setup requires that you run broker, iot_light and light_controller at the
 same time.
 
-## MQTT broker
+### MQTT broker
 
 First you need a MQTT broker.
 If you want to try the Flutter app in a web-browser then you need a broker that
@@ -68,7 +68,7 @@ Repository contains a configuration file for it.
 mosquitto -c mosquitto.conf
 ```
 
-## IoT Light
+### IoT Light
 
 If you use a different broker you need to adjust server, port and credentials in
 `iot_light/bin/iot_light.dart`.
@@ -79,7 +79,7 @@ dart pub get
 dart run
 ```
 
-## Light controller
+### Light controller
 
 Works on Chrome and Android.
 Additional work might be needed for iOS.
@@ -87,7 +87,7 @@ Additional work might be needed for iOS.
 If you use a different broker then you will need to adjust server, port and
 credentials in `light_controller/lib/main.dart`.
 
-### Browser
+#### Browser
 
 Running the app in a browser requires a broker that supports MQTT over
 WebSocket.
@@ -98,7 +98,7 @@ flutter pub get
 flutter run -d chrome
 ```
 
-### Android
+#### Android
 
 The Android emulator got its own IP stack.
 So, `localhost` inside the emulator won't be the same as your host OS (mac,
@@ -115,9 +115,9 @@ flutter pub get
 flutter run
 ```
 
-# How it works
+## How it works
 
-## Protocol
+### Protocol
 
 With MQTT, you can publish and subscribe to topics.
 It doesn't care about how messages are structured.
@@ -133,7 +133,7 @@ The messages are defined
 and the application protocol is defined
 [here](https://github.com/rpede/flutter_mqtt/blob/main/light_protocol/lib/src/protocol.dart).
 
-## MQTT library
+### MQTT library
 
 It uses the [mqtt_client](https://pub.dev/packages/mqtt_client) package.
 It ships with two MQTT client implementations.
@@ -192,7 +192,7 @@ mqttClient.subscribe("topic", qos);
 Where `qos` is
 [MqttQos](https://pub.dev/documentation/mqtt_client/latest/mqtt_client/MqttQos.html)
 
-## JSON
+### JSON
 
 The `toJson` and `fromJson` for the messages are implemented by hand.
 For more complex scenarios you might want to consider using
@@ -264,4 +264,3 @@ that don't share a common base class.
 
 [More on JSON
 serialization](https://docs.flutter.dev/data-and-backend/serialization/json)
-

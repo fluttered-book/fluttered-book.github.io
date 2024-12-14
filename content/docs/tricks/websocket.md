@@ -2,6 +2,7 @@
 title: WebSocket
 description: >-
   Example of using WebSocket with BLoC pattern.
+weight: 10
 ---
 
 # WebSocket

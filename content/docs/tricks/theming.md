@@ -1,9 +1,12 @@
 ---
 title: Theming
 description: Customize how your app looks
+weight: 8
 ---
 
 # Theming
+
+Customize how your app looks
 
 {{< classic-dartpad >}}
 
@@ -119,4 +122,3 @@ Here are a couple of free sites you can use to quickly generate a custom icon:
 - [IconKitchen](https://icon.kitchen)
 
 _Let me know if you find other good sites._
-

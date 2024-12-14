@@ -9,15 +9,29 @@ weight: 9
 
 A collection on recopies that doesn't fit anywhere else.
 
-- [Screen capture](screen-capture)
+## Learn more
+
+- [Deepen your understanding](understanding)
+
+## Platforms
+
 - [Develop on a real phone](phone)
 - [Deploy to web](web)
 - [Port to TV](tv)
+- [Screen capture](screen-capture)
+
+## Development
+
 - [Flutter Inspector](inspector)
+- [DevOps](devops)
+
+## Look and feel
+
 - [Theming](theming)
 - [Dark-mode changer](darkmode-changer)
-- [Deepen your understanding](understanding)
+
+## Projects
+
 - [WebSocket](websocket)
 - [MQTT](mqtt)
-- [DevOps](devops)
 

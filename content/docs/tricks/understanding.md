@@ -2,7 +2,7 @@
 title: Deepen your understanding
 description: >
   How Flutter works under the surface.
-layout: default
+weight: 1
 ---
 
 # Deepen your understanding

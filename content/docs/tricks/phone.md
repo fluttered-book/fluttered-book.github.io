@@ -1,5 +1,6 @@
 ---
 title: Develop on real phone
+weight: 2
 ---
 
 # Develop on real Android phone

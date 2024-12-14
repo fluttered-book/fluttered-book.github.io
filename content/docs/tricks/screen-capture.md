@@ -3,7 +3,7 @@ title: Screen capture
 description: >
   Document various ways of capturing screenshots or screen recordings of your
   apps.
-layout: default
+weight: 5
 ---
 
 # Screenshot window
@@ -72,4 +72,3 @@ scrcpy
 2. Extract All...
 3. Right-click inside the folder with the extracted files, then "Open in Terminal"
 4. Type `scrcpy.exe`
-

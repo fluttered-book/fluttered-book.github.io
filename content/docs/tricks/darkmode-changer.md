@@ -1,6 +1,6 @@
 ---
 title: Dark-mode changer
-layout: default
+weight: 9
 ---
 
 # Dark-mode changer
@@ -156,4 +156,3 @@ class MyApp extends StatelessWidget {
   }
 }
 ```
-

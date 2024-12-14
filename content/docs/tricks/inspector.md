@@ -1,5 +1,6 @@
 ---
 title: Flutter Inspector
+weight: 6
 ---
 
 # Flutter Inspector
@@ -29,4 +30,3 @@ If don't see the button, make sure the app is running.
 - [How to debug layout issues with the Flutter Inspector](https://medium.com/flutter/how-to-debug-layout-issues-with-the-flutter-inspector-87460a7b9db)
 - [Using the Flutter inspector](https://docs.flutter.dev/tools/devtools/inspector)
 - [DevTools](https://docs.flutter.dev/tools/devtools/overview)
-

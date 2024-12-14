@@ -1,7 +1,7 @@
 ---
 title: DevOps
 description: CI/CD for Flutter
-layout: default
+weight: 7
 ---
 
 # DevOps
@@ -181,7 +181,7 @@ _Note: most newer phones are running 64 bit ARM, so they will use the
 APKs needs to be digitally signed before they can be put on Play Store.
 I think that is out of scope.
 
-# Monitoring
+## Monitoring
 
 Monitoring is important to detect defects early, optimize performance and gain
 insight for improving user experience.
@@ -192,7 +192,7 @@ Check out the links:
 - [Get started with Google Analytics](https://firebase.google.com/docs/analytics/get-started?platform=flutter)
 - [Firebase Crashlytics](https://firebase.google.com/docs/crashlytics/)
 
-# Drone CI
+## Drone CI
 
 Here is a minimal pipeline that test and build a Flutter project.
 

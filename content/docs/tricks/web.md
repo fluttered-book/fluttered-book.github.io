@@ -1,5 +1,6 @@
 ---
 title: Deploy to web
+weight: 3
 ---
 
 # Deploy to web
