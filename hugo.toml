@@ -10,7 +10,7 @@ enableGitInfo = true
 BookTheme = 'auto'
 BookRepo = 'https://github.com/fluttered-book/fluttered-book'
 BookCommitPath = 'commit'
-BookLogo = 'logo.png'
+BookLogo = 'logo.webp'
 
 [markup]
 defaultMarkdownHandler = 'goldmark'
