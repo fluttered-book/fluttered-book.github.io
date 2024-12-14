@@ -7,13 +7,11 @@ weight: 11
 
 # MQTT
 
-{{< alert >}}
-
-<div class="alert warning">
+{{< hint warning >}}
 <b>Supports: MQTT v3(3.1 and 3.1.1)</b>
 <br>
 Doesn't work with MQTT v5
-</div>
+{{< /hint >}}
 
  <video width="100%" controls>
   <source src="../images/mqtt_light_demo.webm" type="video/webm">

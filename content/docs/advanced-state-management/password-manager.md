@@ -7,10 +7,8 @@ weight: 3
 
 # Password Manager
 
-{{< alert >}}
-
-<div class="alert danger">
-  I do not recommend actually using it.
+{{< hint danger >}}
+I do not recommend actually using it.
 
 The app you will build following this project is overly simplified and therefore not suitable for real world use.
 
@@ -21,8 +19,7 @@ app.
 
 See <a href="https://en.wikipedia.org/wiki/List_of_password_managers">List of
 password managers</a>
-
-</div>
+{{< /hint >}}
 
 ![Password manager - password screen](../images/password_manager_password_screen.png)
 ![Password manager - vault screen](../images/password_manager_vault.png)
@@ -332,9 +329,10 @@ It might seem like a lot of work for very little.
 However, for a big project with many models that occasionally change, then this
 technique will save you a lot of hassle.
 
-<div class="alert info">
-  <b>Why do you need to do so much work just to serialize something to
-  JSON in Dart?</b>
+{{< hint info >}}
+<b>Why do you need to do so much work just to serialize something to
+JSON in Dart?</b>
+
   <p>
   C# and some other programming languages that you might be familiar with.
   They got something called <a
@@ -351,7 +349,7 @@ technique will save you a lot of hassle.
   Since Dart is designed to declaratively write UI that updates with 60 FPS on
   commodity phones, the designers have decided against the added overhead.
   </p>
-</div>
+{{< /hint >}}
 
 ## Cryptography
 
@@ -877,11 +875,11 @@ Add methods to the VaultCubit class, one by one as I explain them.
   }
 ```
 
-<div class="alert info">
+{{< hint info >}}
 A Cubit would normally not have any instance variables (other than through its
 constructor).
 Doing it here is a compromise, as I don't want the key anyway near UI.
-</div>
+{{< /hint >}}
 
 #### Open vault
 
@@ -1564,4 +1562,3 @@ credentials by accident.
 Add functionality for updating credentials.
 
 You should be able to reuse most of `CredentialScreen`.
-

@@ -5,8 +5,6 @@ description: >-
 weight: 3
 ---
 
-{{< alert >}}
-
 # Push notifications
 
 ![Push notification screenshot 1](../images/push_notification_app1.png)
@@ -86,10 +84,10 @@ more.
 
 ### iOS
 
-<div class="alert info">
+{{< hint info >}}
 This doesn't work in the in iOS Simulator.
 You will need a real iPhone to try it.
-</div>
+{{< /hint >}}
 
 There are some extra steps needed if you want iOS support.
 
@@ -324,4 +322,3 @@ You can grab [Deno](https://deno.com/) from here.
 Deno is basically something that allows running JavaScript/TypeScript server
 side.
 Similar to Node.js.
-

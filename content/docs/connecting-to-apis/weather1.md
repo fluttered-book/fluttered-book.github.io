@@ -6,8 +6,6 @@ weight: 3
 
 # Weather app
 
-{{< hint >}}
-
 ![Screenshot](../images/weather_app_part1_screenshot.png)
 
 # Setup
@@ -293,16 +291,13 @@ String weekdayAsString(DateTime time) {
 }
 ```
 
-<div class="hint">
-  Hints
-  <pre class="hinttext hint-top">
+{{< clue Hints >}}
 final daily = weeklyForecast.daily!;
 final date = DateTime.parse(daily.time![index]);
 final weatherCode = WeatherCode.fromInt(daily.weatherCode![index]);
 final tempMax = daily.temperature2MMax![index];
 final tempMin = daily.temperature2MMin![index];
-  </pre>
-</div>
+{{< /clue >}}
 
 # Challenge
 

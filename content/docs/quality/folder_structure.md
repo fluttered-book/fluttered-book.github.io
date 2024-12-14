@@ -7,8 +7,6 @@ weight: 2
 
 # Folder structure
 
-{{< alert >}}
-
 As the project grows in size it can become more difficult to find the right file
 for a change.
 To combat this, we need a good folder structure for our code files.
@@ -16,12 +14,12 @@ To combat this, we need a good folder structure for our code files.
 In general there are two widely deployed approaches folder structure the code of
 an application.
 
-<div class="alert info">
+{{< hint info >}}
 These concepts will be explained in the context of Flutter.
 However the ideas are by no means specific to Flutter applications.
 The same ideas applies to all programming languages and frameworks I can think
 of.
-</div>
+{{< /hint >}}
 
 ## Layer-first
 
