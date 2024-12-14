@@ -4,6 +4,8 @@ title = 'Fluttered'
 description = 'Mobile development using Flutter'
 theme = 'hugo-book'
 
+enableGitInfo = true
+
 [params]
 BookTheme = 'auto'
 BookRepo = 'https://github.com/fluttered-book/fluttered-book'
