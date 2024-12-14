@@ -509,7 +509,7 @@ While another person retrieves them in another.
 We call the end where things get added a _sink_.
 And where it comes out the _stream_.
 
-{% include_relative pipe.drawio.svg %}
+![Pipe](../images/pipe.drawio.svg)
 
 Person at _stream_ and might not be able to see then things are added to the
 _sink_.
