@@ -6,6 +6,9 @@ theme = 'hugo-book'
 
 [params]
 BookTheme = 'auto'
+BookRepo = 'https://github.com/fluttered-book/fluttered-book'
+BookCommitPath = 'commit'
+BookLogo = 'logo.png'
 
 [markup]
 defaultMarkdownHandler = 'goldmark'
