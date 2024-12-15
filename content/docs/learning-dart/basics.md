@@ -7,10 +7,7 @@ weight: 1
 
 {{< classic-dartpad >}}
 
-Dart is in many ways very similar to languages you already know.
-Some things are simplified a bit compared to C#.
-
-**Note** click the "Run" button on the code snippets to execute the code.
+Dart is in many ways very similar to programming languages you already know.
 
 ## Types
 
@@ -23,15 +20,15 @@ Here is a list of the basic type in Dart
 - **Map** like `Dictionary` in C#
 - **int**
 - **double**
-- **num** can be either `int` or `double`. So it is like `Number` in JavaScript/TypeScript
+- **num** can be either `int` or `double`. So, it is like `Number` in JavaScript/TypeScript
 - **dynamic** which is like `dynamic` in C# or `any` in TypeScript
 
 You can add `?` after a type to make it nullable, similar to TypeScript.
-Example `int?`, can be either an `int` or `null`.
+Example: valid values for variable of type `int?` are `1`, `-1234` and `null`.
 
 ## Functions
 
-In Dart you can have functions that are not part of a class, just like TypeScript.
+In Dart you can define functions outside a class, similar to TypeScript.
 
 ```dart
 num add(num a, num b) {
@@ -39,7 +36,11 @@ num add(num a, num b) {
 }
 ```
 
-The entry point for a program in Dart is a main function.
+Notice, that the type comes before the variable/function name like Java and C#.
+
+### Main function
+
+The entry point for a program in Dart is the `main` function.
 
 ```run-dartpad:theme-dark:mode-dart:width-100%:height-200px
 void main() {
@@ -51,11 +52,22 @@ void anotherFunction() {
 }
 ```
 
-You don't need to specify types in Dart.
-But the compiler can't type check if you don't specify types.
+<small>Hint click the "Run" button on the code snippets to execute the code.</small>
 
-This will give you an error when you run the code, because you can't divide a
-number by a string.
+### Dynamic types
+
+You required to specify types in Dart.
+If you don't and the compiler can't work out a specific type, then the type is
+inferred to be `dynamic`, meaning any value can be assigned to it.
+
+It might seem tempting to leave out the types because it requires less typing.
+However, it is a bad idea since you will end up with errors at runtime that the
+compiler could otherwise have caught for you.
+
+To better illustrate, here are some examples.
+
+The following code will give you an error when you run the code because you
+can't divide a number by a string.
 
 ```run-dartpad:theme-dark:mode-dart:width-100%:height-200px
 divide(a, b) {
@@ -67,8 +79,10 @@ main(){
 }
 ```
 
-Here we get a syntax error, which allows us to fix the mistake before it becomes
-a bug in our program.
+The same (almost) code again.
+But this time it is explicitly stated that the `divide` function works with type `num`.
+The compiler will now tell us that we have an error, allowing us to catch
+mistakes as we are writing the code.
 
 ```run-dartpad:theme-dark:mode-dart:width-100%:height-200px
 num divide(num a, num b) {
@@ -80,13 +94,16 @@ void main(){
 }
 ```
 
+I advise you to always explicitly define types for parameters and return
+values.
+
 ## Control flow
 
 ### Loops & if-else
 
 They work exactly as you would expect.
 
-For-each loops are similar to JavaScript.
+**For-each** loops are similar to JavaScript.
 
 ```dart
 var numbers = [1, 2, 3, 4];
@@ -97,24 +114,30 @@ for (var i in numbers) {
 
 ### Switch
 
-**switch-statement** can be used in similar ways as in C# or TypeScript.
+**switch** can be used in similar ways as in C# or TypeScript.
 But with the exception that each-empty `case` clause jumps to the end of the
 `switch` statement.
 Meaning there is no need for `break` statement in `case`-clauses.
 You could say that it auto-breaks.
 
-```dart
-switch (answer) {
-    case true:
-        print("Correct");
-    case false:
-        print("Wrong");
-    default:
-        print("No valid answer was given");
+```run-dartpad:theme-dark:mode-dart:width-100%:height-300px
+void main(){
+  bool? answer = null;
+  switch (answer) {
+      case true:
+          print("Correct");
+      case false:
+          print("Wrong");
+      default:
+          print("No valid answer was given");
+  }
 }
 ```
 
-Dart also supports **switch expressions**.
+_Try different values for the `answer` variable to see how it works in
+practice._
+
+Dart also supports something called **switch expressions**.
 
 ```dart
 String message = switch (answer) {
