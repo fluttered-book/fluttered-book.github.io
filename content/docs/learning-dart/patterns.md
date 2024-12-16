@@ -7,25 +7,40 @@ weight: 7
 
 # Patterns
 
+_Patterns, not to be confused with design patterns._
+
 Many modern object-oriented programming languages (including Dart) are
-increasingly adopting features previously mostly associated with functional
-programming paradigm.
+increasingly adopting features previously associated with paradigm of
+functional programming.
 
 You likely already know about lambda expressions (aka anonymous functions).
-But another concept known as patterns (or pattern matching) is also being
-adopted by many traditional OOP languages like
-[C#](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/functional/pattern-matching),
-[Java](https://docs.oracle.com/en/java/javase/21/language/pattern-matching.html)
-and of course Dart.
 
-To support pattern matching many languages have added support for a type called
-record.
+Another functional programming concept that have found its way into many OOP
+languages are pattern matching.
+Functionality and syntax can vary a bit, but the overall idea is the same.
+A variation of pattern matching can be found in [C#](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/functional/pattern-matching) and
+[Java](https://docs.oracle.com/en/java/javase/21/language/pattern-matching.html).
+There is also a [proposal for ECMAScript
+(JavaScript)](https://tc39.es/proposal-pattern-matching/).
+
+In short, pattern matching can be used to destructure objects and in many ways
+provide an elegant alternative to express conditions compared to boolean logic.
+
+It gives compact syntax to express conditionals based on the "shape" of a value
+and extract values from objects.
+
+To support pattern matching, many languages have added support for a type
+called record.
 Records are immutable, aggregate types.
 In layman terms it means that, they can't change and are types that can combine
-values of types.
+values of other types.
 
-You can read about these concepts work in Dart from the links below.
+If you are familiar with patterns already, it should be easy enough to convert
+your knowledge to Dart.
 
+To learn about how patterns work in Dart, check out the links below.
+
+- [Patterns #DecodingFlutter](https://www.youtube.com/watch?v=aLvlqD4QS7Y).
 - [Records](https://dart.dev/language/records)
 - [Patterns](https://dart.dev/language/patterns)
 

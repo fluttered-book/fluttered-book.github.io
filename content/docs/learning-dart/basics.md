@@ -26,6 +26,82 @@ Here is a list of the basic type in Dart
 You can add `?` after a type to make it nullable, similar to TypeScript.
 Example: valid values for variable of type `int?` are `1`, `-1234` and `null`.
 
+## Variables
+
+Variables can be defined as shown below.
+Notice that the type comes before the variable name.
+This is similar to Java and C#.
+
+```dart
+String name = 'Joe Doe';
+```
+
+In the rare cases when you need to be able to assign values of different types
+to a variable, you can declare the type as `Object` or `dynamic`.
+
+```dart
+Object name = 'Joe Doe';
+name = 1;
+```
+
+```dart
+dynamic name = 'Joe Doe';
+name = 1;
+```
+
+### var
+
+When using `var` instead of declaring a type, the compiler will infer the type.
+Meaning it will have the same type as the value right-hand side of the
+equal-sign.
+
+```dart
+var name = 'Joe Doe';
+```
+
+Here, the `name` variable can have string values assigned to it.
+
+This is similar to how `var` works in C#.
+
+### final
+
+Variables that aren't supposed to be reassigned should be prefixed it with the
+`final` keyword.
+
+```dart
+final String name = 'Joe Doe';
+```
+
+Or with type inference:
+
+```dart
+final name = 'Joe Doe';
+```
+
+`final` in Dart is similar to `const` in JavaScript/TypeScript, to `final` in
+Java and to some extent `readonly` in C#.
+
+Using `final` allows the compiler to do some optimizations, so it should be
+preferred whenever possible.
+
+### const
+
+It works a bit differently from `final`.
+When a variable is `const` it means that the values is computed during
+compilation.
+It can not be changed when the application is running.
+
+```
+const version = '1.0';
+```
+
+This is similar to `const` in C#.
+
+**Note:** `const` in Dart is not the same as `const` in JavaScript/TypeScript.
+See [final](#final).
+
+You can read more about variables in the [official docs](https://dart.dev/language/variables).
+
 ## Functions
 
 In Dart you can define functions outside a class, similar to TypeScript.
@@ -112,7 +188,7 @@ for (var i in numbers) {
 }
 ```
 
-### Switch
+### switch statement
 
 **switch** can be used in similar ways as in C# or TypeScript.
 But with the exception that each-empty `case` clause jumps to the end of the
@@ -137,7 +213,19 @@ void main(){
 _Try different values for the `answer` variable to see how it works in
 practice._
 
+More details can be found in the [official
+docs](https://dart.dev/language/branches#switch-statements).
+
+### switch expression
+
 Dart also supports something called **switch expressions**.
+The block in a switch-expression returns a value that can be assigned to a
+variable.
+
+> Expressions evaluate to a value that can either be assigned to a value or returned.
+> Statements do not evaluate to a value.
+
+Anyway, here is an example of a switch-expression.
 
 ```dart
 String message = switch (answer) {
@@ -148,15 +236,16 @@ String message = switch (answer) {
 print(message)
 ```
 
-Note that `_` functions as a default.
+Note that `_` indicates we don't care about the value.
+Effectively `_ => ...` serves as the default case.
 
-> Expressions evaluate to a value that can either be assigned to a value or returned.
-> Statements do not evaluate to a value.
+#### switch exercise
 
-Solve the following exercises with either a switch-statement.
+See if you can solve the following small exercise with either a
+switch-statement or expression.
 
-Imagine you have an API that returns day of week as an `int`.
-The numeric values follows
+Imagine you have an API that returns day of week as a `int`.
+The numeric values follow
 [DayOfWeek](https://docs.oracle.com/javase/8/docs/api/java/time/DayOfWeek.html)
 definition in Java.
 Write a simple function that takes a day of the week as input and returns
