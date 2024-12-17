@@ -7,7 +7,7 @@ description: >-
 # Introduction to Fluttered
 
 Welcome to **_Fluttered_**, a free online, interactive, exercise-driven
-textbook on cross-platform mobile app development with Dart™ and Flutter™.
+textbook on cross-platform mobile app development with Dart™ and Flutter™[\*](#disclaimer).
 
 ![Screenshot of Quiz app](images/quiz-app.jpg "Quiz app")
 ![Screenshot of Photos app](images/photos-app.jpg "Photos app")
@@ -91,5 +91,7 @@ For most of the exercises you can also just use Chrome (web browser).
 
 ---
 
-_Flutter and the related logo are trademarks of Google LLC. We are not endorsed by or affiliated with Google LLC._
+<a id="disclaimer" style="color: grey;">Disclaimer</a>
+<small>_Flutter and the related logo are trademarks of Google LLC. We are not endorsed by or affiliated with Google LLC._
 _Dart and the related logo are trademarks of Google LLC. We are not endorsed by or affiliated with Google LLC._
+</small>
