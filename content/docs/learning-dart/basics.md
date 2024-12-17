@@ -9,9 +9,12 @@ weight: 1
 
 Dart is in many ways very similar to programming languages you already know.
 
+In this chapter I'll draw comparisons to C#, Java, JavaScript and TypeScript where relevant.
+If you are familiar with any of those languages you can map your existing knowledge over to Dart.
+
 ## Types
 
-Here is a list of the basic type in Dart
+Here is a list of the basic type in Dart.
 
 - **String**
 - **bool**
@@ -24,19 +27,20 @@ Here is a list of the basic type in Dart
 - **dynamic** which is like `dynamic` in C# or `any` in TypeScript
 
 You can add `?` after a type to make it nullable, similar to TypeScript.
-Example: valid values for variable of type `int?` are `1`, `-1234` and `null`.
+
+Example: valid values for the type `num?` are `1`, `1.23`, `-1234` and `null`.
 
 ## Variables
 
 Variables can be defined as shown below.
-Notice that the type comes before the variable name.
+Notice that the is `<type> <name> = <value>`.
 This is similar to Java and C#.
 
 ```dart
 String name = 'Joe Doe';
 ```
 
-In the rare cases when you need to be able to assign values of different types
+In the rare cases where you need to be able to assign values of different types
 to a variable, you can declare the type as `Object` or `dynamic`.
 
 ```dart
@@ -59,7 +63,7 @@ equal-sign.
 var name = 'Joe Doe';
 ```
 
-Here, the `name` variable can have string values assigned to it.
+Here, the `name` variable is a type `String` because that is what is being assigned to it.
 
 This is similar to how `var` works in C#.
 
@@ -72,7 +76,7 @@ Variables that aren't supposed to be reassigned should be prefixed it with the
 final String name = 'Joe Doe';
 ```
 
-Or with type inference:
+Or with the type being inferred:
 
 ```dart
 final name = 'Joe Doe';
@@ -102,9 +106,22 @@ See [final](#final).
 
 You can read more about variables in the [official docs](https://dart.dev/language/variables).
 
+### var, final or const?
+
+As a general rule, you should pick the most restrictive declaration for any
+variable, in the order:
+
+- `const`
+- `final`
+- `var`
+
+Don't jump through hoops in order to force a variable declaration to be more
+strict than it has to.
+You should quickly pick up on which to use in what situation.
+
 ## Functions
 
-In Dart you can define functions outside a class, similar to TypeScript.
+In Dart you can define functions without a class (similar to JavaScript/TypeScript).
 
 ```dart
 num add(num a, num b) {
@@ -112,7 +129,8 @@ num add(num a, num b) {
 }
 ```
 
-Notice, that the type comes before the variable/function name like Java and C#.
+Notice, that the type is written before the variable/function name like in Java
+and C#.
 
 ### Main function
 
@@ -132,18 +150,39 @@ void anotherFunction() {
 
 ### Dynamic types
 
-You required to specify types in Dart.
-If you don't and the compiler can't work out a specific type, then the type is
-inferred to be `dynamic`, meaning any value can be assigned to it.
+You are not required to specify types in Dart.
+If you don't specify a type then the compiler will infer one from the context.
+If the compiler can't infer a more specific type then it will be treated as
+`dynamic`, meaning any value can be assigned to it and the compiler won't check
+how it is being used.
 
-It might seem tempting to leave out the types because it requires less typing.
-However, it is a bad idea since you will end up with errors at runtime that the
-compiler could otherwise have caught for you.
+It might be tempting to just always leave out the types as it requires
+less typing.
+Doing so is fine whenever a declaration includes an assignment.
+That is because in such cases the compiler can determine the specific type from
+the value assigned to it.
+If you don't have an assignment (`=` sign) in the same line as the declaration
+you will regret leaving out the type.
+That because then the type will be treated as `dynamic`, meaning the compiler
+won't check any invocations/operations on the value.
+Which leads to errors at runtime that the compiler could have caught for you.
 
 To better illustrate, here are some examples.
 
-The following code will give you an error when you run the code because you
-can't divide a number by a string.
+<span style="color: red;">Bad</span>
+
+```
+var name;
+name = "Joe Doe";
+```
+
+<span style="color: green;">Good</span>
+
+```
+var name = "Joe Doe";
+```
+
+<span style="color: red;">Bad</span>
 
 ```run-dartpad:theme-dark:mode-dart:width-100%:height-200px
 divide(a, b) {
@@ -155,10 +194,13 @@ main(){
 }
 ```
 
+_Will give you a runtime error when you run the code because you can't divide a
+number by a string._
+
+<span style="color: green;">Good</span>
+
 The same (almost) code again.
 But this time it is explicitly stated that the `divide` function works with type `num`.
-The compiler will now tell us that we have an error, allowing us to catch
-mistakes as we are writing the code.
 
 ```run-dartpad:theme-dark:mode-dart:width-100%:height-200px
 num divide(num a, num b) {
@@ -169,6 +211,9 @@ void main(){
   divide(1, "foobar");
 }
 ```
+
+_The compiler will now tell us that we have an error, allowing us to catch
+mistakes as we are writing the code._
 
 I advise you to always explicitly define types for parameters and return
 values.
@@ -239,7 +284,7 @@ print(message)
 Note that `_` indicates we don't care about the value.
 Effectively `_ => ...` serves as the default case.
 
-#### switch exercise
+#### switch mini-exercise
 
 See if you can solve the following small exercise with either a
 switch-statement or expression.
