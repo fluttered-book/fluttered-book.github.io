@@ -61,6 +61,9 @@ But here is a quick overview.
 | flutter_bloc               | Flutter package for BLoC                                                        |
 | fast_immutable_collections | Makes it simple to work with immutable collections                              |
 
+To learn more about equality in Dart and the equatable package, [watch
+this](https://www.youtube.com/watch?v=DCKaFaU4jdk).
+
 ## Models
 
 This time we will use code generation for JSON serialization/deserialization.
