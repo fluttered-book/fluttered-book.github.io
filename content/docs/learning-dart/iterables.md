@@ -17,6 +17,25 @@ The [Iterable](https://api.dart.dev/stable/dart-core/Iterable-class.html) class
 (base class for collections) has many convince methods, that once you learn
 them, allow you to write code much faster than when using loops.
 
+### Language comparison
+
+These kinds of operations exists in many programming languages, though naming might be different.
+
+| Description                                     | Dart                                                                               | C#                                                                                           | JavaScript                                                                                                        |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Filter (keep) elements that match the predicate | [where](https://api.dart.dev/stable/dart-core/Iterable/where.html)                 | [Where](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.where)           | [filter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)           |
+| Map (convert) each element to another type      | [map](https://api.dart.dev/stable/dart-core/Iterable/map.html)                     | [Select](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.select)         | [map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)                 |
+| Flatten nested collections                      | [expand](https://api.dart.dev/stable/dart-core/Iterable/expand.html)               | [SelectMany](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.selectmany) | [flatMap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap)         |
+| Group elements by a common value                | [groupBy](https://pub.dev/documentation/collection/latest/collection/groupBy.html) | [GroupBy](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.groupby)       | [Object.groupBy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy) |
+
+### Visualization
+
+| Input                  | Operation              | Output         |
+| ---------------------- | ---------------------- | -------------- |
+| `[🍔, 🍕, 🍔]`         | .where((x) => x == 🍔) | 🍔, 🍔         |
+| `[🍔, 🍔, 🍔]`         | .map((x) => 🍕)        | 🍕, 🍕, 🍕     |
+| `[[🍕, 🍕], [🍔, 🍔]]` | .expand((x) => x)      | 🍕, 🍕, 🍔, 🍔 |
+
 ### Example usage
 
 Run the code an observe the result.
@@ -44,17 +63,6 @@ void main() {
   print(groupBy(movies, (m) => m.title[0]));
 }
 ```
-
-### Language comparison
-
-These kinds of operations exists in many programming languages, though naming might be different.
-
-| Description                                     | Dart                                                                               | C#                                                                                           | JavaScript                                                                                                        |
-| ----------------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| Filter (keep) elements that match the predicate | [where](https://api.dart.dev/stable/dart-core/Iterable/where.html)                 | [Where](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.where)           | [filter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)           |
-| Map (convert) each element to another type      | [map](https://api.dart.dev/stable/dart-core/Iterable/map.html)                     | [Select](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.select)         | [map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)                 |
-| Flatten nested collections                      | [expand](https://api.dart.dev/stable/dart-core/Iterable/expand.html)               | [SelectMany](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.selectmany) | [flatMap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap)         |
-| Group elements by a common value                | [groupBy](https://pub.dev/documentation/collection/latest/collection/groupBy.html) | [GroupBy](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.groupby)       | [Object.groupBy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy) |
 
 ## Exercise
 
