@@ -16,6 +16,8 @@ BookLogo = 'logo.webp'
 defaultMarkdownHandler = 'goldmark'
 [markup.goldmark.renderer]
 unsafe = true
+[markup.highlight]
+style = "catppuccin-frappe"
 
 [outputs]
 home = ["HTML", "RSS", "JSON"]
