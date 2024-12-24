@@ -131,25 +131,30 @@ mainstream programming languages as well, though semantics varies slightly.
 
 ### Language comparison
 
-These kinds of operations exists in many programming languages, though naming might be different.
+These kinds of methods exist in many programming languages, though naming
+might be different.
+So, there is a good chance that you can recognize having seen something similar
+in another language already.
 
-| Description                                     | Dart                                                                               | C#                                                                                           | JavaScript                                                                                                        |
-| ----------------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| Filter (keep) elements that match the predicate | [where](https://api.dart.dev/stable/dart-core/Iterable/where.html)                 | [Where](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.where)           | [filter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)           |
-| Map (convert) each element to another type      | [map](https://api.dart.dev/stable/dart-core/Iterable/map.html)                     | [Select](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.select)         | [map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)                 |
-| Flatten nested collections                      | [expand](https://api.dart.dev/stable/dart-core/Iterable/expand.html)               | [SelectMany](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.selectmany) | [flatMap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap)         |
-| Group elements by a common value                | [groupBy](https://pub.dev/documentation/collection/latest/collection/groupBy.html) | [GroupBy](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.groupby)       | [Object.groupBy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy) |
-
-There is a good chance you are somewhat familiar with the concepts already.
+| Description                                       | Dart                                                                               | C#                                                                                           | JavaScript                                                                                                        |
+| ------------------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Filter (keep) elements that match given predicate | [where](https://api.dart.dev/stable/dart-core/Iterable/where.html)                 | [Where](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.where)           | [filter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)           |
+| Map (convert) each element to another type        | [map](https://api.dart.dev/stable/dart-core/Iterable/map.html)                     | [Select](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.select)         | [map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)                 |
+| Flatten nested collections                        | [expand](https://api.dart.dev/stable/dart-core/Iterable/expand.html)               | [SelectMany](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.selectmany) | [flatMap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap)         |
+| Group elements by a common value                  | [groupBy](https://pub.dev/documentation/collection/latest/collection/groupBy.html) | [GroupBy](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.groupby)       | [Object.groupBy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy) |
 
 ### Visualization
 
-| Input                                      | Operation                  | Output                                     |
-| ------------------------------------------ | -------------------------- | ------------------------------------------ |
-| [🍔, 🍕, 🍔]                               | .where((x) => x == 🍔)     | (🍔, 🍔)                                   |
-| [🍔, 🍔, 🍔]                               | .map((x) => 🍕)            | (🍕, 🍕, 🍕)                               |
-| [[🍕, 🍕], [🍔, 🍔]]                       | .expand((x) => x)          | (🍕, 🍕, 🍔, 🍔)                           |
-| [["🍲", "🌶️"], ["🍲", "🍅"], ["🍞", "🧈"]] | groupBy(list, (x) => x[0]) | {🍲: [[🍲, 🌶️], [🍲, 🍅]], 🍞: [[🍞, 🧈]]} |
+Here are some examples to make it a bit easier to wrap your head around.
+
+| Input                          | Operation                  | Output                                     |
+| ------------------------------ | -------------------------- | ------------------------------------------ |
+| [🍔, 🍕, 🍔]                   | .where((x) => x == 🍔)     | (🍔, 🍔)                                   |
+| [🍔, 🍔, 🍔]                   | .map((x) => 🍕)            | (🍕, 🍕, 🍕)                               |
+| [[🍕, 🍕], [🍔, 🍔]]           | .expand((x) => x)          | (🍕, 🍕, 🍔, 🍔)                           |
+| [[🍲, 🌶️], [🍲, 🍅], [🍞, 🧈]] | groupBy(list, (x) => x[0]) | {🍲: [[🍲, 🌶️], [🍲, 🍅]], 🍞: [[🍞, 🧈]]} |
+
+_Lists are represented with `[]`, maps in the form `{"key": "value"}` and iterables with `()`._
 
 ### Example usage
 
