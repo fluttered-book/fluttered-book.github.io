@@ -28,7 +28,7 @@ programming.
 
 ## Collections
 
-- [Iterables](iterables)
+- [Collections](collections)
 - [Acronym generator](acronym)
 - [Reverse Polish notation](rpn)
 

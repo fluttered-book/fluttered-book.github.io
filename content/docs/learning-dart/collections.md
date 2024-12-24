@@ -1,21 +1,133 @@
 ---
-title: Iterables
+title: Collections
 weight: 4
 ---
 
 {{< classic-dartpad >}}
 
-# Iterables
+# Collection
 
 ## Introduction
 
-Iterable collections are important building blocks for many applications.
-Almost all applications deals with collections of things in some way.
-It is therefore a huge payoff in being able to work efficiently with collections.
+Almost all applications deals with collections of things in some way, making
+collections an important building block.
 
-The [Iterable](https://api.dart.dev/stable/dart-core/Iterable-class.html) class
-(base class for collections) has many convince methods, that once you learn
-them, allow you to write code much faster than when using loops.
+## Lists
+
+A `List` in Dart is similar to lists or arrays of other languages.
+It is simply an ordered group of objects.
+
+```dart
+List<int> list = [1, 2, 3];
+```
+
+**Notice**: elements are encapsulated within square brackets.
+
+If we leave out the type `List<int>` then it will be inferred by the compiler
+since all elements are `int`.
+
+```dart
+var list = [1, 2, 3];
+```
+
+If we instead define the list as `[1, 2, 3.0]` then it will be inferred as type
+`List<num>`, since `num` is the closet common subclass of both `int` and
+`double`.
+
+There are two ways to define an empty list of some type.
+
+```dart
+List<int> list1 = [];
+var list2 = <int>[];
+```
+
+Remember, if you leave out the type then it will be inferred as `dynamic`.
+
+```run-dartpad:theme-dark:mode-dart:width-100%:height-300px
+void main() {
+  List<int> list1 = [1, 2, 3];
+  print("list1 is ${list1.runtimeType}");
+
+  var list2 = [1, 2, 3];
+  print("list2 is also ${list2.runtimeType}");
+
+  var list3 = [1, 2, 3.0];
+  print("list3 is ${list3.runtimeType} since all elements are num");
+}
+```
+
+## Set
+
+A set is an unordered collection of unique items.
+
+```dart
+Set<int> set = {1, 2, 3};
+```
+
+**Notice**: elements are encapsulated within curly-brackets.
+
+Here is a silly example of what is meant by a collection unique items.
+If you do:
+
+```dart
+var set = {1, 2, 3, 3};
+```
+
+You will only get a set with 3 values because `3` and `3` are the same.
+
+An example use case for sets are tags on a block post.
+This article could have the tags:
+
+```dart
+final tags = {"programming", "oop", "dart", "collections"};
+```
+
+We could find related posts by taking the intersection (overlap) between the
+two set of tags.
+
+```dart
+final otherTags = {"Python", "collections"};
+final tagsInCommon = tags.intersection(otherTags);
+```
+
+The variable `tagsInCommon` will be `{"collections"}` since that is the only
+element contained in both sets.
+
+There are of cause many other use cases for sets.
+Just remember they don't maintain order.
+Meaning you can't rely on the order of elements when looping over a set being
+the same as they were added.
+
+## Maps
+
+A map is a collection of key/value pairs.
+
+```dart
+Map<String, dynamic> map = {
+  "name": "Joe",
+  "age": 21
+};
+```
+
+**Notice**: syntax is similar to objects in JSON.
+
+In the example above I've specified the value to be of type `dynamic`.
+If I had left out the type then it would be inferred as type `Object` since
+that is the common base class of both `String` and `int`.
+
+You will work with maps when retrieving data from a web-API.
+
+## Iterables
+
+The collection types in Dart such as `List`, `Set` and `Map` are `Iterable`,
+which provides you with a bunch of convenient methods for operating across
+their elements.
+These methods can be chained together making them really powerful.
+Learning to utilize them allows you to express transformations more elegantly
+than with explicit loops.
+
+The concepts you will learn about in the section applies to many other
+mainstream programming languages as well, though semantics varies slightly.
 
 ### Language comparison
 
@@ -28,13 +140,16 @@ These kinds of operations exists in many programming languages, though naming mi
 | Flatten nested collections                      | [expand](https://api.dart.dev/stable/dart-core/Iterable/expand.html)               | [SelectMany](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.selectmany) | [flatMap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap)         |
 | Group elements by a common value                | [groupBy](https://pub.dev/documentation/collection/latest/collection/groupBy.html) | [GroupBy](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.groupby)       | [Object.groupBy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy) |
 
+There is a good chance you are somewhat familiar with the concepts already.
+
 ### Visualization
 
-| Input                  | Operation              | Output         |
-| ---------------------- | ---------------------- | -------------- |
-| `[🍔, 🍕, 🍔]`         | .where((x) => x == 🍔) | 🍔, 🍔         |
-| `[🍔, 🍔, 🍔]`         | .map((x) => 🍕)        | 🍕, 🍕, 🍕     |
-| `[[🍕, 🍕], [🍔, 🍔]]` | .expand((x) => x)      | 🍕, 🍕, 🍔, 🍔 |
+| Input                                      | Operation                  | Output                                     |
+| ------------------------------------------ | -------------------------- | ------------------------------------------ |
+| [🍔, 🍕, 🍔]                               | .where((x) => x == 🍔)     | (🍔, 🍔)                                   |
+| [🍔, 🍔, 🍔]                               | .map((x) => 🍕)            | (🍕, 🍕, 🍕)                               |
+| [[🍕, 🍕], [🍔, 🍔]]                       | .expand((x) => x)          | (🍕, 🍕, 🍔, 🍔)                           |
+| [["🍲", "🌶️"], ["🍲", "🍅"], ["🍞", "🧈"]] | groupBy(list, (x) => x[0]) | {🍲: [[🍲, 🌶️], [🍲, 🍅]], 🍞: [[🍞, 🧈]]} |
 
 ### Example usage
 
