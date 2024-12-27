@@ -16,9 +16,18 @@ textbook on cross-platform mobile app development with Dart™ and Flutter™[\*
 
 _Example apps from the exercises in this book._
 
+---
+
+<a id="disclaimer" style="color: grey;">Disclaimer</a>
+<small>_Flutter and the related logo are trademarks of Google LLC. We are not endorsed by or affiliated with Google LLC._
+_Dart and the related logo are trademarks of Google LLC. We are not endorsed by or affiliated with Google LLC._
+</small>
+
+---
+
 ## What is Flutter?
 
-Flutter is a powerful UI toolkit from Google, for crafting natively compiled
+Flutter is a powerful UI toolkit backed by Google, for crafting natively compiled
 applications for mobile, web, and desktop - all from a single codebase.
 
 ## What will I learn?
@@ -61,10 +70,10 @@ foundation to tackle larger, more complex projects.
 
 ## Who is this book for?
 
-This book assumes basic programming knowledge but does not require any prior
+This book assumes basic programming knowledge, but does not require any prior
 experience with Flutter or mobile development.
-If you have some understanding of object-oriented programming (OOP) and know
-how to work with collections, you are ready to start.
+If you have some understanding of object-oriented programming (OOP), you are
+ready to start.
 
 The target audience is CS students and entry-level programmers.
 However, experienced developers can also use it to gain insight into best
@@ -74,24 +83,21 @@ practices, patterns and architecture.
 
 To complete the exercises in this book, you need a computer with a recent version of either Windows, macOS or Linux.
 
-8 GB of RAM is required as a minimum, though 16 GB or more is recommended.
+8 GB of RAM is required as a minimum, however 16 GB or more is recommended.
 
-It can be beneficial to have a supported smartphone to try the apps on,
+It can be beneficial to have a supported smartphone to test your apps on,
 although not strictly required.
 Either Android (5.0+) or iOS (12+).
 
-**Note:** You need a Mac to develop for iPhone.
+{{< hint info >}}
+<b>Note:</b> You need a Mac to develop for iPhone.
 This limitation is unfortunately imposed by Apple.
-As a workaround, you can [deploy to web](tricks/web) to try it on an iPhone.
+However as a workaround, you can <a href="docs/tricks/web" >deploy to web</a>
+to use your apps on iPhone.
+{{< /hint >}}
 
 No matter your operating system, you can always run your app out on a virtual
 Android device (emulator).
 
 For most of the exercises you can also just use Chrome (web browser).
 
----
-
-<a id="disclaimer" style="color: grey;">Disclaimer</a>
-<small>_Flutter and the related logo are trademarks of Google LLC. We are not endorsed by or affiliated with Google LLC._
-_Dart and the related logo are trademarks of Google LLC. We are not endorsed by or affiliated with Google LLC._
-</small>
