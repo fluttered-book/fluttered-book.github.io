@@ -25,6 +25,4 @@ Here you'll learn about generators by implementing fizz buzz.
 Implement a fizz buzz generator using
 [streams](https://dart.dev/articles/libraries/creating-streams).
 
-```run-dartpad:theme-dark:mode-dart:width-100%:height-460px
-{% include exercise path="codelab/lib/fizzbuzz/" %}
-```
+{{< exercise path="/content/docs/learning-dart/codelab/lib/fizzbuzz/" height="460px" >}}

@@ -381,6 +381,4 @@ class MockUserService implements UserService {}
 
 Here is an example of using it all together.
 
-```run-dartpad:theme-dark:mode-dart:width-100%:height-800px
-{% include demo path="codelab/lib/objects/" %}
-```
+{{< codedemo path="/content/docs/learning-dart/codelab/lib/objects/" height="720px" >}}

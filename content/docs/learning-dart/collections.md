@@ -228,6 +228,4 @@ const List<Person> people = [
 
 ### Code
 
-```run-dartpad:theme-dark:mode-dart:width-100%:height-460px
-{% include exercise path="codelab/lib/iterables/" %}
-```
+{{< exercise path="/content/docs/learning-dart/codelab/lib/iterables/" height="720px" >}}

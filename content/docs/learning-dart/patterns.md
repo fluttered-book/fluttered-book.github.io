@@ -55,6 +55,4 @@ Here are the rules:
 - When selling beverages with 1.2 to 16.5 percent alcohol, the retailer must verify that the customer are 16 years of age
 - Beverages with 16.5 percent alcohol or more may not be sold to persons under the age of 18
 
-```run-dartpad:theme-dark:mode-dart:width-100%:height-800px
-{% include demo path="codelab/lib/patterns/" %}
-```
+{{< codedemo path="/content/docs/learning-dart/codelab/lib/patterns/" height="720px" >}}

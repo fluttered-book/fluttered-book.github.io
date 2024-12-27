@@ -22,6 +22,4 @@ You give it some text and it will abbreviate it to an acronym.
 
 ## Code
 
-```run-dartpad:theme-dark:mode-dart:width-100%:height-460px
-{% include exercise path="codelab/lib/acronym/" %}
-```
+{{< exercise path="/content/docs/learning-dart/codelab/lib/acronym/" height="460px" >}}

@@ -1,0 +1,14 @@
+<pre><code class="language-run-dartpad:mode-dart:theme-dark:width-100%:height-{{.Get "height" }}">
+{$ begin main.dart $}
+{{ print (.Get "path") "main.dart" | readFile }}
+{$ end main.dart $}
+{$ begin solution.dart $}
+{{ print (.Get "path") "solution.dart" | readFile }}
+{$ end solution.dart $}
+{$ begin test.dart $}
+{{ print (.Get "path") "test.dart" | readFile }}
+{$ end test.dart $}
+{$ begin test_import.dart $}
+part 'test.dart';
+{$ end test_import.dart $}
+</code></pre>

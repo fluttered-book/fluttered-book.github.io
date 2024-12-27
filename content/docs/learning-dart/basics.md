@@ -236,8 +236,8 @@ for (var i in numbers) {
 ### switch statement
 
 **switch** can be used in similar ways as in C# or TypeScript.
-But with the exception that each-empty `case` clause jumps to the end of the
-`switch` statement.
+But with the exception that each non-empty `case` clause jumps to the end of
+the `switch` statement.
 Meaning there is no need for `break` statement in `case`-clauses.
 You could say that it auto-breaks.
 
@@ -297,18 +297,14 @@ Write a simple function that takes a day of the week as input and returns
 whether it's a weekday or a weekend.
 On invalid input it should `throw ArgumentError('Invalid day')`.
 
-```run-dartpad:theme-dark:mode-dart:width-100%
-{{ include exercise path="codelab/lib/switch_statement/" }}
-```
+{{< exercise path="/content/docs/learning-dart/codelab/lib/switch_statement/" height="300px" >}}
 
 Solve this one with a switch-expression.
 
 Write a simple function that converts Denmark's 7-step-scale to ECTS grading scale.
 See [Academic grading in Denmark](https://en.wikipedia.org/wiki/Academic_grading_in_Denmark).
 
-```run-dartpad:theme-dark:mode-dart:width-100%
-{% include exercise path="codelab/lib/switch_expression/" %}
-```
+{{< exercise path="/content/docs/learning-dart/codelab/lib/switch_expression/" height="300px" >}}
 
 ## Variables
 

@@ -7,14 +7,17 @@ weight: 6
 
 Watch the video for an introduction to the concepts.
 
-[📺 Reverse Polish Notation and The Stack - Computerphile](https://www.youtube.com/watch?v=7ha78yWRDlE)
+<figure>
+<iframe width="720" height="400" src="https://www.youtube.com/embed/7ha78yWRDlE?si=M21W2n2Sq_0yp9bM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <figcaption><i>Reverse Polish Notation and The Stack - Computerphile</i></figcaption>
+</figure>
 
 Reverse polish notation doesn't have anything to do Flutter.
 Here we are just using it to practice some writing Dart.
 
 ## Description
 
-Implement a simple calculator based on Reverse Polish Notation (RPN).
+Implement a simple calculator based on Reverse Polish Notatjion (RPN).
 RPN is also known as postfix notation.
 
 We are used to what is called infix notation where the operator is between the
