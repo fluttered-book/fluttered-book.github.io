@@ -1,5 +1,5 @@
 class FizzBuzzer {
-  Stream<String> generate() async* {
+  Iterable<String> generate() sync* {
     // TODO implement here
   }
 }
