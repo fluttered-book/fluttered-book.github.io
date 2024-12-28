@@ -32,7 +32,7 @@ You have already seen the
 [Center](https://api.flutter.dev/flutter/widgets/Center-class.html) widget.
 It simply puts its child in the center of the available space.
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-400px:split-60
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-400px
 import 'package:flutter/material.dart';
 
 void main() {
@@ -64,7 +64,7 @@ Including margin, padding, decoration, color, shape and size.
 
 Here is an example you can play around with:
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-800px:split-60
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-800px
 import 'package:flutter/material.dart';
 
 void main() {
@@ -133,7 +133,7 @@ is probably a better fit.
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
     allowfullscreen></iframe>
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-400px:split-60
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-400px
 import 'package:flutter/material.dart';
 
 void main() {
@@ -163,7 +163,7 @@ For that there is [ConstrainedBox](https://api.flutter.dev/flutter/widgets/Const
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
     allowfullscreen></iframe>
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-400px:split-60
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-480px
 import 'package:flutter/material.dart';
 
 void main() {
@@ -202,7 +202,7 @@ The difference between them is what axis it uses to layout its children.
 
 `Row` will layout its children horizontally.
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-460px:split-70
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-460px
 import 'package:flutter/material.dart';
 
 void main() {
@@ -225,7 +225,7 @@ void main() {
 
 And `Column` will layout vertically.
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-460px:split-70
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-460px
 import 'package:flutter/material.dart';
 
 void main() {
@@ -250,15 +250,15 @@ void main() {
 They also both have a `mainAxisAlignment` parameter to control the spacing of its children.
 The different possibilities are shown below:
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-800px:split-60
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-800px
 import 'package:flutter/material.dart';
 
 void main() {
   final boxes = [
-    Container(width: 50, height: 50, color: Colors.amber),
-    Container(width: 50, height: 50, color: Colors.blue),
-    Container(width: 50, height: 50, color: Colors.brown),
-    Container(width: 50, height: 50, color: Colors.cyan),
+    Container(width: 30, height: 30, color: Colors.amber),
+    Container(width: 30, height: 30, color: Colors.blue),
+    Container(width: 30, height: 30, color: Colors.brown),
+    Container(width: 30, height: 30, color: Colors.cyan),
   ];
   runApp(
     MaterialApp(
@@ -312,7 +312,7 @@ If you don't want empty space around the children, then you can wrap children in
 [Expanded](https://api.flutter.dev/flutter/widgets/Expanded-class.html) widget.
 It makes the child widget expand to fill out the available space.
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-500px:split-60
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-500px
 import 'package:flutter/material.dart';
 
 void main() {
@@ -321,11 +321,11 @@ void main() {
       home: Scaffold(
         body: Row(
           children: [
-            Container(width: 50, height: 50, color: Colors.amber),
+            Container(width: 30, height: 30, color: Colors.amber),
             Expanded(
-              child: Container(width: 50, height: 50, color: Colors.blue),
+              child: Container(width: 30, height: 30, color: Colors.blue),
             ),
-            Container(width: 50, height: 50, color: Colors.brown),
+            Container(width: 30, height: 30, color: Colors.brown),
           ],
         ),
       ),
@@ -339,7 +339,7 @@ dividing it between them.
 You can control how much space (relative to the others) a `Expanded` gets by
 setting the flex value.
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-500px:split-60
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-600px
 import 'package:flutter/material.dart';
 
 void main() {
@@ -349,15 +349,15 @@ void main() {
         body: Row(
           children: [
             Expanded(
-              child: Container(width: 50, height: 50, color: Colors.amber),
+              child: Container(width: 30, height: 30, color: Colors.amber),
             ),
             Expanded(
               flex: 2,
-              child: Container(width: 50, height: 50, color: Colors.blue),
+              child: Container(width: 30, height: 30, color: Colors.blue),
             ),
             Expanded(
               flex: 3,
-              child: Container(width: 50, height: 50, color: Colors.brown),
+              child: Container(width: 30, height: 30, color: Colors.brown),
             ),
           ],
         ),
@@ -379,7 +379,7 @@ Second gets $6/2$ and third gets $6/3$ (or half).
 
 Sometimes you might want more children in a `Row` or `Column` than what fits on the screen.
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-460px:split-70
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-520px:split-70
 import 'package:flutter/material.dart';
 
 void main() {
@@ -424,7 +424,7 @@ space it will wrap to a new line.
 
 Let's try the example above again, but with a `Wrap` instead of a `Row`.
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-460px:split-70
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-520px:split-70
 import 'package:flutter/material.dart';
 
 void main() {
@@ -462,7 +462,7 @@ sometimes a better option than combining multiple Row and Column widgets.
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
     allowfullscreen></iframe>
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-460px:split-70
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-800px
 import 'package:flutter/material.dart';
 
 void main() {
@@ -520,7 +520,7 @@ Think of it as a stack of paper on your desk view from the top.
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
   allowfullscreen></iframe>
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-600px:split-70
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-680px
 import 'package:flutter/material.dart';
 
 void main() {
@@ -558,7 +558,7 @@ It can be overridden on a per child basis by wrapping it in the
 [Positioned](https://api.flutter.dev/flutter/widgets/Positioned-class.html)
 widget.
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-600px:split-70
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-680px
 import 'package:flutter/material.dart';
 
 void main() {
@@ -607,7 +607,7 @@ content.
 However, the children can be any widget as long as their size is constrained in
 the scroll direction.
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-460px:split-70
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-800px
 import 'package:flutter/material.dart';
 
 void main() {
@@ -666,7 +666,7 @@ Sometimes the items you want to display in a ListView need to be generated or
 fetched.
 In such situations you would use a `itemBuilder` function to build the items.
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-460px:split-70
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-500px
 import 'package:flutter/material.dart';
 
 final List<int> colorCodes = [800, 600, 300, 100];
@@ -704,7 +704,7 @@ Among other things, it is a perfect fit for creating a gallery or product catalo
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
   allowfullscreen></iframe>
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-460px:split-60
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-500px
 import 'package:flutter/material.dart';
 
 void main() {
@@ -734,11 +734,13 @@ The spacing between tiles can be controlled with `mainAxisSpacing` and
 `crossAxisSpacing`.
 The number of tiles displayed across is controlled with `crossAxisCount`.
 
+_Try to change `crossAxisCount`._
+
 You can use the
 [GridTile](https://api.flutter.dev/flutter/material/GridTile-class.html) widget
 in children list to quickly add some flair.
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-460px:split-60
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-800px
 import 'package:flutter/material.dart';
 
 void main() {
@@ -797,4 +799,3 @@ void main() {
   );
 }
 ```
-_Try to change `crossAxisCount`._

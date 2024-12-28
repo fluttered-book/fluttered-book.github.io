@@ -17,7 +17,7 @@ A widget serves a similar purpose es a component in React, Angular or Vue.
 The entry point for Flutter is a call to the [runApp function](https://api.flutter.dev/flutter/widgets/runApp.html).
 It takes a tree of widgets as argument and puts the widgets on the screen.
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-340px:split-60
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-360px
 import 'package:flutter/material.dart';
 
 void main() {
@@ -180,7 +180,7 @@ there are no buttons.
 That is because Material uses different flavors of buttons.
 Here are some examples:
 
-```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-500px:split-70
+```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-550px
 import 'package:flutter/material.dart';
 
 void main() {
