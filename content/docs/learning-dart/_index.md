@@ -29,8 +29,9 @@ programming.
 ## Collections
 
 - [Collections](collections)
-- [Acronym generator](acronym)
-- [Reverse Polish notation](rpn)
+- Challenges
+  - [Acronyms](acronym)
+  - [Reverse Polish notation](rpn)
 
 ## Advanced
 
