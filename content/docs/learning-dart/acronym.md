@@ -1,6 +1,6 @@
 ---
-title: Acronym generator
-weight: 5
+title: "Challenge: Acronym"
+weight: 6
 ---
 
 {{< classic-dartpad >}}

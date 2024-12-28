@@ -25,6 +25,8 @@ programming.
 
 - [Constructors](constructors)
 - [Building object trees](object-trees)
+- Challenges
+  - [Computer parts](parts)
 
 ## Collections
 
