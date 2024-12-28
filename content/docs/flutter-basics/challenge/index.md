@@ -9,7 +9,7 @@ weight: 3
 
 Can you match the screenshot?
 
-![Screenshot](../widget_challenge.png)
+![Screenshot](images/widget_challenge.png)
 
 ```run-dartpad:theme-dark:mode-flutter:run-false:width-100%:height-800px:split-60
 {$ begin main.dart $}
