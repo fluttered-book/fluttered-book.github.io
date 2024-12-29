@@ -28,6 +28,10 @@ base class:
 For now, we will just focus on **StatelessWidget**.
 You will learn about the others later on.
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/wE7khGHVkYY?si=fmBpUb5a0zDBl5W-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+_Introduction to StatelessWidget made by Google some years ago._
+
 ## App widget
 
 Instead of passing the entire widget tree to the `runApp()` function, most apps
@@ -63,7 +67,7 @@ class MyApp extends StatelessWidget {
 It has one abstract method we need to override.
 That is the **build** method.
 It returns a subtree of widgets.
-So, a custom widget can be composed of other widgets.
+Meaning, a custom widget can be composed of other widgets.
 
 ## Maintainability
 
@@ -177,6 +181,8 @@ So Android Studio got a option in context menu to do it for your.
 
 ![Extract Flutter Widget](images/extract-flutter-widget.png)
 
+**Note:** You might need to do some manual adjustments of the code afterward.
+
 {{% /details %}}
 
 To fix the second problem, we can turn the title text into a parameter for the
@@ -240,7 +246,7 @@ class FancyTitle extends StatelessWidget {
 
 ## Helper methods
 
-Helpers methods are sometimes used to break down the **build** method into
+Helpers methods can also be used to break down a large **build** method into
 smaller chunks.
 It can be seen as an alternative to introducing new custom widgets.
 Here is a variation where the fancy title is defined with a helper method.
@@ -293,3 +299,7 @@ class MyApp extends StatelessWidget {
   }
 }
 ```
+
+Using widgets over helper methods can have some advantages.
+It allows the widget to be reused.
+And in some situations it will actually perform better as well.
