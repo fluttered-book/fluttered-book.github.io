@@ -1,6 +1,6 @@
 ---
 title: Challenge
-weight: 3
+weight: 4
 ---
 
 {{< classic-dartpad >}}

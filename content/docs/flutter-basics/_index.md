@@ -8,8 +8,8 @@ weight: 3
 
 # Flutter basics
 
-Now that you've gotten a taste of Dart, it's time to dive into the GUI
-framework Flutter.
+Now that you've gotten a taste of Dart, it's time to dive into the UI framework
+Flutter.
 
 ![Flutter logo](images/lockup_flutter_horizontal.svg)
 
@@ -18,4 +18,5 @@ Widget in Flutter are comparable to components in popular web frameworks such as
 
 - [Widgets](widgets)
 - [Layouts](layouts)
-- [Challenge](challenge)
+  - [Challenge](challenge)
+- [Custom widgets](custom-widgets)

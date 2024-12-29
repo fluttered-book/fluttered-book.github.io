@@ -10,7 +10,7 @@ weight: 1
 # Widgets
 
 In Flutter, the entire UI is built from widgets.
-A widget serves a similar purpose es a component in React, Angular or Vue.
+A widget serves a similar purpose as a component in React, Angular or Vue.
 
 ## Run app
 
@@ -119,7 +119,7 @@ void main() {
       title: 'Flutter Demo',
       darkTheme: ThemeData.dark(),
       home: Scaffold(
-        appBar: AppBar(title: const Text("Flutter Cupertino Demo")),
+        appBar: AppBar(title: const Text("Flutter Android Demo")),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
