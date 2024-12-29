@@ -37,5 +37,6 @@ programming.
 
 ## Advanced
 
+- [Cascade notation](cascade)
 - [Patterns](patterns)
 - [Generators](generators)
