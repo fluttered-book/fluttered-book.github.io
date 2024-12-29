@@ -119,4 +119,15 @@ void main() {
 {$ end solution.dart $}
 ```
 
-Hint: [list of icons](https://fonts.google.com/icons?selected=Material+Icons&icon.platform=flutter)
+Hint: You can create an icon with `Icon(Icons.home))`.
+The icons used are:
+
+- settings
+- add
+- home
+- local_library
+- search
+- list
+- account_circle
+
+See [list of icons](https://fonts.google.com/icons?selected=Material+Icons&icon.platform=flutter) for more.
