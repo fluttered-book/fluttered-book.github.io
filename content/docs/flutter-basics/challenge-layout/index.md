@@ -1,6 +1,6 @@
 ---
-title: Challenge
-weight: 4
+title: "Challenge: Layout"
+weight: 3
 ---
 
 {{< classic-dartpad >}}

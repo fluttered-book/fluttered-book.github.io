@@ -18,5 +18,6 @@ Widget in Flutter are comparable to components in popular web frameworks such as
 
 - [Widgets](widgets)
 - [Layouts](layouts)
-  - [Challenge](challenge)
+  - [Challenge: Layout](challenge-layout)
 - [Custom widgets](custom-widgets)
+  - [Challenge: Calculator](challenge-calculator)

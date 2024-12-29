@@ -2,7 +2,7 @@
 title: Custom Widgets
 description: >-
   Create your own Flutter widgets.
-weight: 3
+weight: 4
 ---
 
 {{< classic-dartpad >}}
