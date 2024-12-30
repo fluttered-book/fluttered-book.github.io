@@ -662,14 +662,33 @@ Try the app again.
 
 ## Challenges
 
-### Quiz with images
+### 1. Refactor
+
+Refactor the app to use widgets instead of helper methods to build the UI.
+It might be a good idea to keep the for what happens on button presses in the
+`QuizScreen` widget.
+
+**Hint**: you can write methods that take functions as arguments.
+The type for a function that takes a string as argument and return void is `
+void Function(String option)`.
+
+Then answer these questions:
+
+1. Which version do you prefer?
+2. Which style do you think is more maintainable if the app was 10x as big?
+
+{{% details "Reveal solution" %}}
+[Go to source](https://github.com/fluttered-book/quiz/tree/widgets-refactor/lib)
+{{% /details %}}
+
+### 2. Quiz with images
 
 Change the quiz, so each question includes an image.
 
 See [Adding assets and
 images](https://docs.flutter.dev/ui/assets/assets-and-images) for help.
 
-### Support multiple quizzes
+### 3. Support multiple quizzes
 
 Upgrade the app to support multiple quizzes.
 You probably need a different widget to allow the user to select a quiz.
