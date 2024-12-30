@@ -7,7 +7,15 @@ weight: 1
 
 # Quiz app
 
+Here are some screenshots of the finished app you'll be making in this section.
+
 ![Screenshot](images/quiz_app_screenshot.png)
+
+## What you will learn
+
+- Update UI based on state changes with `setState()`
+- How widgets are rendered
+- Tips for Android Studio
 
 ## Shortcut
 
@@ -21,9 +29,13 @@ Practice the following.
 - Linux: <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>L</kbd>
 - macOS: <kbd>Option</kbd> + <kbd>Command</kbd> + <kbd>L</kbd>
 
+{{% hint info %}}
+You can affect the formatting by adding or removing trailing <code>,</code> in lists.
+{{% /hint %}}
+
 ## Project setup
 
-Lets try to create a project from CLI this time.
+Let's try to create a project from CLI this time.
 Open a terminal in the folder with your Flutter projects.
 Create a new project with:
 
@@ -262,13 +274,13 @@ instance variables".
 ## Theory
 
 Flutter aims at providing fast rendering (60 fps).
-In our apps we tell Flutter how to draw the screen by providing widget trees.
-However it wouldn't be efficient to redraw the entire screen from scratch each
-frame, just because some small part of the screen is animated (like when you tap
-a button).
+In our apps, we tell Flutter how to draw the screen by providing widget trees.
+However, it wouldn't be efficient to redraw the entire screen from scratch each
+frame, just because some small part of the screen is animated (like when you
+tap a button).
 
 Flutter got some clever wizardry to solve the problem.
-There aren't just one tree of object representing the screen.
+There aren't just one tree of objects representing what is on the screen.
 There are 3 😯 !.
 
 ![The 3 trees in Flutter](images/trees.drawio.svg)
@@ -286,8 +298,9 @@ If it determines that a render-object should be reused, it update the existing
 render-object to match the new widget configuration.
 The element is responsible managing this.
 
-You can view [How Flutter renders
-Widgets](https://www.youtube.com/watch?v=996ZgFRENMs) to learn more.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/996ZgFRENMs?si=_RyfLdKet05aNPwq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+_Explanation of how rendering is done from Flutter YouTube channel._
 
 But what about the State object?
 Well, it can tell the element to update its render-object and provide it new
@@ -305,9 +318,13 @@ setState(() {
 });
 ```
 
-# Showing data
+When you invoke `setState()` it will mark the element as dirty, causing the
+`build()` method to be called, which will return of a new widget tree.
+The render-object is then updated based on the new widget tree.
 
-## Injecting the quiz
+## Showing data
+
+### Injecting the quiz
 
 The QuizScreen needs access to the quiz data.
 So change the constructor to:
@@ -320,13 +337,13 @@ const QuizScreen({required this.quiz, super.key});
 You will see an error in main.dart.
 Fix it by importing the data and passing it as parameter to QuizScreen.
 
-At the top:
+Add to the top of the file:
 
 ```dart
 import 'quiz_data.dart';
 ```
 
-Change change:
+Then change the call to the constructor in `build()` method:
 
 ```dart
 home: QuizScreen(quiz: quiz),
@@ -334,7 +351,7 @@ home: QuizScreen(quiz: quiz),
 
 ## Showing current question
 
-At the top of \_QuizScreenState add:
+Inside the `QuizScreenState` class add:
 
 ```dart
 int index = 0;
@@ -343,7 +360,7 @@ Quiz get questions => widget.quiz;
 
 The `Quiz get questions => ...` is how you can make getters in Dart.
 
-State object can access the widget through the `widget` variable.
+A widgets state object can access the widget through the `widget` variable.
 This is how it is able to access the quiz on the widget.
 
 Now at the top of the `build()` method, right before `return Scaffold`.
@@ -355,7 +372,7 @@ final currentQuestion = questions[index];
 
 Add another parameter to `_buildQuestion()` method, so it can access the current
 question.
-Also change, so it displays the text from the parameter.
+Also change it, so it displays the text from the parameter.
 
 ```dart
 Text _buildQuestion(BuildContext context, Question question) {
@@ -384,7 +401,7 @@ List<Widget> _buildOptions(Question question) {
 
 Notice, in Dart we can have for-loop and if/else withing the declaration of
 a list `[]`.
-Pretty cool 😎, right?
+Pretty neat, right?
 
 Then add a new method to handle the `onPressed` event.
 
@@ -396,6 +413,9 @@ _onOptionPressed(String answer) {
 }
 ```
 
+**Notice**: When an option is selected, we update the answer within `setState`,
+causing the build method to be called again, thereby updating the UI.
+
 Now within the `build()` method, pass `currentQuestion` as parameter to
 `_buildOptions` and `_buildQuestion`.
 
@@ -405,19 +425,20 @@ child: _buildQuestion(context, currentQuestion),
 children: _buildOptions(currentQuestion)
 ```
 
-_I think it makes it slightly easier to follow the application flow if you use
+_I think it makes it slightly easier to follow the application flow, if using
 parameters in such cases, instead of accessing the properties directly._
 
-Run the application an click the buttons.
+Try it out!
+Run the application and click the buttons.
 
-We now have changing UI 🥳.
+We now have a changing UI 🥳.
 
 The call to `setState` results in the UI being rebuilt.
 The method is only available within the State object of a StatefulWidget.
 
 [Check your progress](https://github.com/fluttered-book/quiz/tree/main/lib/quiz_screen2.dart)
 
-# Next question
+### Next question
 
 Now we need a button to progress through the questions.
 Add:
@@ -429,7 +450,7 @@ Widget? _buildActionButton(Question currentQuestion) {
 }
 ```
 
-When the current question has been answered it will return a button allowing the
+When the current question has been answered it will show a button allowing the
 user to progress.
 
 We also need a method to handle the event:
@@ -445,15 +466,15 @@ _onNextPressed() {
 ```
 
 When the button is pressed, the index gets increased.
-It is done within a `setState` so the UI rebuilds.
+It is done within a `setState`, so the UI rebuilds.
 The first line in `build()` method retrieves the current question from the
 index.
 
-Increasing the index beyond the last question will make the app crash.
-We therefore wrap it in an if-statement.
+Increasing the index beyond the last question would make the app crash.
+Therefore, we need to wrap it in an if-statement.
 
-Before the button shows up in the UI, it needs to be added to the Scaffold.
-Withing `Scaffold` in the `build()` method:
+To make the button show up in the UI, it needs to be added to the Scaffold.
+Withing `Scaffold` in the `build()` method, add:
 
 ```dart
 floatingActionButton: _buildActionButton(currentQuestion)
@@ -463,10 +484,10 @@ Run the app again!
 
 [Check your progress](https://github.com/fluttered-book/quiz/tree/main/lib/quiz_screen3.dart)
 
-# Show progress
+### Show progress
 
 It would be nice if the user could follow their progress.
-Add a methods to build progress indicator widgets.
+Add a method to build a progress indicator.
 
 ```dart
 List<Widget> _buildProgress(int number, int total) {
@@ -485,15 +506,15 @@ List<Widget> _buildProgress(int number, int total) {
 }
 ```
 
-It takes a _number_ and a _total_ as parameters.
-Add declaration to the top of `build()`.
+It takes a _number_ and a _total_ as parameters, which needs to be defined to
+the top of `build()`.
 
 ```dart
 final number = index + 1;
 final total = questions.length;
 ```
 
-Then invoke new method before the other children at the outermost column.
+Now, invoke new method before the other children at the outermost column.
 
 ```dart
 ..._buildProgress(number, total),
@@ -533,10 +554,11 @@ Run the app again to how far you have come 😉.
 
 [Check your progress](https://github.com/fluttered-book/quiz/tree/main/lib/quiz_screen4.dart)
 
-# When done
+## When done
 
 Nothing really happens when user taps next at the last question.
 It would be nice if they could tell whether they got the answers correct.
+So, let's implement it!
 
 Change the `_buildActionButton()` to:
 
@@ -555,10 +577,11 @@ Widget? _buildActionButton(Question currentQuestion) {
 }
 ```
 
-When user is at the last question, we show a "Done" button instead of "Next".
+When the user is at the last question, we show a "Done" button instead of
+"Next".
 
-To keep track we need another property.
-So at the very top of `_QuizScreenState`, add:
+To keep track, we need another property.
+So, at the very top of `_QuizScreenState`, add:
 
 ```dart
 bool done = false;
@@ -589,7 +612,7 @@ sheet.
 [Documentation for showModalBottomSheet
 ](https://api.flutter.dev/flutter/material/showModalBottomSheet.html)
 
-Also, add a method to build widgets for the bottom sheet.
+Add a new method to build the bottom sheet.
 
 ```dart
 Widget _buildBottomSheet(BuildContext context, bool allCorrect) {
@@ -610,11 +633,11 @@ Widget _buildBottomSheet(BuildContext context, bool allCorrect) {
 }
 ```
 
-The container will show a different text and background color depending on if
-all answers are correct.
+The container will show a different text and background color depending on
+whether all answers are correct.
 
-Let's go back to the first question when the bottom sheet is closed.
-Change the last half of `_onDonePressed` to:
+Let's also allow the user go back to the first question when the bottom sheet
+is closed. Change the last half of `_onDonePressed` to:
 
 ```dart
 final controller = showModalBottomSheet(
@@ -633,14 +656,24 @@ Try the app again.
 
 [Check your progress](https://github.com/fluttered-book/quiz/tree/main/lib/quiz_screen.dart)
 
-# Full source
+## Full source
 
 [View on GitHub](https://github.com/fluttered-book/quiz/tree/main/)
 
-# Challenge
+## Challenges
+
+### Quiz with images
+
+Change the quiz, so each question includes an image.
+
+See [Adding assets and
+images](https://docs.flutter.dev/ui/assets/assets-and-images) for help.
+
+### Support multiple quizzes
 
 Upgrade the app to support multiple quizzes.
 You probably need a different widget to allow the user to select a quiz.
 
 If you lack creativity to come up with additional quizzes then you can always
-ask ChatGTP.
+ask ChatGPT.
+
