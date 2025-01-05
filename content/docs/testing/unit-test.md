@@ -151,7 +151,22 @@ class Undo extends Command {
 Where `[...state.history.take(state.history.length - 1)]` just creates a new
 list with all elements from `state.history` except the last.
 
-## Write unit tests
+## Exercise
+
+Clone or download the repository
+[calculator_cli](https://github.com/fluttered-book/calculator_cli).
+
+**Run application**
+
+```sh
+dart run
+```
+
+**Run tests**
+
+```sh
+dart test
+```
 
 Your job is now to write unit-tests for all the commands.
 
@@ -176,3 +191,13 @@ You should write tests to verify that `apply()` for each command returns:
 - Divide
   - stack with the last two values divided, and history so that old state
   - does nothing when stack length is less than 2
+
+Compare your solution to the [solution
+branch](https://github.com/fluttered-book/calculator_cli/tree/solution).
+
+## Reflection
+
+Reflect over the following questions.
+
+- Can you write test for [bin/calculator_cli.dart](https://github.com/fluttered-book/calculator_cli/blob/main/bin/calculator_cli.dart)?
+- How would your rewrite `bin/calculator_cli.dart` to be easier to testable?
