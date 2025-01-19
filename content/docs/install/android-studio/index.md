@@ -7,7 +7,8 @@ description: All platforms (Windows, macOS, Linux)
 
 Download and install Android Studio from [https://developer.android.com/studio](https://developer.android.com/studio).
 
-Accept all the defaults and the license agreements, except that you don't want to import existing settings.
+Accept all the defaults and the license agreements.
+But don't import existing settings.
 
 ## Android SDK
 
@@ -65,3 +66,5 @@ Verify that there is a checkmark for the following:
 ```
 
 # Done 🥳
+
+Your Flutter development environment is ready.

@@ -9,10 +9,11 @@ weight: 2
 
 ## Prerequisite
 
-Open "Terminal" app (search in spotlight).
+Open "Terminal" app (you can just search in spotlight).
 
 Type `git` to verify that you have GIT installed.
-If you don't it will ask you if you want to install developer tools, go ahead and do that.
+If you don't have it will ask you if you want to install developer tools, go
+ahead and do that.
 
 If you are on the new Apple Silicon Mac you need to install the translation layer for x86 code.
 
@@ -22,7 +23,12 @@ sudo softwareupdate --install-rosetta --agree-to-license
 
 ## Install Flutter-SDK
 
-Now get flutter directly from github
+Now get flutter directly from github.
+
+{{< hint info >}}
+I do not recommend synchronizing Flutter SDK to iCloud.
+Please exclude <code>~/flutter</code> or choose a different location.
+{{< /hint >}}
 
 ```sh
 cd ~
@@ -49,6 +55,11 @@ Add following line at the end of the file:
 export PATH="$PATH:$HOME/flutter/bin"
 ```
 
+{{< hint info >}}
+If you cloned Flutter to a different folder than your home folder
+<code>~</code> then you need to adjust the path above accordingly.
+{{< /hint >}}
+
 Save and reboot.
 
 Run following command to check flutter dependencies:
@@ -65,10 +76,10 @@ Don't worry about the other issues for now.
 
 ## iPhone
 
-If you have an iPhone and would like to be able to build your Flutter projects
-for it, then there is a bit of extra setup you need to do.
+If you have an iPhone and would like to be able to run Flutter projects on it,
+then there is a bit of extra setup you will need to do.
 
-[Flutter on iPhone](../iphone)
+[Flutter on iPhone](../mac/iphone)
 
 ---
 

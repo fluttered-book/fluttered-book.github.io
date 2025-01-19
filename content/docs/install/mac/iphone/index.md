@@ -9,6 +9,11 @@ for it, then there is a bit of extra setup you need to do.
 
 If you don't have an iPhone then skip to [here](../android_studio.md).
 
+{{< hint info >}}
+You need to use macOS to develop apps on iPhone.
+This is a restriction imposed by Apple.
+{{< /hint >}}
+
 To build for iPhone you will need Xcode which can be found in App Store.
 So go ahead and install it!
 
@@ -51,7 +56,7 @@ brew link cocoapods
 
 Hopefully you should see a checkmark for cocoapods now when running `flutter doctor` .
 
-Then to set up xcode.
+Then to set up Xcode.
 
 ```sh
 sudo sh -c 'xcode-select -s /Applications/Xcode.app/Contents/Developer && xcodebuild -runFirstLaunch'
@@ -62,7 +67,14 @@ sudo xcodebuild -license
 ## Developer mode
 
 Next, you need to pair your phone.
-Connection it with a cable as usual.
+Connect your iPhone to your Mac with a cable.
+
+{{< hint info >}}
+The command below will create the project in a subfolder of your current
+working directory.
+If you want to store your projects in a different folder you should navigate to
+it before executing the command.
+{{< /hint >}}
 
 Create a new Flutter project by running:
 
@@ -70,7 +82,7 @@ Create a new Flutter project by running:
 flutter create ios_test --platforms=ios
 ```
 
-It will create the project in a subfolder of your current working directory.
+You will need to open the project in Xcode.
 You can either do it by opening op Xcode, then select "File"->"Open Folder" and
 browse to the location.
 Or from Terminal using:
@@ -81,7 +93,7 @@ open ios_test/ios/Runner.xcworkspace
 
 ![](images/mac_xcode_device.png)
 
-That unlocks a new "Developer Mode" menu on you iPhone, under
+It unlocks a new "Developer Mode" menu on you iPhone, under
 "Settings"->"Privacy & Security".
 Enable it and restart.
 
@@ -104,11 +116,11 @@ Enter your Apple ID credentials.
 
 Close the settings window.
 
-Click on the Play icon in the top bar, then "Runner" in the left panel.
+1. Click on the Play icon in the top bar.
+2. click "Runner" in the left panel.
+3. Under "Signing & Capabilities" tab, click on the "Team" dropdown and select "{Your name} (Personal Team)".
 
 ![](images/mac_xcode_runner.png)
-
-Under "Signing & Capabilities" tab, click on the "Team" dropdown and select "{Your name} (Personal Team)".
 
 In "Bundle Identifier" field you must invent a unique name for you app.
 
@@ -153,3 +165,10 @@ Here are a couple of links that could help if you get stuck.
 
 - [Start building Flutter iOS apps on macOS](https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=physical)
 - [Enabling Developer Mode on a device](https://developer.apple.com/documentation/xcode/enabling-developer-mode-on-a-device)
+
+---
+
+Next you will install an IDE for Flutter, namely Android Studio.
+Don't let the name fool you, as it is great for Flutter development no matter the platform.
+
+# [Continue](../android-studio)
