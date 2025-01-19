@@ -18,7 +18,8 @@ Click **More Actions** under **Projects**, select **SDK Manager**.
 
 ![](images/android1.png)
 
-Check **Android SDK Command-line Tools (latest)** and click **OK**.
+In the **SDK Tools** tab, check **Android SDK Command-line Tools (latest)** and
+click **OK**.
 
 ![](images/android2.png)
 

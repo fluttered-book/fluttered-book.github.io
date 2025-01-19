@@ -60,7 +60,7 @@ If you cloned Flutter to a different folder than your home folder
 <code>~</code> then you need to adjust the path above accordingly.
 {{< /hint >}}
 
-Save and reboot.
+Close your terminal and open it again.
 
 Run following command to check flutter dependencies:
 
