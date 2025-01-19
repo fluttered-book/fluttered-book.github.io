@@ -21,22 +21,21 @@ programming.
 
 - [The basics](basics)
 
+## Collections
+
+- [Collections](collections)
+- Challenges
+  - [Acronyms](acronym)
+- Advanced
+  - [Patterns](patterns)
+  - [Generators](generators)
+
 ## Objects
 
 - [Constructors](constructors)
 - [Building object trees](object-trees)
 - Challenges
   - [Computer parts](parts)
-
-## Collections
-
-- [Collections](collections)
-- Challenges
-  - [Acronyms](acronym)
   - [Reverse Polish notation](rpn)
-
-## Advanced
-
-- [Cascade notation](cascade)
-- [Patterns](patterns)
-- [Generators](generators)
+- Advanced
+  - [Cascade notation](cascade)

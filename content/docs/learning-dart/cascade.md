@@ -1,6 +1,6 @@
 ---
 title: Cascade notation
-weight: 8
+weight: 10
 ---
 
 # Cascade Notation
@@ -17,6 +17,7 @@ value 3 times then print the result.
 {{% tabs %}}
 
 {{% tab "Dart" %}}
+
 ```dart
 class Counter {
   var _value = 0;
@@ -33,9 +34,11 @@ main() {
   print(counter.count);
 }
 ```
+
 {{% /tab %}}
 
 {{% tab "JavaScript" %}}
+
 ```javascript
 class Counter {
   #value = 0;
@@ -53,9 +56,11 @@ counter.increment();
 counter.increment();
 console.log(counter.count);
 ```
+
 {{% /tab %}}
 
 {{% tab "TypeScript" %}}
+
 ```typescript
 class Counter {
   private _value: number = 0;
@@ -73,9 +78,11 @@ counter.increment();
 counter.increment();
 console.log(counter.count);
 ```
+
 {{% /tab %}}
 
 {{% tab "C#" %}}
+
 ```cs
 public class Counter {
   public int Count { get; private set; } = 0;
@@ -91,9 +98,11 @@ counter.Increment();
 
 Console.WriteLine(counter.Count);
 ```
+
 {{% /tab %}}
 
 {{% tab "Java" %}}
+
 ```java
 public class Test {
   public static class Counter {
@@ -116,6 +125,7 @@ public class Test {
   }
 }
 ```
+
 {{% /tab %}}
 
 {{% /tabs %}}
@@ -143,7 +153,6 @@ print(
 ```
 
 The `..` can also be used to set values for fields.
-
 
 {{% tabs %}}
 
@@ -179,6 +188,7 @@ var contact = new Contact() {
     Phone = "12345678",
 };
 ```
+
 {{% hint "warning" %}}
 Property initialization in C# can only be used when instantiating the class.
 If you want to update the fields on an existing instance then you would have to
@@ -197,8 +207,8 @@ class Contact {
 }
 
 var contact = new Contact();
-contact.name = "Joe Doe"
-contact.email = "joe@example.com"
+contact.name = "Joe Doe";
+contact.email = "joe@example.com";
 contact.phone = "12345678";
 ```
 
@@ -209,9 +219,9 @@ contact.phone = "12345678";
 However, making all fields final and using named parameters should be preferred
 when possible.
 
-
 {{% tabs %}}
 {{% tab "Dart" %}}
+
 ```dart
 class Contact {
     final String name;
@@ -231,6 +241,7 @@ var contact = Contact(
     phone: "12345678",
 );
 ```
+
 {{% /tab %}}
 {{% /tabs %}}
 

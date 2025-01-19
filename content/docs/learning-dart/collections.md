@@ -1,6 +1,6 @@
 ---
 title: Collections
-weight: 5
+weight: 2
 ---
 
 {{< classic-dartpad >}}

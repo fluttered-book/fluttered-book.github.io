@@ -1,6 +1,6 @@
 ---
 title: "Challenge: Reverse Polish notation"
-weight: 7
+weight: 9
 ---
 
 # Calculating with Reverse Polish notation (RPN)

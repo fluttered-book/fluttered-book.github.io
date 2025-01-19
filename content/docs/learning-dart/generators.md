@@ -1,6 +1,6 @@
 ---
 title: Generators
-weight: 10
+weight: 5
 ---
 
 {{< classic-dartpad >}}
@@ -42,9 +42,14 @@ The generator in the example yield a finite sequence of values, but a generator 
 For example, you could have a random number generator that yields an endless
 sequence of random numbers.
 
+The neat thing about generators is that they produce the values as they are
+being consumed.
+When the generator functions reach a `yield` it will pause.
+Then resume from where it left of when the caller ask for the next value.
+
 ### Asynchronous generator
 
-Here it is again, rewritten as an asynchronous function.
+Here is it again, but this time rewritten as an asynchronous function.
 
 ```run-dartpad:theme-dark:mode-dart:width-100%:height-300px
 Stream<int> countdown(int start) async* {
@@ -80,7 +85,7 @@ Stream<List<Post>> feed() async* {
 ```
 
 More on async/await later.
-If you can't wait then you can read more about it
+However, if you can't wait then you can read more about it
 [here](https://dart.dev/libraries/async/async-await).
 
 ## Challenge

@@ -1,6 +1,6 @@
 ---
 title: Patterns
-weight: 9
+weight: 4
 ---
 
 {{< classic-dartpad >}}
@@ -130,6 +130,7 @@ void main() {
   }
 }
 ```
+
 _Click "hide" to make the warning go away._
 
 More interesting, the `case` construct can be used to match on destructured

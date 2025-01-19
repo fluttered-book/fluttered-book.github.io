@@ -1,6 +1,6 @@
 ---
 title: "Challenge: Acronym"
-weight: 6
+weight: 3
 ---
 
 {{< classic-dartpad >}}

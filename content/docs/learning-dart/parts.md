@@ -1,6 +1,6 @@
 ---
 title: "Challenge: Computer parts"
-weight: 4
+weight: 8
 ---
 
 ## Challenge: Computer parts
@@ -63,7 +63,7 @@ It got:
   - Network (Wi-Fi, ethernet)
 - [M.2](https://en.wikipedia.org/wiki/M.2) for SSD
 - [SATA](https://en.wikipedia.org/wiki/SATA) for HDD, SSD and optical drives
-- [PSU](https://en.wikipedia.org/wiki/Power_supply_unit_(computer)) for power
+- [PSU](<https://en.wikipedia.org/wiki/Power_supply_unit_(computer)>) for power
 
 Not need to support old legacy configurations since customers won't be buying
 them anyway.

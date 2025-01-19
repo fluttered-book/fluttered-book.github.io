@@ -1,6 +1,6 @@
 ---
-title: Object trees
-weight: 3
+title: Building object trees
+weight: 7
 ---
 
 # Building object trees
@@ -130,4 +130,3 @@ class Task {
   Task(this.name, {required this.done});
 }
 ```
-

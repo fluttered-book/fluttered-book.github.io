@@ -95,7 +95,7 @@ When a variable is `const` it means that the values is computed during
 compilation.
 It can not be changed when the application is running.
 
-```
+```dart
 const version = '1.0';
 ```
 
