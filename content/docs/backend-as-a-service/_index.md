@@ -2,7 +2,7 @@
 title: Backend as a service (BaaS)
 description: >-
   Backend for mobile apps without writing a backend
-weight: 7
+weight: 9
 ---
 
 # Backend as a service (BaaS)

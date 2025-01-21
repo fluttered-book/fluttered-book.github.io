@@ -2,7 +2,7 @@
 title: Notifications
 description: >-
   How notifications work and how to make them.
-weight: 8
+weight: 10
 ---
 
 # Notifications

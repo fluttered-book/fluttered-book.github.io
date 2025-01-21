@@ -2,7 +2,7 @@
 title: Quality
 description: >-
   Go from toy app to production grade quality
-weight: 8
+weight: 11
 ---
 
 # Quality
@@ -12,4 +12,3 @@ of your apps.
 
 - [Architecture](architecture)
 - [Folder structure](folder-structure)
-

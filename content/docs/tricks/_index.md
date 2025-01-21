@@ -2,7 +2,7 @@
 title: Tricks
 description: >-
   This page contains various tricks that doesn't fit anywhere else.
-weight: 9
+weight: 12
 ---
 
 # Flutter tricks
@@ -34,4 +34,3 @@ A collection on recopies that doesn't fit anywhere else.
 
 - [WebSocket](websocket)
 - [MQTT](mqtt)
-

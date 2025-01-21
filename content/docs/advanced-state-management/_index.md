@@ -2,7 +2,7 @@
 title: Advanced State Management
 description: >-
   Advanced state-management using BLoC pattern and library.
-weight: 7
+weight: 6
 ---
 
 # Advanced state-management
