@@ -184,6 +184,56 @@ void main() {
 }
 ```
 
+### Fold
+
+Another neat trick you can do with collections is folding.
+When you fold you are combining (or reducing) the collection to a single value.
+
+Say you have a list of numbers, and you want the sum of all the numbers.
+
+```dart
+void main() {
+  final numbers = [10, 2, 5];
+  final initial = 0;
+  final result =
+      numbers.fold(initial, (previous, element) => previous + element);
+  print(result); // 17
+}
+```
+
+The way folding works is that it applies the same function over and over again,
+across the whole collection.
+To calculate the sum we use the fold function
+`(previous, element) => previous + element)`.
+It takes two values, the `previous` and the current `element`, and adds them.
+When applied across all elements we get the sum.
+There is no previous element for the very first element of collection.
+We therefore need to give it an `initial` value of `0`.
+
+Here are some sketches depicting what happens at each iteration.
+
+![fold - element 0](../images/fold-0.webp)
+![fold - element 1](../images/fold-1.webp)
+![fold - element 2](../images/fold-2.webp)
+
+Summing a collection is common enough that they included already.
+All you need is:
+
+```dart
+import "package:collection/collection.dart";
+
+void main() {
+  print([10, 2, 5].sum); // 17
+}
+```
+
+What if you want either the minimum, maximum or average.
+Oh wait, that also [exists
+already](https://api.flutter.dev/flutter/package-collection_collection/IterableNumberExtension.html).
+
+The point I'm trying to get across is that you can solve many kinds of problems
+with very little code once you know how to use collections efficiently.
+
 ## Exercise
 
 Implement each function so that the test pass.
