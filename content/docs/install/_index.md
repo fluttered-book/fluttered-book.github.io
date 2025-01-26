@@ -36,6 +36,6 @@ including iPhone.
 - [Android Studio](android-studio)
 
 {{< hint info >}}
-The instructions above are for all operating systems (macOS, Windows &
-Linux).
+Setting up Android Studio is the same for all operating systems (macOS, Windows
+& Linux).
 {{< /hint >}}
