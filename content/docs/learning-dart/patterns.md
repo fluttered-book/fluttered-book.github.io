@@ -131,8 +131,6 @@ void main() {
 }
 ```
 
-_Click "hide" to make the warning go away._
-
 More interesting, the `case` construct can be used to match on destructured
 values.
 
