@@ -5,16 +5,16 @@ weight: 6
 
 {{< classic-dartpad >}}
 
-# Constructors in Dart
+## Constructors in Dart
 
-This tutorial is aimed at teaching you the basics of OOP in Dart.
+This section is aimed at teaching you the basics of OOP in Dart.
 
 We will look at how to specify constructors, methods and inheritance.
 You will also learn a bit about how Dart deals with nullability.
 
 Let's jump right into it.
 
-## Nullability
+### Nullability
 
 We can declare a class with positional parameters like this:
 
@@ -41,8 +41,8 @@ of a nullable variable.
 This is called [sound null safety](https://dart.dev/null-safety), and it's there
 to protect us from null reference exceptions.
 
-The Point class doesn't accurately represent a point, unless it has a value for
-both a _x_ and _y_.
+The `Point` class doesn't accurately represent a point, unless it has a value
+for both an _x_ and _y_.
 
 Let's fix it by rewriting the class, such that the instance fields are no longer
 nullable.
@@ -58,13 +58,13 @@ class Point {
 }
 ```
 
-Notice the curly brackets are gone. Instead, we have a comma separated list of
-assignments.
-This is called an [initializer list](https://dart.dev/language/constructors#initializer-list).
+Notice the curly brackets are gone. Instead, we have a `:` followed by a comma
+separated list of assignments.
+This is called an [initializer list](https://dart.dev/language/constructors#use-an-initializer-list).
 
-If we want the variables to be non-nullable, then we can no longer make the
-assignments in a code block (within curly brackets).
-That is because within a block you have the ability to make conditional
+If we want the variables to be non-nullable, we have to use an initialize list
+instead of assigning the variables in a code block (within curly brackets).
+That is because within a block, you have the ability to make conditional
 assignments.
 
 Here is a silly example of conditional assignment.
@@ -87,10 +87,20 @@ With an initializer list, you are always going to assign a value.
 Therefore, in order to make the instance-variables non-nullable, we have to use
 an initializer list for the assignments.
 
-## Immutability
+### Immutability
 
-If we don't want the values of _x_ and _y_ to change, then we can declare them
-as final.
+Immutability is just a fancy way to say that values can't change after
+instantiation.
+It can protect us from unexpected side effects in our apps.
+
+![Simple class diagram](../images/simple-class-diagram.drawio.png)
+
+_Both `B` and `C` reference `A`.
+They both make changes to `A` each expecting they are the only part of the code that changes `A`.
+This leads to bug that can be hard to track down._
+
+If we don't want the values of _x_ and _y_ to change, we can declare them as
+final.
 
 ```dart
 class Point {
@@ -103,8 +113,8 @@ class Point {
 }
 ```
 
-Assigning parameters directly to instance fields is very common.
-Luckily the Dart designers made a nice shorthand for us.
+Assigning parameters directly to instance fields is so common that the Dart
+designers made a nice shorthand for us.
 
 ```dart
 class Point {
@@ -116,22 +126,35 @@ class Point {
 ```
 
 Notice I've also added the `const` keyword in-front of the constructor.
-I'm allowed to do that because all of the instance variables are `final`.
-An object that can't change is said to be immutable.
-So `const` before constructor tells the compiler that the object will be immutable.
 Which allows the compiler to do some optimizations.
+I'm allowed to do that because all the instance variables are `final`.
 
 An immutable class can be instantiated as a compile-time constant.
 Thereby saving some CPU cycles at runtime.
 
 ```dart
-const Point origin = Point(0, 0);
+const origin = Point(0, 0);
 ```
 
 Here, `origin` is created when the code compiles, not when the application runs.
 It simplifies how _x_ and _y_ are accessed, thereby making it more efficient.
 
-## Named parameters
+If you want to make a constant instance, but you are not assigning directly to
+a variable, then you can place a `const` keyword right in front of the
+constructor.
+
+```dart
+final pointsOfInterest = {
+  "origin": const Point(0, 0),
+  "unit": const Point(1, 1)
+};
+pointsOfInterest["normal"] = const Point(0, 1);
+```
+
+You will see this way of using `const` a lot when you start making UI with
+Flutter.
+
+### Named parameters
 
 Previously we used positional parameters.
 It means that we have to pass values for parameters in the same order as they
@@ -152,7 +175,7 @@ class Line {
 ```
 
 In this example, we have a line from point _a_ to point _b_.
-We use named parameters to imply that direction matters for the line.
+We use named parameters to signal the direction of the line (from a to b).
 Notice that the instance variables are nullable again.
 That is because named parameters are optional by default.
 We can make them required with the `required` keyword.
@@ -193,9 +216,10 @@ class Line {
 }
 ```
 
-# Modifiers
+### Modifiers
 
-Maybe you have noticed that there are no public or private keywords anywhere.
+Maybe you have noticed that there are no _public_ or _private_ keywords
+anywhere.
 That is because everything in Dart is public by default.
 To make something private you just prefix it with a `_` underscore.
 
@@ -205,12 +229,13 @@ class Nonsense {
 }
 ```
 
-It is a common convention in other languages (like C# and TypeScript) to prefix
-private instance-variables with an underscore.
+It is a common convention in other languages (like C#, TypeScript and Python)
+to prefix private instance-variables with an underscore.
 In Dart this convention is enforced by the compiler, so there is no need for a
 private keyword.
 
 The same is true for methods.
+To make a method private you just prefix the name with an underscore.
 
 ```dart
 class Nonsense {
@@ -218,8 +243,7 @@ class Nonsense {
 }
 ```
 
-Putting the keyword `static` in front of method behaves just as you would
-expect.
+The keyword `static` behaves just as you would expect.
 
 ```dart
 class Greeter {
@@ -229,7 +253,8 @@ class Greeter {
 Greeter.greeting("bob");
 ```
 
-You could also written:
+By the way, variables can be interpolated into strings.
+So the above could also be written as:
 
 ```dart
 class Greeter {
@@ -238,23 +263,27 @@ class Greeter {
 ```
 
 Here `$name` is substituted with the value of the variable `name`.
-This is called string interpolation.
 
-For comparison, this is what it looks like in:
+For comparison, this is what it looks like in some other languages:
 
-**C#**
+{{% tabs %}}
+{{% tab "C#" %}}
 
 ```csharp
 $"Hello {name}!"
 ```
 
-**JavaScript/TypeScript**
+{{% /tab %}}
+{{% tab "TypeScript" %}}
 
 ```typescript
 `Hello ${name}!`;
 ```
 
-# Extension methods
+{{% /tab %}}
+{{% /tabs %}}
+
+### Extension methods
 
 Maybe you have heard of extension methods?
 They can be used to extend an existing class from somewhere else.
@@ -275,7 +304,7 @@ However, they are super useful for people writing libraries, as it allows them t
 extend existing types.
 You will be calling extension methods a lot.
 
-# Inheritance
+## Inheritance
 
 Like other object-oriented programming languages, Dart (of course) supports
 inheritance.
@@ -311,14 +340,48 @@ The subclass needs to implement the abstract method `area`, unless we make the
 subclass abstract as well.
 
 Notice that we don't need to specify a return type for `area` in the subclass.
-That is because the compile can tell from base class.
+That is because the compiler can tell from base class.
 
 The `@override` isn't strictly required.
 It is just an indicator to whoever reads the code that the methods override a
 method in a base class.
 
-It is also possible to have a class only implement the interface of another,
-but none of the functionality.
+You can use the above like this:
+
+```dart
+Circle(5).area()
+```
+
+The trailing parentheses are kinda ugly.
+Writing it as a getter looks a bit nicer.
+
+```dart
+abstract class Shape {
+  double get area;
+}
+
+class Circle extends Shape {
+  num radius;
+  Circle(this.radius);
+
+  @override
+  get area => math.pow(radius, 2) * math.pi;
+}
+
+// Invoke the getter
+Circle(5).area
+```
+
+### Implementing interfaces
+
+They way you make interfaces in Dart might seem very strange in the beginning,
+but once you get used to it then it's actually pretty clever.
+
+There is no interface types or keyword in Dart.
+What you can do is to have a class implement the public interface of another
+class without any of its behavior.
+
+**In Dart, a class can be used as an interface!**
 
 ```run-dartpad:theme-dark:mode-dart:width-100%:height-500px
 class Greeter {
@@ -328,7 +391,6 @@ class Greeter {
 }
 
 class PoliteGreeter implements Greeter {
-  @override
   void greet(String name) {
     print("Good day to you, dear $name");
   }
@@ -343,42 +405,107 @@ void main() {
 }
 ```
 
-Here `PoliteGreeter` implements `Greeter`, meaning it will need to implement all
-of its methods and fields.
+Here `PoliteGreeter` implements the interface of `Greeter`, meaning it will
+need to implement the `greet()` method.
+You use `extends` keyword for normal class inheritance.
+You use `implements` to implement the interface of another class.
 
-**In Dart, a class can be used as an interface!**
+If you want an interface like you know from TypeScript, Java or C# in Dart, you
+just make an abstract class.
 
-Why is that you might be wondering.
-Let's see how it can be useful.
+Why doesn't Dart have a `interface` keyword like other <abbr title="Object
+  Oriented Programming">OOP</abbr> languages?
 
-In C# you might have something like:
+#### Reason 1
 
-```csharp
-public interface IUserService {
-  // Imagine a lot of stuff here
-}
+Both
+[C#](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-8.0/default-interface-methods)
+and
+[Java](https://docs.oracle.com/javase/tutorial/java/IandI/defaultmethods.html)
+has support for defining interfaces with behavior.
+They call it _default interface methods_.
+Though pretty niche, there are some good use cases for it.
+Although of the top of my head, I can't name any.
 
-public class UserService : IUserService {
-  // You need to keep the implementation in sync with the interface
-}
+Anyway, _default interface methods_ has blurred the conceptual lines between
+abstract classes and interfaces.
 
-public class MockUserService : IUserService {}
-```
+#### Reason 2
 
-You need the interface, just in case you want to make an alternative
-implementation of UserService.
-Like a mock for testing.
+How many times have you written interfaces that only have a single concrete
+implementation?
+You have done that countless times, right?
+You do it because potentially some time in the future you might need a
+different implementation, and it will be a hassle refactoring everything
+without an interface to depend on.
 
-However, in Dart you could just do:
+In Dart, you just write the concrete class.
+If for any reason you need a different implementation in the future, you just
+write another class implementing the interface of the first class.
 
 ```dart
-class UserService {}
+class Person {
+  final String firstName;
+  final String lastName;
+  Person(this.firstName, this.lastName);
+}
 
-class MockUserService implements UserService {}
+// We for sure only need to be able to serialize a person as JSON.
+class PersonSerializer {
+  String serialize(Person person) {
+    return """{
+      "firstName": "${person.firstName}",
+      "lastName": "${person.lastName}"
+    }""";
+  }
+}
+
+// Oh wait, we also need to be able to serialize as Comma-separated values (CSV).
+class CsvPersonSerializer implements PersonSerializer {
+  String serialize(Person person) {
+    return """firstName, lastName
+${person.firstName},${person.lastName}
+""";
+  }
+}
+
+void main() {
+  final PersonSerializer serializer = CsvPersonSerializer();
+  print(serializer.serialize(Person("Joe", "Doe")));
+}
+```
+
+{{% hint danger %}}
+Never implement serialization like this, as it is both fragile and insecure.
+You will learn the correct way to work with JSON in Dart later on.
+{{% /hint %}}
+
+See, you can just swap between the two implementations, without having to write
+an interface.
+
+In C# you will need both an interface and two concrete implementations.
+
+```csharp
+public interface IPersonSerializer {
+  public String serialize(Person person);
+}
+
+public class PersonSerializer : IPersonSerializer {
+  public String serialize(Person person) {
+    return "Pretend this returns JSON";
+  }
+}
+
+public class CsvPersonSerializer : IPersonSerializer {
+  public String serialize(Person person) {
+    return "Pretend this returns CSV";
+  }
+}
 ```
 
 ## Combined
 
-Here is an example of using it all together.
+Here is an example of most if the stuff I've written about in this section put
+together.
 
 {{< codedemo path="/content/docs/learning-dart/codelab/lib/objects/" height="720px" >}}
