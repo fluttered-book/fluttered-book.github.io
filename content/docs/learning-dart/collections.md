@@ -14,7 +14,7 @@ collections an important building block.
 
 ## Lists
 
-A `List` in Dart is similar to lists or arrays of other languages.
+A `List` in Dart, is similar to lists or arrays of other languages.
 It is simply an ordered group of objects.
 
 ```dart
@@ -41,20 +41,9 @@ List<int> list1 = [];
 var list2 = <int>[];
 ```
 
-Remember, if you leave out the type then it will be inferred as `dynamic`.
+Remember, if you leave out the type it will be inferred as `dynamic`.
 
-```run-dartpad:theme-dark:mode-dart:width-100%:height-300px
-void main() {
-  List<int> list1 = [1, 2, 3];
-  print("list1 is ${list1.runtimeType}");
-
-  var list2 = [1, 2, 3];
-  print("list2 is also ${list2.runtimeType}");
-
-  var list3 = [1, 2, 3.0];
-  print("list3 is ${list3.runtimeType} since all elements are num");
-}
-```
+<iframe width="100%" height="300px" src="https://dartpad.dev/?id=1cae55fc0d263cd5d21e6b68403d0c28"></iframe>
 
 ## Set
 
@@ -64,7 +53,7 @@ A set is an unordered collection of unique items.
 Set<int> set = {1, 2, 3};
 ```
 
-**Notice**: elements are encapsulated within curly-brackets.
+**Notice**: elements are in written inside curly-brackets.
 
 Here is a silly example of what is meant by a collection unique items.
 If you do:
@@ -75,8 +64,8 @@ var set = {1, 2, 3, 3};
 
 You will only get a set with 3 values because `3` and `3` are the same.
 
-An example use case for sets are tags on a block post.
-This article could have the tags:
+An example use case for sets are tags on a blog post.
+The article you are reading could have the tags:
 
 ```dart
 final tags = {"programming", "oop", "dart", "collections"};
@@ -115,7 +104,7 @@ In the example above I've specified the value to be of type `dynamic`.
 If I had left out the type then it would be inferred as type `Object` since
 that is the common base class of both `String` and `int`.
 
-You will work with maps when retrieving data from a web-API.
+You will work with maps when retrieving data from a web API using JSON.
 
 ## Iterables
 
@@ -123,11 +112,11 @@ The collection types in Dart such as `List`, `Set` and `Map` are `Iterable`,
 which provides you with a bunch of convenient methods for operating across
 their elements.
 These methods can be chained together making them really powerful.
-Learning to utilize them allows you to express transformations more elegantly
-than with explicit loops.
+Learning to utilize them effectively allows you to express transformations more
+elegantly than with explicit loops.
 
-The concepts you will learn about in the section applies to many other
-mainstream programming languages as well, though semantics varies slightly.
+The concepts you will learn in the section applies to many other mainstream
+programming languages as well, though semantics varies slightly.
 
 ### Language comparison
 
@@ -154,7 +143,8 @@ Here are some examples to make it a bit easier to wrap your head around.
 | [[🍕, 🍕], [🍔, 🍔]]           | .expand((x) => x)          | (🍕, 🍕, 🍔, 🍔)                           |
 | [[🍲, 🌶️], [🍲, 🍅], [🍞, 🧈]] | groupBy(list, (x) => x[0]) | {🍲: [[🍲, 🌶️], [🍲, 🍅]], 🍞: [[🍞, 🧈]]} |
 
-_Lists are represented with `[]`, maps in the form `{"key": "value"}` and iterables with `()`._
+_Lists are represented with `[]`, sets with `{}`, maps in the form `{"key":
+"value"}` and iterables with `()`._
 
 ### Example usage
 
@@ -187,7 +177,8 @@ void main() {
 ### Fold
 
 Another neat trick you can do with collections is folding.
-When you fold you are combining (or reducing) the collection to a single value.
+When you fold, you are combining (or reducing) the collection to a single
+value.
 
 Say you have a list of numbers, and you want the sum of all the numbers.
 
@@ -216,7 +207,7 @@ Here are some sketches depicting what happens at each iteration.
 ![fold - element 1](../images/fold-1.webp)
 ![fold - element 2](../images/fold-2.webp)
 
-Summing a collection is common enough that they included already.
+Summing a collection is common enough that it is already built in.
 All you need is:
 
 ```dart
@@ -227,11 +218,11 @@ void main() {
 }
 ```
 
-What if you want either the minimum, maximum or average.
+But, what if you want something like the minimum, maximum or average?
 Oh wait, that also [exists
 already](https://api.flutter.dev/flutter/package-collection_collection/IterableNumberExtension.html).
 
-The point I'm trying to get across is that you can solve many kinds of problems
+The point I'm trying to get across is, that you can solve many kinds of problems
 with very little code once you know how to use collections efficiently.
 
 ## Exercise
@@ -271,7 +262,7 @@ const List<Person> people = [
 
 | Age        | Category   |
 | ---------- | ---------- |
-| < 18       | adults     |
+| > 18       | adults     |
 | < 18       | minors     |
 | < 13       | kids       |
 | > 13, < 18 | youngsters |

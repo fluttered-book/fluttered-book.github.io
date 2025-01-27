@@ -82,11 +82,11 @@ Or with the type being inferred:
 final name = 'Joe Doe';
 ```
 
-`final` in Dart is similar to `const` in JavaScript/TypeScript, to `final` in
-Java and to some extent `readonly` in C#.
+`final` in Dart is similar to `const` in JavaScript/TypeScript, and to `final`
+in Java and to some extent `readonly` in C#.
 
-Using `final` allows the compiler to do some optimizations, so it should be
-preferred whenever possible.
+Using `final` allows the compiler to do some optimizations, therefore it should
+be preferred whenever possible.
 
 ### const
 
@@ -117,7 +117,8 @@ variable, in the order:
 
 Don't jump through hoops in order to force a variable declaration to be more
 strict than it has to.
-You should quickly pick up on which to use in what situation.
+You will fairly quickly be able to pick up on in which situation what kind of
+declarations is appropriate.
 
 ## Functions
 
@@ -152,20 +153,21 @@ void anotherFunction() {
 
 You are not required to specify types in Dart.
 If you don't specify a type then the compiler will infer one from the context.
-If the compiler can't infer a more specific type then it will be treated as
-`dynamic`, meaning any value can be assigned to it and the compiler won't check
-how it is being used.
+If the compiler can not infer a more specific type then it will be treated as
+`dynamic`, meaning any value can be assigned to it and therefore compiler won't
+do any further type checking on it.
 
 It might be tempting to just always leave out the types as it requires
 less typing.
 Doing so is fine whenever a declaration includes an assignment.
-That is because in such cases the compiler can determine the specific type from
-the value assigned to it.
-If you don't have an assignment (`=` sign) in the same line as the declaration
+That is because, in such cases the compiler can determine the specific type
+from the value assigned to it.
+If you don't have an assignment (`=` sign) in the same line as the declaration,
 you will regret leaving out the type.
-That because then the type will be treated as `dynamic`, meaning the compiler
+That's because then the type will be treated as `dynamic`, meaning the compiler
 won't check any invocations/operations on the value.
-Which leads to errors at runtime that the compiler could have caught for you.
+This leads to errors at runtime that the compiler could otherwise have caught
+for you.
 
 To better illustrate, here are some examples.
 
@@ -199,7 +201,7 @@ number by a string._
 
 <span style="color: green;">Good</span>
 
-The same (almost) code again.
+The (almost) same code again.
 But this time it is explicitly stated that the `divide` function works with type `num`.
 
 ```run-dartpad:theme-dark:mode-dart:width-100%:height-200px
@@ -212,7 +214,7 @@ void main(){
 }
 ```
 
-_The compiler will now tell us that we have an error, allowing us to catch
+_The compiler will now tell us that we have an error, allowing us to spot
 mistakes as we are writing the code._
 
 I advise you to always explicitly define types for parameters and return
@@ -238,7 +240,7 @@ for (var i in numbers) {
 **switch** can be used in similar ways as in C# or TypeScript.
 But with the exception that each non-empty `case` clause jumps to the end of
 the `switch` statement.
-Meaning there is no need for `break` statement in `case`-clauses.
+Meaning there is no need for a `break` statement in `case`-clauses.
 You could say that it auto-breaks.
 
 ```run-dartpad:theme-dark:mode-dart:width-100%:height-300px
@@ -264,8 +266,7 @@ docs](https://dart.dev/language/branches#switch-statements).
 ### switch expression
 
 Dart also supports something called **switch expressions**.
-The block in a switch-expression returns a value that can be assigned to a
-variable.
+A matching condition returns a value that can be assigned to a variable.
 
 > Expressions evaluate to a value that can either be assigned to a value or returned.
 > Statements do not evaluate to a value.
@@ -299,7 +300,7 @@ On invalid input it should `throw ArgumentError('Invalid day')`.
 
 {{< exercise path="/content/docs/learning-dart/codelab/lib/switch_statement/" height="300px" >}}
 
-Solve this one with a switch-expression.
+See if you can solve the next small exercise with a switch-expression.
 
 Write a simple function that converts Denmark's 7-step-scale to ECTS grading scale.
 See [Academic grading in Denmark](https://en.wikipedia.org/wiki/Academic_grading_in_Denmark).
@@ -309,12 +310,6 @@ See [Academic grading in Denmark](https://en.wikipedia.org/wiki/Academic_grading
 ## Variables
 
 The official documentation explains it better than I can.
-
-**[Dart - Variables](https://dart.dev/language/variables)**
-
-**Note** `const` in TypeScript are the same as `final` in Dart.
-In Dart you can only declare a variable as `const` when the value can be
-determined during compilation and will never change at runtime.
 
 ## Error handling
 
@@ -342,7 +337,7 @@ void main() {
 }
 ```
 
-As indicated, having `new` before invoking a constructor is not necessary.
+**Note:** having `new` before invoking a constructor is not necessary in Dart.
 
 ```dart
 void coolFunction() => throw UnimplementedError();
@@ -362,7 +357,7 @@ void main() {
 }
 ```
 
-In case you want to do something with the catch object.
+In case you want to do something with the caught object.
 
 ```dart
 class ValidationError extends ArgumentError {
