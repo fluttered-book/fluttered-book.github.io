@@ -124,7 +124,7 @@ The `is` keyword can be used to check if a value matches a certain type.
 typedef Person = (int, {String firstName, String lastName});
 
 void main() {
-  final joe = (1, firstName: "Joe", lastName: "Doe");
+  dynamic joe = (1, firstName: "Joe", lastName: "Doe");
   if (joe is Person) {
     print("It's a person");
   }
@@ -155,8 +155,9 @@ To learn about how patterns work in Dart, check out the links below.
 
 ## Challenge
 
-Rewrite the algorithm to determine if someone is allowed to buy alcohol, to a
-[switch expression](https://dart.dev/language/branches#switch-expressions).
+Write an algorithm to determine if someone is allowed to buy alcohol, using a
+[switch expression](https://dart.dev/language/branches#switch-expressions) and
+pattern matching.
 
 Here are the rules:
 
