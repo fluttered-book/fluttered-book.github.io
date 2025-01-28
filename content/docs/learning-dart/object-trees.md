@@ -92,8 +92,11 @@ Task("Learn Dart", true);
 
 **Named parameter**
 
-With positional parameters, it is not always obvious from looking at the
-invocation what the purpose of the parameter is.
+It can be difficult to remember what the meaning is of a positional parameter.
+If you just saw `Task("Learn Dart", true)` without seeing the class definition,
+would you be able to tell what the 2nd parameter means?
+Maybe `true` means that the task is done, or it could indicate that the task is
+important.
 
 Named parameters can be used to make the purpose of a parameter more explicit.
 
@@ -106,6 +109,8 @@ class Task {
 
 Task("Learn Dart", done: true);
 ```
+
+Now there is no doubt what `true` means.
 
 **Named with default value**
 
@@ -121,7 +126,8 @@ Task("Learn Dart"); // `done` is false
 
 **Required named parameter**
 
-It can also be useful to require that a named parameter be specified.
+Named parameters are optional by default.
+It can be useful to make a named parameter required.
 
 ```dart
 class Task {
@@ -129,4 +135,6 @@ class Task {
   bool done;
   Task(this.name, {required this.done});
 }
+
+Task("Learn Dart"); // Compile error, since `done` is required
 ```
