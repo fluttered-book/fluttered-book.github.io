@@ -5,11 +5,11 @@ weight: 8
 
 ## Challenge: Computer parts
 
-You are making an app for a client.
-The client is a local computer store and repair business.
+Imagine you are making an app for a client.
+The client is a local computer store and PC repair business.
 They figured that they could cut costs if they had app to help them when building custom PCs.
-An app that can help them keep track of the parts and figure out which parts
-they need.
+An app that can help them keep track of the parts in a build and tell them how
+the parts fit together.
 
 Come up with a class hierarchy for assembling computer parts.
 
@@ -39,8 +39,8 @@ void main() {
 }
 ```
 
-If you haven't built a computer before, then here are some pointers to get you
-started.
+Here are some pointers to get you started, if you haven't built a computer
+before.
 
 Motherboard is what all other components are connected to.
 It got:
@@ -68,4 +68,13 @@ It got:
 Not need to support old legacy configurations since customers won't be buying
 them anyway.
 
-Write your code on [DartPad](https://dartpad.dev/) or in [Android Studio](../../install/android-studio)
+Write your code on [DartPad](https://dartpad.dev/) or in [Android Studio](../../install/android-studio).
+
+{{% hint info %}}
+You can create a Dart project by typing:
+
+<pre>dart create yourprojectname</pre>
+
+Then open the folder in Android Studio.
+
+{{% /hint %}}
