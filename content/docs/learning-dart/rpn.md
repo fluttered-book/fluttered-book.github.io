@@ -14,26 +14,62 @@ Watch the video for an introduction to the concepts.
 
 Reverse polish notation doesn't have anything to do Flutter.
 Here we are just using it to practice some writing Dart.
+And learning about stack, because that becomes important later for navigation
+in apps.
 
 ## Description
 
-Implement a simple calculator based on Reverse Polish Notatjion (RPN).
+Implement a simple calculator based on Reverse Polish Notation (RPN).
 RPN is also known as postfix notation.
 
 We are used to what is called infix notation where the operator is between the
 operands.
-
 With postfix notation, the operator follows the operands.
-
 RPN has the advantage of not using parentheses.
-
 Values entered are stored in a stack.
 
-Picture a stack of cards.
+**Picture a stack of cards**
+
+![Stack of cards](../images/pexels-zauro-58562.jpg)
 
 - You put a card in the stack by placing it on top of other cards.
 - You can remove a card by taking the topmost card.
 - You can also peek at the card in the top of the stack.
+
+## Create a project
+
+Open a terminal.
+Use `cd` to navigate to the folder where you want to store your project.
+Then create a new Dart project with:
+
+```dart
+dart create rpn_calculator
+```
+
+It will create a sub-folder called `rpn_calculator/`.
+Open it in Android Studio.
+
+In the project you will see the following files:
+
+```
+├── analysis_options.yaml
+├── bin
+│   └── rpn_calculator.dart
+├── CHANGELOG.md
+├── lib
+│   └── rpn_calculator.dart
+├── pubspec.lock
+├── pubspec.yaml
+├── README.md
+└── test
+    └── rpn_calculator_test.dart
+```
+
+The `main()` function (entry point for the program) is defined in
+`/bin/rpn_calculator.dart`.
+All your logic (command implementations) should be added to files in the `lib/`
+folder.
+You can ignore all other files and folders for now.
 
 ## Implementation
 
@@ -51,50 +87,72 @@ Stacks support 3 operations.
 An operation (+, -, \*, / etc) replaces values in the stack with the result.
 You can support more operations if you want.
 
-In additional you will need a operation to push a value to the stack.
+You will also need an operation to push a value to the stack.
 
-Operations should implemented using the [Command
-pattern](https://www.geeksforgeeks.org/command-pattern/) or variation thereof.
+Operations should implement using the [Command
+pattern](https://refactoring.guru/design-patterns/command), or variation
+thereof.
+
+Make a class for each operation.
+They should all implement the same `Command` interface.
+
+_Remember: in Dart we can use an abstract class when we need just an
+interface._
 
 ```dart
 abstract class Command {
-  void apply(List<num> stack);
+  void execute(List<num> stack);
 }
 ```
 
-You should implement this class in a sub-classes for each operation.
+You should implement `Command` in a subclass for each operation.
 
 ```dart
 class AddCommand implements Command {
   @override
-  void apply(List<num> stack) {
+  void execute(List<num> stack) {
     // implementation goes here
   }
 }
 ```
 
-### Optional
+Can you find a way to implement undo functionality?
+Maybe you need another stack for it?
 
-Implement undo functionality by adding an `undo` method to command class and
-keep a stack (command history) of executed commands.
+## What about UI?
 
-You can capture the state needed to undo in the command object.
+So you have a bunch of classes.
+That's not really useful.
+You might be thinking "how do I make a GUI for it".
+I will show you that in an upcoming chapter.
+For now, you could try to make a CLI for it.
 
-Undo will be a separate stack that you push commands to after they have been
-executed on stack of values.
-
-Extend the Command class with an unapply method to undo.
+Here is an example of how you can read input and print output in a CLI app.
 
 ```dart
-abstract class Command {
-  void apply(List<num> stack);
-  void unapply(List<num> stack);
+import 'dart:io';
+
+void main()
+{
+    print("Enter your name?");
+    String? name = stdin.readLineSync();
+    print("Hello, $name!");
 }
 ```
 
-## Solution
+Importing `'dart:io'` allows you to get line of text input using
+`stdin.readLineSync()`.
 
-Write your solution in [DartPad](https://dartpad.dev/).
+## What about infix notation?
 
-**Important** save your work to a file on your computer afterwards.
-As it will help you later in the course.
+Implementing a calculator based on infix notations requires that the input gets
+converted into a tree structure that then gets recursively evaluated to
+calculate a result.
+
+Here is a video from Computerphile YouTube channel showing how to implement it
+in Python.
+
+<figure>
+<iframe width="720" height="400" src="https://www.youtube.com/embed/7tCNu4CnjVc?si=PlAKIduwBftt5eBX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<figcaption><i> Coding Trees in Python - Computerphile</i></figcaption>
+</figure>
