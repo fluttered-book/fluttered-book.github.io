@@ -17,6 +17,10 @@ Here we are just using it to practice some writing Dart.
 And learning about stack, because that becomes important later for navigation
 in apps.
 
+![Calculator app on macOS in RPN mode](../images/macos-calculator-rpn-mode.png)
+
+_The Calculator app on macOS in RPN mode_
+
 ## Description
 
 Implement a simple calculator based on Reverse Polish Notation (RPN).
