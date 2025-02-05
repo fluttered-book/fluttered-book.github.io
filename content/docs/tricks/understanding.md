@@ -2,7 +2,7 @@
 title: Deepen your understanding
 description: >
   How Flutter works under the surface.
-weight: 1
+weight: 2
 ---
 
 # Deepen your understanding
@@ -45,4 +45,3 @@ Small selection of videos from [Decoding Flutter](https://www.youtube.com/playli
 ## Using Dart analyze & Dart fix | Decoding Flutter
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/OBIuSrg_Quo?si=oAamDbYjxz7NE5Vn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-

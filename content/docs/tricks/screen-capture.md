@@ -3,7 +3,7 @@ title: Screen capture
 description: >
   Document various ways of capturing screenshots or screen recordings of your
   apps.
-weight: 5
+weight: 9
 ---
 
 # Screenshot window

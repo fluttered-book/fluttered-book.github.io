@@ -1,6 +1,6 @@
 ---
 title: Develop on real phone
-weight: 2
+weight: 3
 ---
 
 # Develop on real Android phone
@@ -24,4 +24,3 @@ should be the same.
 9. Select your phone under device selection in Android Studio.
 
 ![Device selection](../images/device_selection.png)
-

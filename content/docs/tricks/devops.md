@@ -1,7 +1,7 @@
 ---
 title: DevOps
 description: CI/CD for Flutter
-weight: 7
+weight: 10
 ---
 
 # DevOps

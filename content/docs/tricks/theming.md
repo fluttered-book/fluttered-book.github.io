@@ -1,7 +1,7 @@
 ---
 title: Theming
 description: Customize how your app looks
-weight: 8
+weight: 7
 ---
 
 # Theming

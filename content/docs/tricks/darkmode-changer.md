@@ -1,6 +1,6 @@
 ---
 title: Dark-mode changer
-weight: 9
+weight: 8
 ---
 
 # Dark-mode changer

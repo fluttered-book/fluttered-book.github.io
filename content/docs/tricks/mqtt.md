@@ -2,7 +2,7 @@
 title: MQTT
 description: >-
   Example of controlling a IoT device over MQTT v3
-weight: 11
+weight: 12
 ---
 
 # MQTT
