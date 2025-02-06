@@ -231,5 +231,5 @@ I can't tell you what the exact symptoms of this issue are as it can vary.
 If you are getting strange compilation errors pointing to something deep inside a package, you might want to try:
 
 ```sh
-flutter pub clean
+flutter clean
 ```
