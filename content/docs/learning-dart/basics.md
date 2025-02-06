@@ -173,14 +173,14 @@ To better illustrate, here are some examples.
 
 <span style="color: red;">Bad</span>
 
-```
+```dart
 var name;
 name = "Joe Doe";
 ```
 
 <span style="color: green;">Good</span>
 
-```
+```dart
 var name = "Joe Doe";
 ```
 
