@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
-typedef ButtonDef = (String, void Function()?);
-
 void main() {
-  runApp(const CalculatorApp());
+  runApp(CalculatorApp());
 }
 
 class CalculatorApp extends StatelessWidget {
@@ -40,6 +38,8 @@ class CalculatorBody extends StatelessWidget {
     ['0', '.', '', "="],
   ];
 
+  const CalculatorBody({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -69,40 +69,6 @@ class CalculatorBody extends StatelessWidget {
   }
 }
 
-class CalculatorDisplay extends StatelessWidget {
-  const CalculatorDisplay({required this.equation, required this.result});
-
-  final String equation;
-  final String result;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black,
-      child: Padding(
-        padding: EdgeInsets.all(32.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text(
-              equation,
-              style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              result,
-              style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class CalculatorButton extends StatelessWidget {
   const CalculatorButton(this.text,
       {required this.rowIndex, required this.colIndex});
@@ -123,5 +89,51 @@ class CalculatorButton extends StatelessWidget {
       style = TextStyle(fontSize: 24, color: Colors.white);
     }
     return TextButton(child: Text(text, style: style), onPressed: () {});
+  }
+}
+
+class CalculatorDisplay extends StatelessWidget {
+  const CalculatorDisplay({required this.equation, required this.result});
+
+  final String equation;
+  final String result;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.black,
+      child: Padding(
+        padding: EdgeInsets.all(32.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Flexible(
+              flex: 1,
+              child: FittedBox(
+                fit: BoxFit.fitHeight,
+                child: Text(
+                  equation,
+                  style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              child: FittedBox(
+                fit: BoxFit.fitHeight,
+                child: Text(
+                  result,
+                  style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
