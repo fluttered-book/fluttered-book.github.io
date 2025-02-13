@@ -12,10 +12,30 @@ Instead of `test()` you need to use the `testWidgets()` method.
 
 <iframe width="100%" height="720px" src="https://dartpad.dev/?id=75421dd3466b326eab5a336ea3eee015?theme=light"></iframe>
 
+{{% hint info %}}
+The example might not function correctly.
+I'm reaching the limit of what can be done with these embedded code examples.
+
+If you are unable to run it here, try pasting the code into Android Studio.
+{{% /hint %}}
+
 The first argument is a description, just like `test()` method.
 The second argument is a bit different.
 For `test()` it is `dynamic Function()`.
 And for `testWidgets()` it is `Future<void> Function(WidgetTester widgetTester)`.
+The difference is that `testWidgets()` is takes an async function with a single
+parameter as an argument.
+We can use the parameter (WidgetTester) to interact with a widget tree.
+But remember, always `await` on each interaction.
+
+Before we can interact with the widget tree though, we need to inflate it.
+Remember that there are 3 trees in Flutter (widgets, elements and
+render-objects).
+We need the trees to be instantiated somehow.
+That process is called inflating the widget.
+Normally you would do that with `runApp()`, but for tests we use
+`tester.pumpWidget()` instead.
+We can make it build/render another frame by calling `tester.pump()`.
 
 ```dart
 import 'package:calculator_gui/main.dart';
