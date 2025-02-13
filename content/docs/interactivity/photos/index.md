@@ -873,7 +873,7 @@ You have now coded your own photo app from scratch 📷.
 
 ## Debug
 
-### Error running on Android
+### Running on Android
 
 Do you get an error like shown below when running the app on Android?
 
@@ -904,6 +904,26 @@ The solution is simple.
 2. Find the line that contains `com.android.application`
 3. Change version number to `8.2.1`
 4. Re-run your app
+
+### Running on iOS
+
+First time you run an app on iOS you need to configure code signing.
+In a terminal, run:
+
+```sh
+open ios/Runner.xcworkspace
+```
+
+Or manually open the project in Xcode.
+
+1. Click "Runner" in the panel on the left.
+2. Select "Signing & Capabilities" tab
+3. Enter a unique "Bundle Identifier"
+   - You could try prefixing the app name with your reverse email.
+   - If you email "<your-name@gmail.com>"
+   - Try Bundle Identifier "com.gmail.your-name.photos"
+4. Select "Your Name (Personal Team)" in the "Team" dropdown.
+5. Run the app again
 
 ## Challenges
 
