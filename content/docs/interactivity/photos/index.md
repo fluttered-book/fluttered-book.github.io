@@ -7,8 +7,9 @@ weight: 3
 
 # Photos app
 
-![Screenshot Android](images/photos_app_screenshot.png)
-![Screenshot iOS](images/photos_app_screenshot_ios.png)
+<iframe src="https://fluttered-book.github.io/photos/" width="375" height="667px"></iframe>
+
+[Live demo](https://fluttered-book.github.io/photos/)
 
 ## Shortcut
 
