@@ -198,6 +198,22 @@ branch](https://github.com/fluttered-book/calculator_cli/tree/solution).
 
 ## Reflection
 
+[Side effects](<https://en.wikipedia.org/wiki/Side_effect_(computer_science)>) is
+the enemy of testability.
+A function or method is free from side effects (aka pure) if the only
+observable effect from invoking it is returning a value that is based solely on
+its arguments.
+Code without side effect is a lot easier to write tests for.
+Because you can just write assertions for return value without having to
+consider internal state changes in objects.
+The reason why `CalculatorState` is immutable is so the commands needs to be
+implemented without side effects.
+
+The `main()` method in `bin/calculator_cli.dart` contains some logic in form of
+a switch statement.
+It also reads input and writes output to the console, which is a kind of side
+effect.
+
 Reflect over the following questions.
 
 - Can you write test for [bin/calculator_cli.dart](https://github.com/fluttered-book/calculator_cli/blob/main/bin/calculator_cli.dart)?
