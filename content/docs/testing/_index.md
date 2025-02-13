@@ -16,8 +16,8 @@ In This chapter you'll learn how to write automated tests for Flutter.
 First an introduction to writing tests for Flutter apps.
 
 - [Introduction to testing](introduction)
-- [Unit testing]
-- [Widget testing]
+- [Unit testing](unit-test)
+- [Widget testing](widget-test)
 - [Integration testing]
 - [Writings tests](writing-tests)
 
