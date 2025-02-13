@@ -22,8 +22,8 @@ But for now, we'll just leave it as CLI app, because it makes it simpler.
 The calculator is based on <abbr title="Reverse Polish Notation">RPN</abbr>, so
 we avoid having to deal with complicated operator precedence rules.
 
-RPN was introduced in a [previous exercise](../learning-dart/rpn.md).
-If you didn't do that one, then you should watch the video below for an
+RPN was introduced in a [previous exercise](../../learning-dart/rpn).
+If you skipped the exercise, you should watch the video below for an
 explanation.
 
 <figure>
@@ -56,7 +56,7 @@ Line 4 adds the number `4` to the end of the list.
 
 ### Creating a list without mutating
 
-Dart has a special syntax for creating a new list witch includes all elements
+Dart has a special syntax for creating a new list that includes all elements
 from an existing list.
 
 ```run-dartpad:theme-dark:mode-dart:run-false:width-100%:height-200px
@@ -71,15 +71,15 @@ void main() {
 Notice the `...` part and how we get a new list with all elements from the
 previous and an additional element without changing the original list.
 
-You might know how `...` works already from JavaScript.
+You might be familiar with `...` already from JavaScript.
 
-### Internal state
+### State
 
 The state of our calculator will be represented by an instance of this class.
 
 ```dart
-class InternalState {
-  InternalState({
+class CalculatorState {
+  CalculatorState({
     required this.stack,
     required this.history,
   });
@@ -87,7 +87,7 @@ class InternalState {
   final List<num> stack;
   final List<List<num>> history;
 
-  static InternalState empty() => InternalState(stack: [], history: []);
+  static CalculatorState empty() => CalculatorState(stack: [], history: []);
 
   @override
   String toString() {
@@ -97,7 +97,8 @@ class InternalState {
 ```
 
 It has a stack of numbers as described in the video.
-The `List<List<num>> history` gives us a simple way to undo operations again.
+The `List<List<num>> history` gives us a simple way to undo operations.
+By just keeping a copy of the previous stack.
 
 ### Commands
 
@@ -132,7 +133,7 @@ class Enter implements Command {
 
 A new stack is created with all numbers from the previous stack plus the new
 number.
-The history becomes the previous history plus state.
+The history becomes the previous history plus the previous stack.
 That way, an undo command can be implemented as:
 
 ```dart
@@ -200,4 +201,4 @@ branch](https://github.com/fluttered-book/calculator_cli/tree/solution).
 Reflect over the following questions.
 
 - Can you write test for [bin/calculator_cli.dart](https://github.com/fluttered-book/calculator_cli/blob/main/bin/calculator_cli.dart)?
-- How would your rewrite `bin/calculator_cli.dart` to be easier to testable?
+- How would your rewrite `bin/calculator_cli.dart` to be more testable?

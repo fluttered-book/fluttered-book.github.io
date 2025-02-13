@@ -85,7 +85,7 @@ void main() {
 _When I embed tests on the page it gives some warnings.
 Click the "hide" button to make it go away._
 
-Each test file have a `main()` function within one or more tests can be
+Each test file have a `main()` function, wherein one or more tests can be
 defined.
 A test is defined with a call to `test()` function from the test package.
 It takes two arguments.
@@ -188,22 +188,22 @@ to pass.
 
 You can test your code at several levels of granularity.
 The examples shown so far are called **unit tests**.
-That is because the test at the smallest level of granularity (class, method
+That is because they test at the smallest level of granularity (class, method
 or function level).
 
-It is also common to write tests to verify that multiple parts of a system work
-together as expected.
+It is also common to write tests that verify that multiple parts of a system
+work together as expected.
 These are called **integration tests**.
 
 You can also write tests that cover the entire system.
 Often this means everything from simulated user interaction to talking to API
 or database.
-These kinds of tests are called system or end-to-end (e2e) tests.
+These kinds of tests are called system or **end-to-end (e2e) tests**.
 
-With Flutter, we also have widget tests.
+With Flutter, we also have **widget tests**.
 As the name implies they test widgets.
-Meaning, they simulate user interaction with widgets and can verify they update
-as expected.
+Meaning, they simulate user interaction with widgets and can verify that the
+widget update as expected.
 
 Tests that simulates user interaction requires a bit more tooling than what is
 shown here.
