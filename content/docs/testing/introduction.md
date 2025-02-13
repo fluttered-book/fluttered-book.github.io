@@ -127,16 +127,25 @@ void main() {
   group("AddCommand", () {
     group("apply()", () {
       test('adds the last two values', () {
+        // Arrange
         final origStack = [1, 2];
+
+        // Act
         final newStack = AddCommand().apply(origStack);
 
+        // Assert
         expect(newStack, isNot(equals(origStack)));
         expect(newStack, equals([3]));
       });
 
       test("does nothing when length of stack is less than 2", () {
+        // Arrange
         final origStack = [1];
+
+        // Act
         final newStack = AddCommand().apply(origStack);
+
+        // Assert
         expect(newStack, equals(origStack));
       });
     });
@@ -144,10 +153,14 @@ void main() {
     group("unapply", () {
       test("replaces result with operands and removes itself from the history",
           () {
+        // Arrange
         final command = AddCommand();
-        final origStack = [1, 2];
+        final origStack = command.apply([1, 2]);
+
+        // Act
         final newStack = command.unapply(origStack);
 
+        // Assert
         expect(newStack, isNot(equals(origStack)));
         expect(newStack, equals([1, 2]));
       });
