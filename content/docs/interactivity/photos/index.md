@@ -9,7 +9,7 @@ weight: 3
 
 <iframe src="https://fluttered-book.github.io/photos/" width="375" height="667px"></iframe>
 
-[Live demo](https://fluttered-book.github.io/photos/)
+[Live Demo](https://fluttered-book.github.io/photos/)
 
 ## Shortcut
 
