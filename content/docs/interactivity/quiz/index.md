@@ -9,7 +9,7 @@ weight: 1
 
 Here are some screenshots of the finished app you'll be making in this section.
 
-![Screenshot](images/quiz_app_screenshot.png)
+<iframe src="https://fluttered-book.github.io/quiz/" width="375" height="667px"></iframe>
 
 ## What you will learn
 
@@ -695,4 +695,3 @@ You probably need a different widget to allow the user to select a quiz.
 
 If you lack creativity to come up with additional quizzes then you can always
 ask ChatGPT.
-
