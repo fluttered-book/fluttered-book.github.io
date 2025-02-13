@@ -871,6 +871,40 @@ animations](https://docs.flutter.dev/ui/animations/hero-animations).
 That's all 🎊.
 You have now coded your own photo app from scratch 📷.
 
+## Debug
+
+### Error running on Android
+
+Do you get an error like shown below when running the app on Android?
+
+```sh
+┌─ Flutter Fix ────────────────────────────────────────────────────────────────────────────────────┐
+│ [!] This is likely due to a known bug in Android Gradle Plugin (AGP) versions less than 8.2.1,   │
+│ when                                                                                             │
+│   1. setting a value for SourceCompatibility and                                                 │
+│   2. using Java 21 or above.                                                                     │
+│ To fix this error, please upgrade your AGP version to at least 8.2.1. The version of AGP that    │
+│ your project uses is likely defined in:                                                          │
+│ /path-to-project/photos/android/settings.gradle,                                                 │
+│ in the 'plugins' closure (by the number following "com.android.application").                    │
+│  Alternatively, if your project was created with an older version of the templates, it is likely │
+│ in the buildscript.dependencies closure of the top-level build.gradle:                           │
+│ /home/rpe/Code/fluttered/photos/android/build.gradle,                                            │
+│ as the number following "com.android.tools.build:gradle:".                                       │
+│                                                                                                  │
+│ For more information, see:                                                                       │
+│ https://issuetracker.google.com/issues/294137077                                                 │
+│ https://github.com/flutter/flutter/issues/156304                                                 │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+The solution is simple.
+
+1. Open `android/settings.gradle`
+2. Find the line that contains `com.android.application`
+3. Change version number to `8.2.1`
+4. Re-run your app
+
 ## Challenges
 
 ### Spring cleaning
