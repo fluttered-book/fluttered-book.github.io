@@ -28,12 +28,18 @@ Practice the following.
 **Reformat code**
 
 - Windows: <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>L</kbd>
-- Linux: <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>L</kbd>
-- macOS: <kbd>Option</kbd> + <kbd>Command</kbd> + <kbd>L</kbd>
+- macOS: <kbd>⌥ Option</kbd> + <kbd>⌘Сmd</kbd> + <kbd>L</kbd>
 
 {{% hint info %}}
 You can affect the formatting by adding or removing trailing <code>,</code> in lists.
 {{% /hint %}}
+
+**Show context actions**
+
+The context menu is the IDEs hints for refactoring.
+
+- Windows: <kbd>Alt</kbd> + <kbd>Enter</kbd>
+- macOS: <kbd>⌥ Option</kbd> <kbd>↩Enter</kbd>
 
 ## Project setup
 
@@ -100,13 +106,21 @@ class Question {
 typedef Quiz = List<Question>;
 ```
 
+{{% hint info %}}
+If you just type in the fields, then you can get the IDE to generate a constructor from the context actions menu.
+Choose "Create constructor for required fields, required named" then make
+`text` a positional parameter.
+{{% /hint %}}
+
 Hopefully you are able to tell what the purpose of everything is from the
 comments.
 
-_Note: The triple slash `///` means that the comment will be used as
+{{% hint info %}}
+Note: The triple slash `///` means that the comment will be used as
 documentation.
 You can see it in action if you hover over the name/symbol underneath the
-comment._
+comment.
+{{% /hint %}}
 
 ### Add a quiz
 
@@ -147,7 +161,9 @@ final Quiz quiz = [
 ];
 ```
 
-_Note: it will look a lot nicer if you format the file._
+{{% hint %}}
+It will look a lot nicer if you format the file.
+{{% /hint %}}
 
 ## Basic layout
 
@@ -184,7 +200,11 @@ class MyApp extends StatelessWidget {
 }
 ```
 
-_Note: you can change the colors by changing `themeColor`._
+{{% hint %}}
+You can change the colors by changing `themeColor`.\_
+{{% /hint %}}
+
+Compilation errors will be fixed after completing the following section.
 
 ### Quiz screen
 
@@ -424,11 +444,13 @@ Now within the `build()` method, pass `currentQuestion` as parameter to
 ```dart
 child: _buildQuestion(context, currentQuestion),
 //...
-children: _buildOptions(currentQuestion)
+children: _buildOptions(context, currentQuestion)
 ```
 
-_I think it makes it slightly easier to follow the application flow, if using
-parameters in such cases, instead of accessing the properties directly._
+{{% hint %}}
+I think it makes it slightly easier to follow the application flow, if using
+parameters in such cases, instead of accessing the properties directly.
+{{% /hint %}}
 
 Try it out!
 Run the application and click the buttons.
@@ -667,12 +689,14 @@ Try the app again.
 ### 1. Refactor
 
 Refactor the app to use widgets instead of helper methods to build the UI.
-It might be a good idea to keep the for what happens on button presses in the
-`QuizScreen` widget.
+It might be a good idea to keep the code for what happens on button presses in
+the `QuizScreen` widget.
 
-**Hint**: you can write methods that take functions as arguments.
+{{% hint info %}}
+You can write methods that take functions as arguments.
 The type for a function that takes a string as argument and return void is `
 void Function(String option)`.
+{{% /hint %}}
 
 Then answer these questions:
 
