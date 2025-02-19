@@ -363,7 +363,7 @@ class CameraScreen extends StatelessWidget {
 
 Go ahead and do the same with the other screens.
 
-Try it out! Navigate 🧭 around the different screens.
+Try it out! Navigate around the different screens.
 
 ## Camera action
 
@@ -869,8 +869,8 @@ The `tag` value is used to match the Hero across rebuilds.
 Visit the documentation to learn more about [Hero
 animations](https://docs.flutter.dev/ui/animations/hero-animations).
 
-That's all 🎊.
-You have now coded your own photo app from scratch 📷.
+That's all.
+You have now coded your own photo app from scratch.
 
 ## Debug
 
@@ -948,4 +948,4 @@ Add customizable color filters to PhotoScreen using
 [ImageFiltered class](https://api.flutter.dev/flutter/widgets/ColorFiltered-class.html).
 
 Throw in some social media, then brag to all your friends and family about
-how you created the next Instagram 😉 😉.
+how you created the next Instagram 😎.
