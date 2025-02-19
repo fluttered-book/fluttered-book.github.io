@@ -278,8 +278,8 @@ This is similar to what happens when we do `Theme.of(context)`.
 
 So, `BuildContext` allows us to reach up the tree, therefore it must hold
 information about the tree.
-**Components** also hold information about the tree.
-In fact `BuildContext` is just an interface implemented by `Component` 🤯.
+**Elements** also hold information about the tree.
+In fact `BuildContext` is just an interface implemented by `Element` 🤯.
 
 # Named routes
 
