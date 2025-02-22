@@ -300,6 +300,11 @@ testWidgets("Entering a name shows a greeting", (tester) async {
 });
 ```
 
+### Source
+
+You can find full source code for the examples in this section
+[here](https://github.com/fluttered-book/widget_testing_examples).
+
 ## Debugging
 
 ### Printing
