@@ -135,6 +135,155 @@ find.descendant(
 )
 ```
 
+You can both use finders to find widgets in the widget tree to interact with.
+And you can also use finders to locate widgets for your tests assertions,
+meaning what you expect the app to do based on the interaction.
+
+## Interactions
+
+To write any meaningful widget test we need to simulate interactions with the
+app.
+Common interactions for mobile apps are:
+
+1. **tap** on something
+2. **Scroll** around
+3. **Drag**/swipe
+4. **Enter text** in a field
+
+We can use `WidgetTester` to simulate these interactions.
+
+### Tap
+
+Tapping is pretty simple.
+You just call
+[tap](https://api.flutter.dev/flutter/flutter_test/WidgetController/tap.html)
+method on `WidgetTester` with a finder for the widget you want to tap on as
+argument.
+
+```dart
+testWidgets('Tapping "OK" provides feedback', (tester) async {
+  // Inflate the widget tree
+  await tester.pumpWidget(const MaterialApp(home: TapWidget()));
+
+  // Tap the button.
+  await tester.tap(find.widgetWithText(FloatingActionButton, "OK"));
+
+  // Rebuild the widget after the state has changed.
+  await tester.pump();
+
+  // Expect to find the item on screen.
+  expect(find.text('Button was tapped'), findsOneWidget);
+});
+```
+
+There are also a couple of variations of
+[tap](https://api.flutter.dev/flutter/flutter_test/WidgetController/tap.html) that you can explore for yourself.
+These are
+[tapAt](https://api.flutter.dev/flutter/flutter_test/WidgetController/tapAt.html)
+and
+[tapOnText](https://api.flutter.dev/flutter/flutter_test/WidgetController/tapOnText.html).
+
+### Scroll
+
+Scrolling is also just a method on `WidgetTester`.
+We don't need to calculate how much to scroll to find a particular item, we can
+just use
+[scrollUntilVisible](https://api.flutter.dev/flutter/flutter_test/WidgetController/scrollUntilVisible.html).
+
+Imaging you have an app with a ListView widget containing 1000 items.
+You could write a test that scroll until some item is visible like this:
+
+```dart
+testWidgets('Scrolling reveals additional tiles', (tester) async {
+  // Inflate the widget tree
+  await tester.pumpWidget(const MaterialApp(home: ScrollWidget()));
+
+  final listFinder = find.byType(Scrollable);
+  final itemFinder = find.text("No 50");
+
+  // Scroll until the item to be found appears.
+  await tester.scrollUntilVisible(itemFinder, 200.0, scrollable: listFinder);
+
+  // Verify that the item contains the correct text.
+  expect(itemFinder, findsOneWidget);
+});
+```
+
+However, looking for certain text is not always the best.
+Your app could have multiple widgets with the text "No 50".
+
+In many cases it is better to give the widget a
+[Key](https://api.flutter.dev/flutter/foundation/Key-class.html), so you can
+find it based on that instead.
+
+```dart
+testWidgets('Scrolling reveals additional tiles (by key)', (tester) async {
+  // Inflate the widget tree
+  await tester.pumpWidget(const MaterialApp(home: ScrollWidget()));
+
+  final listFinder = find.byType(Scrollable);
+  final itemFinder = find.byKey(const ValueKey('key_for_item_50'));
+
+  // Scroll until the item to be found appears.
+  await tester.scrollUntilVisible(itemFinder, 200.0, scrollable: listFinder);
+
+  // Verify that the item contains the correct text.
+  expect(itemFinder, findsOneWidget);
+});
+```
+
+### Drag
+
+Dragging/swiping gestures can be used for several things.
+One example is swipe to dismiss.
+
+Imagine you have an app with a to-do list.
+You can write a test to dismiss an item like this:
+
+```dart
+testWidgets('Remove a todo', (tester) async {
+  // Inflate the widget tree
+  await tester.pumpWidget(const MaterialApp(home: DragWidget()));
+
+  const todoText = "Clean room";
+
+  // Swipe the item to dismiss it.
+  await tester.drag(
+    find.widgetWithText(Dismissible, todoText),
+    const Offset(500, 0),
+  );
+
+  // Build the widget until the dismiss animation ends.
+  await tester.pumpAndSettle();
+
+  // Ensure that the item is no longer on screen.
+  expect(find.text(todoText), findsNothing);
+});
+```
+
+### Text
+
+Many apps got text fields.
+They are used in forms, for search etc.
+
+Imagine you have an app where you can enter a name to make it show a greeting.
+
+```dart
+testWidgets("Entering a name shows a greeting", (tester) async {
+  // Inflate the widget tree
+  await tester.pumpWidget(MaterialApp(home: TextExampleWidget()));
+
+  // Enter "Bob" into the TextField
+  await tester.enterText(find.byType(TextField), "Bob");
+
+  // Trigger a rebuild
+  await tester.pump();
+
+  // Expect to find a greeting for Bob.
+  expect(find.text("Hello Bob"), findsOneWidget);
+});
+```
+
 ## Debugging
 
 ### Printing
