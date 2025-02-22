@@ -145,7 +145,7 @@ To write any meaningful widget test we need to simulate interactions with the
 app.
 Common interactions for mobile apps are:
 
-1. **tap** on something
+1. **Tap** on something
 2. **Scroll** around
 3. **Drag**/swipe
 4. **Enter text** in a field
@@ -159,6 +159,12 @@ You just call
 [tap](https://api.flutter.dev/flutter/flutter_test/WidgetController/tap.html)
 method on `WidgetTester` with a finder for the widget you want to tap on as
 argument.
+
+Say you have an app that change the text shown when a button is tapped.
+
+<iframe width="100%" height="200px" src="https://fluttered-book.github.io/widget_testing_examples/#tap"></iframe>
+
+Here is how you could write a test for it.
 
 ```dart
 testWidgets('Tapping "OK" provides feedback', (tester) async {
@@ -190,7 +196,10 @@ We don't need to calculate how much to scroll to find a particular item, we can
 just use
 [scrollUntilVisible](https://api.flutter.dev/flutter/flutter_test/WidgetController/scrollUntilVisible.html).
 
-Imaging you have an app with a ListView widget containing 1000 items.
+Say you have an app with a ListView widget containing 1000 items.
+
+<iframe width="100%" height="200px" src="https://fluttered-book.github.io/widget_testing_examples/#scroll"></iframe>
+
 You could write a test that scroll until some item is visible like this:
 
 ```dart
@@ -237,7 +246,10 @@ testWidgets('Scrolling reveals additional tiles (by key)', (tester) async {
 Dragging/swiping gestures can be used for several things.
 One example is swipe to dismiss.
 
-Imagine you have an app with a to-do list.
+Say you have an app with a to-do list.
+
+<iframe width="100%" height="200px" src="https://fluttered-book.github.io/widget_testing_examples/#drag"></iframe>
+
 You can write a test to dismiss an item like this:
 
 ```dart
@@ -266,7 +278,11 @@ testWidgets('Remove a todo', (tester) async {
 Many apps got text fields.
 They are used in forms, for search etc.
 
-Imagine you have an app where you can enter a name to make it show a greeting.
+Say you have an app where you can enter a name to make it show a greeting.
+
+<iframe width="100%" height="200px" src="https://fluttered-book.github.io/widget_testing_examples/#text"></iframe>
+
+You could write a test for it like this:
 
 ```dart
 testWidgets("Entering a name shows a greeting", (tester) async {
