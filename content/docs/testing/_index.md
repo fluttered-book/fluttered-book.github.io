@@ -17,11 +17,7 @@ First an introduction to writing tests for Flutter apps.
 
 - [Introduction to testing](introduction)
 - [Unit testing](unit-test)
+  - [Challenge: Unit test RPN Calculator]
 - [Widget testing](widget-test)
 - [Integration testing]
 - [Writings tests](writing-tests)
-
-Then a small project where you get to practice everything you've learned this
-far.
-
-- [Calculator project](calculator-project)

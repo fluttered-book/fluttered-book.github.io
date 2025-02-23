@@ -1,6 +1,6 @@
 ---
 title: Widget tests
-weight: 3
+weight: 4
 ---
 
 # Widgets tests
