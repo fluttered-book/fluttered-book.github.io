@@ -9,8 +9,8 @@ weight: 3
 
 This exercise is based on the familiar RPN calculator concept that you have
 seen in previous exercises
-([her](../../flutter-basics/challenge-calculator/) and
-[her](../../flutter-basics/challenge-calculator/)).
+([here](../../flutter-basics/challenge-calculator/) and
+[here](../../flutter-basics/challenge-calculator/)).
 
 The implementation you will be writing unit tests for has been altered to make
 all commands pure, meaning they don't have any observable effect other than the
