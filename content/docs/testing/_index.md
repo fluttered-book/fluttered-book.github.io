@@ -18,6 +18,7 @@ First an introduction to writing tests for Flutter apps.
 - [Introduction to testing](introduction)
 - [Unit testing](unit-test)
   - [Challenge: Unit test calculator](unit-test-challenge-rpn)
+  - [Challenge: Unit test Quiz app](unit-test-challenge-quiz)
 - [Widget testing](widget-test)
 - [Integration testing]
 - [Writings tests](writing-tests)
