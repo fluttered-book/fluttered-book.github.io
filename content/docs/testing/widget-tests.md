@@ -164,6 +164,8 @@ Say you have an app that change the text shown when a button is tapped.
 
 <iframe width="100%" height="200px" src="https://fluttered-book.github.io/widget_testing_examples/#tap"></iframe>
 
+[Code](https://github.com/fluttered-book/widget_testing_examples/blob/main/lib/tap_widget.dart)
+
 Here is how you could write a test for it.
 
 ```dart
@@ -182,6 +184,8 @@ testWidgets('Tapping "OK" provides feedback', (tester) async {
 });
 ```
 
+[Code](https://github.com/fluttered-book/widget_testing_examples/blob/main/test/tap_widget_test.dart)
+
 There are also a couple of variations of
 [tap](https://api.flutter.dev/flutter/flutter_test/WidgetController/tap.html) that you can explore for yourself.
 These are
@@ -199,6 +203,8 @@ just use
 Say you have an app with a ListView widget containing 1000 items.
 
 <iframe width="100%" height="200px" src="https://fluttered-book.github.io/widget_testing_examples/#scroll"></iframe>
+
+[Code](https://github.com/fluttered-book/widget_testing_examples/blob/main/lib/scroll_widget.dart)
 
 You could write a test that scroll until some item is visible like this:
 
@@ -241,6 +247,8 @@ testWidgets('Scrolling reveals additional tiles (by key)', (tester) async {
 });
 ```
 
+[Code](https://github.com/fluttered-book/widget_testing_examples/blob/main/test/scroll_widget_test.dart)
+
 ### Drag
 
 Dragging/swiping gestures can be used for several things.
@@ -249,6 +257,8 @@ One example is swipe to dismiss.
 Say you have an app with a to-do list.
 
 <iframe width="100%" height="200px" src="https://fluttered-book.github.io/widget_testing_examples/#drag"></iframe>
+
+[Source](https://github.com/fluttered-book/widget_testing_examples/blob/main/lib/drag_widget.dart)
 
 You can write a test to dismiss an item like this:
 
@@ -273,6 +283,8 @@ testWidgets('Remove a todo', (tester) async {
 });
 ```
 
+[Code](https://github.com/fluttered-book/widget_testing_examples/blob/main/test/drag_widget_test.dart)
+
 ### Text
 
 Many apps got text fields.
@@ -281,6 +293,8 @@ They are used in forms, for search etc.
 Say you have an app where you can enter a name to make it show a greeting.
 
 <iframe width="100%" height="200px" src="https://fluttered-book.github.io/widget_testing_examples/#text"></iframe>
+
+[Code](https://github.com/fluttered-book/widget_testing_examples/blob/main/lib/text_widget.dart)
 
 You could write a test for it like this:
 
@@ -300,10 +314,7 @@ testWidgets("Entering a name shows a greeting", (tester) async {
 });
 ```
 
-### Source
-
-You can find full source code for the examples in this section
-[here](https://github.com/fluttered-book/widget_testing_examples).
+[Code](https://github.com/fluttered-book/widget_testing_examples/blob/main/test/text_widget_test.dart)
 
 ## Debugging
 
