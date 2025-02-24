@@ -102,7 +102,7 @@ By just keeping a copy of the previous stack.
 
 ### Commands
 
-All operations on the stack is will be done with an implementation of this
+All operations on the stack will be done with an implementation of this
 interface:
 
 ```dart

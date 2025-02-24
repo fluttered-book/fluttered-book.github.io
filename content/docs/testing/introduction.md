@@ -37,7 +37,7 @@ by interacting with things outside the app itself.
 Whether it be users or APIs.
 Users can be unpredictable.
 And external APIs can also act in ways you didn't expect.
-In order for your tests to be reliable your need to be able to isolate them
+In order for your tests to be reliable you need to be able to isolate them
 from these external entities.
 If the app code isn't written in a way that allows substituting external
 entities then you can't write good tests for it.
@@ -51,7 +51,7 @@ Simple as that.
 In Dart and Flutter you use the [test](https://pub.dev/packages/test) package
 for writing your tests.
 
-Your tests lives in `test/` folder in your project.
+Your tests live in `test/` folder in your project.
 Say you have a file named `lib/commands.dart` that you want to write tests for.
 You will then write your tests in a file named `test/commands_test.dart`.
 Here is an example of a test.
@@ -171,7 +171,8 @@ void main() {
 
 If you are familiar with testing frameworks in the JavaScript/Node ecosystem,
 such as [Jasmine](https://jasmine.github.io/) and [Jest](https://jestjs.io/),
-then you can use the following table to help you translate.
+then you can use the following table to help you convert your existing
+knowledge.
 
 | JavaScript                                                    | Dart                                                                           |
 | ------------------------------------------------------------- | ------------------------------------------------------------------------------ |
