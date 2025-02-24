@@ -1,23 +1,109 @@
 ---
 title: "Challenge: Unit test Calculator"
-weight: 3
+weight: 2
 ---
+
+{{< classic-dartpad >}}
 
 # Challenge: Unit test Calculator
 
 ## Introduction
 
-This exercise is based on the familiar RPN calculator concept that you have
-seen in previous exercises
-([here](../../flutter-basics/challenge-calculator/) and
-[here](../../flutter-basics/challenge-calculator/)).
+Let's practice writing some unit tests.
+I've prepared a repository with some code for you to test.
 
-The implementation you will be writing unit tests for has been altered to make
-all commands pure, meaning they don't have any observable effect other than the
-return value.
-In other words; they are pure since they are free from side effects.
+We are writing a calculator app.
+It's going to start out as a simple <abbr title="Command-line interface">CLI</abbr> app.
+In the next section we will expand it to a full-blown Flutter app.
+But for now, we'll just leave it as CLI app, because it makes it simpler.
 
-The abstract base-class for all commands looks like this:
+## The concept
+
+The calculator is based on <abbr title="Reverse Polish Notation">RPN</abbr>, so
+we avoid having to deal with complicated operator precedence rules.
+
+RPN was introduced in a [previous exercise](../../learning-dart/rpn).
+If you skipped the exercise, you should watch the video below for an
+explanation.
+
+<figure>
+<iframe width="720" height="400" src="https://www.youtube.com/embed/7ha78yWRDlE?si=M21W2n2Sq_0yp9bM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <figcaption><i>Reverse Polish Notation and The Stack - Computerphile</i></figcaption>
+</figure>
+
+If you've done the previous exercise on RPN, you should know that we are
+changing the rules a bit this time, so that the stack is immutable.
+
+Immutable data types are types that don't change.
+For classes, it means that all fields are final.
+For lists, it means that instead of modifying the existing list we create a new
+list with values from the previous list with our modification.
+
+### Mutating a list
+
+Here is what modifying a list looks like.
+
+```run-dartpad:theme-dark:mode-dart:run-false:width-100%:height-200px
+void main() {
+  final list = [1,2,3];
+  print(list);
+  list.add(4);
+  print(list);
+}
+```
+
+Line 4 adds the number `4` to the end of the list.
+
+### Creating a list without mutating
+
+Dart has a special syntax for creating a new list that includes all elements
+from an existing list.
+
+```run-dartpad:theme-dark:mode-dart:run-false:width-100%:height-200px
+void main() {
+  final list1 = [1,2,3];
+  final list2 = [...list1, 4];
+  print(list1);
+  print(list2);
+}
+```
+
+Notice the `...` part and how we get a new list with all elements from the
+previous and an additional element without changing the original list.
+
+You might be familiar with `...` already from JavaScript.
+
+### State
+
+The state of our calculator will be represented by an instance of this class.
+
+```dart
+class CalculatorState {
+  CalculatorState({
+    required this.stack,
+    required this.history,
+  });
+
+  final List<num> stack;
+  final List<List<num>> history;
+
+  static CalculatorState empty() => CalculatorState(stack: [], history: []);
+
+  @override
+  String toString() {
+    return "{stack: $stack, history: $history}";
+  }
+}
+```
+
+It has a stack of numbers as described in the video.
+The `List<List<num>> history` gives us a simple way to undo operations.
+By just keeping a copy of the previous stack.
+
+### Commands
+
+All operations on the stack is will be done with an implementation of this
+interface:
 
 ```dart
 abstract class Command {
@@ -25,23 +111,46 @@ abstract class Command {
 }
 ```
 
-Where `CalculatorState` is:
+_In Dart we use abstract classes as interfaces since there isn't any "interface" keyword._
+
+To push/enter a number to the stack we have this implementation:
 
 ```dart
-class CalculatorState {
-  CalculatorState({required this.stack, required this.history});
+class Enter implements Command {
+  const Enter(this.number);
 
-  final List<num> stack;
-  final List<List<num>> history;
+  final num number;
+
+  @override
+  CalculatorState execute(CalculatorState state) {
+    return CalculatorState(
+      stack: [...state.stack, number],
+      history: [...state.history, state.stack],
+    );
+  }
 }
 ```
 
-It means that a `Command` takes `CalculatorState` as parameter.
-A `CalculatorState` consist of stack of numbers and history of previous stack
-to facilitate undo.
+A new stack is created with all numbers from the previous stack plus the new
+number.
+The history becomes the previous history plus the previous stack.
+That way, an undo command can be implemented as:
 
-The `execute()` returns a new `CalculatorState` instead of modifying the
-argument.
+```dart
+class Undo extends Command {
+  @override
+  CalculatorState execute(CalculatorState state) {
+    if (state.history.isEmpty) return state;
+    return CalculatorState(
+      stack: state.history.last,
+      history: [...state.history.take(state.history.length - 1)],
+    );
+  }
+}
+```
+
+Where `[...state.history.take(state.history.length - 1)]` just creates a new
+list with all elements from `state.history` except the last.
 
 ## Getting started
 

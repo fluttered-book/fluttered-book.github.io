@@ -1,5 +1,5 @@
 ---
-title: Widget tests
+title: Widget test
 weight: 4
 ---
 
