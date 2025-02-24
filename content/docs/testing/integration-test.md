@@ -1,5 +1,5 @@
 ---
-title: Widget test
+title: Integration test
 weight: 5
 ---
 
