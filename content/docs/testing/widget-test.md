@@ -382,3 +382,18 @@ Here is an example.
 Remember to remove `developer.debugger()` when you are done.
 Otherwise, it will seem like the app just hangs.
 {{% /hint %}}
+
+### Screen size
+
+By default, widget tests are run on a screen size of 800x600 which is a strange
+resolution for a phone.
+It can create issues if your app is only meant to run in portrait mode.
+
+You can change the default size by adding the following code:
+
+```dart
+tester.view.devicePixelRatio = 1;
+tester.view.physicalSize = Size(412, 915);
+```
+
+Feel free to adjust the size as you see fit.
