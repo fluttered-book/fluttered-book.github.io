@@ -49,7 +49,7 @@ dart test
 ## What to do
 
 Write unit-tests for `QuizModel` found in `lib/quiz_model.dart`.
-Your tests should be written in `text/quiz_model_test.dart`.
+Your tests should be written in `test/quiz_model_test.dart`.
 
 `QuizModel` has side effects.
 In fact its methods are void.
