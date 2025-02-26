@@ -2,7 +2,7 @@
 title: Password Manager
 description: >-
   Simplified password-manager demonstrating the use of Cubit
-weight: 3
+weight: 4
 ---
 
 # Password Manager
