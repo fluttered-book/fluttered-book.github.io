@@ -114,9 +114,8 @@ flutter pub add uuid
 
 ### Equatable
 
-Later on, we need to be able to compare to instances of `Credential` for
-equality (`a == b`).
-So we might as well implement it now.
+When writing tests it is going to be super useful if we can compare to
+instances of our model with `==` operator.
 
 The default behavior you get in Dart, is that two object are equal if they are
 the same instance.
@@ -126,8 +125,7 @@ When overriding it, one should also override the `hashCode` method.
 It can be super annoying to do manually.
 So, we will use the [equatable](https://pub.dev/packages/equatable) package to
 help us.
-
-Equatable also supports `toString`.
+Equatable also implements `toString` which can be handy when debugging.
 
 ### Writing models
 
@@ -181,7 +179,7 @@ And that is what gives us an implementation of `==` (equality comparison),
 `hashCode` and `toString()`.
 
 Our model class is immutable, so we added a couple of helper methods to make it
-easier to instantiate new instances.
+easier to make new instances.
 
 `Todo.create()` is a factory method for creating a new instance.
 Only required parameter is `id` (which is what we are going to use the uuid
@@ -250,8 +248,8 @@ sort of feedback.
 Our to-do app needs <abbr title="Create, read, update and delete">CRUD</abbr>
 like functionality.
 
-We don't have to do anything about _read_ since that is just our UI responding
-to new states.
+We don't have to do anything about _read_ here since that is just our UI
+responding to new states.
 
 The `create`, `update` and `delete` are implemented in the cubit.
 
@@ -383,6 +381,15 @@ We can define a test case with a call to `blocTest()`.
 | `act`     | The interaction we want to test                    |
 | `expect`  | What state changes we expect as a result           |
 
+Delete the default test that is included in a new project by removing
+`test/widget_test.dart`.
+
+Try it out by running:
+
+```sh
+flutter test
+```
+
 ## Make functional UI
 
 Okay, so we got a UI and some logic.
@@ -416,21 +423,26 @@ class TodoApp extends StatelessWidget {
 }
 ```
 
+_TodoListPage will be added in a moment._
+
 Remember: Widgets can use the [BuildContext](https://www.youtube.com/watch?v=rIaaH87z1-g)
 to reach up the tree.
 The `BlocProvider` allows its children to get hold of a Cubit/BLoC by reaching
 up the element tree.
 
-It child widgets you can reference the `TodoCubit` in one of several ways.
+### React to state changes
+
+By having a `BlocProvider` for `TodoCubit` at the root, it allows all other
+widgets to access the `TodoCubit`.
+Referencing `TodoCubit` can be done in one of several ways.
 
 Using `final cubit = context.read<TodoCubit>()` or `final cubit = context.watch<TodoCubit>()`.
 The difference is that `context.watch()` will trigger a rebuild when a new
 state is emitted.
+And `context.read()` will not.
 
-We can also use a `BlocBuilder` widget which will rebuild its children when a
-new state is emitted.
-
-### React to state changes
+We can also use a `BlocBuilder` to rebuild widgets when a new state is emitted.
+Note: it will only rebuild its children provided by the `builder` parameter.
 
 Add `lib/ui/todo_list_page.dart` with:
 
@@ -440,7 +452,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../core/todo_cubit.dart';
 import '../core/todo_state.dart';
-import 'update_todo_dialog.dart';
 
 class TodoListPage extends StatelessWidget {
   const TodoListPage({
@@ -451,36 +462,34 @@ class TodoListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("ToDo")),
-body: BlocBuilder<TodoCubit, TodoState>(
-          builder: (context, state) {
-            return ListView.separated(
-              itemBuilder: (context, index) {
-                final todo = state.todos[index];
-                return Dismissible(
-                  key: Key(todo.id),
-                  background: Container(color: Colors.redAccent),
-                  child: ListTile(
-                    title: Text(todo.title),
-                    subtitle: Text(todo.description),
-                    trailing: Checkbox(
-                      value: todo.done,
-                      onChanged: (_) =>
-                          context.read<TodoCubit>().toggle(todo.id),
-                    ),
+
+      body: BlocBuilder<TodoCubit, TodoState>(
+        builder: (context, state) {
+          return ListView.separated(
+            itemBuilder: (context, index) {
+              final todo = state.todos[index];
+              return Dismissible(
+                key: Key(todo.id),
+                background: Container(color: Colors.redAccent),
+                child: ListTile(
+                  title: Text(todo.title),
+                  subtitle: Text(todo.description),
+                  trailing: Checkbox(
+                    value: todo.done,
+                    onChanged: (_) => context.read<TodoCubit>().toggle(todo.id),
                   ),
-                  onDismissed: (_) => context.read<TodoCubit>().delete(todo.id),
-                );
-              },
-              separatorBuilder: (context, index) => const Divider(),
-              itemCount: state.todos.length,
-            );
-          }),
+                ),
+                onDismissed: (_) => context.read<TodoCubit>().delete(todo.id),
+              );
+            },
+            separatorBuilder: (context, index) => const Divider(),
+            itemCount: state.todos.length,
+          );
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) => context.read<TodoCubit>().create(),
-          );
+          context.read<TodoCubit>().create();
         },
         child: Icon(Icons.add),
       ),
@@ -491,21 +500,22 @@ body: BlocBuilder<TodoCubit, TodoState>(
 
 ### Update dialog
 
-The `FloatingActionButton` above allows us to add new todo items, but they are
-empty.
-We need a form so we can provide it some values.
+The `FloatingActionButton` above allows us to add new todo items.
+But they are all empty!
+
+What We need is a form so we can provide it some values.
 
 We can use a combination of
 [Form](https://api.flutter.dev/flutter/widgets/Form-class.html) and
 [TextFormField](https://api.flutter.dev/flutter/material/TextFormField-class.html)
 widgets to build a form with validation.
 
-A `Form` widget allows us to validate across all the fields of its children.
+A `Form` widget allows validation across all the fields of its children.
 But we need a key attached to the form, so we can refer to it when the "submit"
 button is pressed/tapped.
-You normally use a
+You should use a
 [GlobalKey](https://api.flutter.dev/flutter/widgets/GlobalKey-class.html) for
-it.
+this.
 `GlobalKey` is just a key that is unique throughout your entire app.
 
 `lib/ui/update_todo_dialog.dart`
@@ -570,7 +580,8 @@ class _UpdateTodoDialogState extends State<UpdateTodoDialog> {
 }
 ```
 
-Each `TextFormField` gets a `validator` function which can validate that field.
+Each `TextFormField` gets a `validator` function which can validate that one
+field.
 We can then use `_formKey.currentState!.validate()` to validate across the
 entire form.
 
@@ -596,7 +607,8 @@ To open the dialog we need to change the floatingActionButton to:
 
 We can optimize the UI slightly by controlling when the list needs to be rebuilt.
 
-In `lib/ui/todo_list_page.dart`, add following as parameter to `BlocBuilder` just above the `build: (context) =>...` part:
+In `lib/ui/todo_list_page.dart`, add following as parameter to `BlocBuilder`
+just above the `build: (context) =>...` part:
 
 ```dart
 buildWhen: (previous, current) => previous.todos != current.todos,
@@ -610,8 +622,8 @@ other parts of `TodoState` changes.
 ### Fake delay
 
 We don't have time to build an API for the app, so we will pretend we have one.
-We are going to fake some delay for the network requests to complete, just so I
-can show you how to deal with it in the UI.
+We are going to fake some delay while network requests to complete.
+Just so I can show you how to deal with it in the UI.
 
 This is where `TodoStatus` comes in.
 
@@ -654,7 +666,7 @@ after a short delay (`Future.delay`) we emit a new state where **status** is
 
 ### Show feedback
 
-Change `BlocBuilder` to `BlocConsumer`.
+In `TodoListPage`, change `BlocBuilder` to `BlocConsumer`.
 Add following above `buildWhen`:
 
 ```dart
@@ -674,8 +686,44 @@ listener: (context, state) {
 },
 ```
 
+From the [docs](https://pub.dev/documentation/flutter_bloc/latest/flutter_bloc/BlocListener-class.html) for `listener`:
+
+_... should be used for functionality that needs to occur only in response to a
+state change such as navigation, showing a SnackBar, showing a Dialog, etc...
+The listener is guaranteed to only be called once for each state change unlike
+the builder in BlocBuilder._
+
+Try it out!
+Notice a small message is shown each time you add/update or remove an item.
+
 ## Challenges
+
+### Change an item
+
+The app has a dialog to update todo items, but there is currently now way to
+update an item after it has been created.
+
+Can you fix that?
+
+**Hint:**
+Try adding a [GestureDetector](https://api.flutter.dev/flutter/widgets/GestureDetector-class.html) to the tile to show the dialog.
 
 ### Missing test
 
 We don't have a test for `TodoCubit.toggle()`, can you write a test for it?
+
+### Persistence
+
+The app would be a lot more useful if the list was persisted on the device.
+
+Can you implement it?
+
+**Hint:** you can use
+[shared_preferences](https://pub.dev/packages/shared_preferences) package for
+on device persistence.
+It works across all platforms supported by Flutter.
+
+This might be a bit challenging.
+
+Maybe you can find more hints in the [Password Manager
+guide](../password-manager).
