@@ -21,9 +21,7 @@ See <a href="https://en.wikipedia.org/wiki/List_of_password_managers">List of
 password managers</a>
 {{< /hint >}}
 
-![Password manager - password screen](../images/password_manager_password_screen.png)
-![Password manager - vault screen](../images/password_manager_vault.png)
-![](../images/password_manager_credential.png)
+<iframe src="https://fluttered-book.github.io/password_manager/" width="375" height="667px"></iframe>
 
 ## Project setup
 
@@ -1565,3 +1563,9 @@ credentials by accident.
 Add functionality for updating credentials.
 
 You should be able to reuse most of `CredentialScreen`.
+
+## Solution
+
+{{% details "Reveal solution" %}}
+[Go to source](https://github.com/fluttered-book/password_manager)
+{{% /details %}}
