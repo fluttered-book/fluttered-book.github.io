@@ -7,13 +7,13 @@ weight: 2
 
 ## Introduction
 
-This will be a fun one (hopefully).
+This will be a fun one.
 Today we are going to kill the boredom by writing an app that tells jokes.
 
 First you need to create a new Flutter project.
 
 ```sh
-flutter create make_me_laugh
+flutter create jokes
 ```
 
 You can use a different project name if you want.
@@ -30,7 +30,9 @@ Head over to [jokeapi](https://jokeapi.dev/#try-it).
 
 I suggest that you select _Programming_ as the category.
 It is also recommended that you select everything under **Select flags to
-blacklist** as some of the jokes will be really offensive otherwise.
+blacklist** as some of the jokes will be otherwise be really offensive.
+
+_Feel free to explore different options at your own risk._
 
 ![Recommended jokeapi settings](../images/jokeapi.png)
 
@@ -48,7 +50,7 @@ Remember the URL because you will need it later.
 There are two types of jokes `single` and `twopart`.
 You can tell which type you get from the `type` field in the response.
 
-For the next step you need to merge a response of both types.
+For the next step you'll need to merge a response of both types.
 So, you get something like:
 
 ```json
@@ -83,27 +85,26 @@ In the "Class Name" input, type `JokeDto` and hit the _Generate_ button.
 Copy all the generated Dart code and paste it into a new file named
 `joke_dto.dart` inside your project.
 
-It generated a DTO class for you, from the json, with convince methods to help
-convert to and from JSON.
+It generated a DTO class for us, with convince methods to help convert to and
+from JSON.
 
-Now that you have a class for the data, you need some code to fetch it from the
+Now that we have a class for the data, we need some code to fetch it from the
 API.
-For that you need a package.
+For that we need to add a package.
 
 ```sh
 flutter pub add http
 ```
 
-_There is a HTTP client build into Dart but the
-[http package](https://pub.dev/packages/http) is a lot nicer to work with._
+{{% hint info %}}
+There is an HTTP client build into Dart but the [http
+package](https://pub.dev/packages/http) is a lot nicer to work with.
+{{% /hint %}}
 
-You also need to add the [provider package](https://pub.dev/packages/provider).
-
-```sh
-flutter pub add provider
-```
-
-In `android/app/src/main/AndroidManifest.xml`, you need add a couple of lines:
+{{% hint warning %}}
+On Android we need to specify that the app requires permission to access the internet.
+To do that, open up `android/app/src/main/AndroidManifest.xml` then add a
+couple of lines:
 
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
@@ -115,7 +116,7 @@ In `android/app/src/main/AndroidManifest.xml`, you need add a couple of lines:
     ...
 ```
 
-Adding permissions to AndroidManifest.xml is required to access the internet.
+{{% /hint %}}
 
 Add a new file called `data_source.dart` to your project with the following content:
 
@@ -136,7 +137,94 @@ class DataSource {
 }
 ```
 
-## Make a UI
+And since we just learned about Cubit, let's write a Cubit to keep track of the
+state.
+
+We need to add _flutter_bloc_ library to the project.
+
+```sh
+flutter pub add flutter_bloc
+```
+
+Here is a quick refresher of how cubits work.
+
+1. The cubit is made available to widgets by placing a `BlocProvider` high in
+   the widget tree.
+2. User interacts with a widget.
+3. The widget invokes a method on the cubit.
+4. Cubit does some stuff and emits one or more states.
+5. `BlocBuilder` (or similar) rebuild part of widget tree when a new state is
+   emitted.
+
+A state is just an instance of an object.
+It can be anything really.
+
+Here I'll show a different way of writings states than what you've seen
+previous.
+
+```dart
+import 'package:flutter/widgets.dart';
+import 'package:jokes/joke_dto.dart';
+
+@immutable
+sealed class JokeState {}
+
+final class JokeInitial extends JokeState {}
+
+final class JokeLoading extends JokeState {}
+
+final class JokeLoaded extends JokeState {
+  final JokeDto joke;
+  JokeLoaded({required this.joke});
+}
+
+final class JokeError extends JokeState {
+  final String message;
+  JokeError({required this.message});
+}
+```
+
+All different states of the app will be represented by a subclass of `JokeState`.
+
+A `sealed` class is similar to an abstract class but can't be extended outside
+the file itself (aka library).
+
+A `final` class can't be extended anywhere.
+
+You can read more about [class modifiers
+here](https://dart.dev/language/class-modifiers).
+
+The cubit is going to be really simple.
+
+```
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jokes/data_source.dart';
+
+import 'joke_state.dart';
+
+class JokeCubit extends Cubit<JokeState> {
+  final DataSource dataSource;
+
+  JokeCubit({required this.dataSource}) : super(JokeInitial());
+
+  Future<void> loadNewJoke() async {
+    emit(JokeLoading());
+    try {
+      final joke = await dataSource.getJoke();
+      emit(JokeLoaded(joke));
+    } catch (e) {
+      emit(JokeError(e.toString()));
+    }
+  }
+}
+```
+
+You can probably figure out what it does on your own.
+
+Here we are taking advantage of the fact that a Cubit can emit several states
+from the same method.
+
+## UI
 
 In `main.dart`, wrap `MaterialApp` with a provider for `DataSource`:
 
@@ -159,45 +247,52 @@ class MyApp extends StatelessWidget {
 Now, replace `MyHomePage` with:
 
 ```dart
-class JokePage extends StatefulWidget {
-  const JokePage({super.key});
-
-  @override
-  State<JokePage> createState() => _JokePageState();
-}
-
-class _JokePageState extends State<JokePage> {
-  JokeDto? joke;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadJoke();
-  }
-
-  _loadJoke() async {
-    setState(() {
-      joke = null;
-    });
-    final newJoke = await context.read<DataSource>().getJoke();
-    setState(() {
-      joke = newJoke;
-    });
-  }
+class JokesPage extends StatelessWidget {
+  const JokesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Jokes")),
-      body: Column(
-        children: [
-          if (joke == null) const CircularProgressIndicator(),
-          if (joke?.joke != null) Text(joke!.joke!),
-          if (joke?.setup != null) Text(joke!.setup!),
-          if (joke?.delivery != null) Text(joke!.delivery!),
-          TextButton(onPressed: _loadJoke, child: const Text("Show another")),
-        ],
+      body: BlocBuilder<JokeCubit, JokeState>(
+        builder: (context, state) {
+          return Column(
+            children: [
+              switch (state) {
+                JokeInitial() => Text("Wan't to hear a joke?"),
+                JokeLoading() => CircularProgressIndicator(),
+                JokeLoaded() => JokeWidget(state.joke),
+                JokeError() => Text(
+                    state.message,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                  ),
+              },
+              TextButton(
+                onPressed: () => context.read<JokeCubit>().loadNewJoke(),
+                child: Text(state is JokeInitial ? "Yes" : "Another"),
+              ),
+            ],
+          );
+        },
       ),
+    );
+  }
+}
+
+class JokeWidget extends StatelessWidget {
+  final JokeDto joke;
+  const JokeWidget(this.joke, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        if (joke.joke != null) Text(joke.joke!),
+        if (joke.setup != null) Text(joke.setup!),
+        if (joke.delivery != null) Text(joke.delivery!)
+      ],
     );
   }
 }
@@ -215,26 +310,28 @@ The following challenges can be completed independent of each other.
 
 You are not required to complete them all, but you should at least read the
 text.
-However, completing the challenges will make your app a lot more awesome 😎.
 
 ### Challenge 1 - Add some graphics
 
 Without graphics the app looks pretty boring.
 So, let's fix it!
 
+{{% hint info %}}
 You are not required to follow the steps in this section.
 You can get creative and add some other graphics instead.
+{{% /hint %}}
+
 With the [Image
 widget](https://api.flutter.dev/flutter/widgets/Image-class.html) you can easily
 add images.
 
-Anyway, I thought it would be cool if it looks like there are different cartoon
+I thought it would be cool if it looks like there are different cartoon
 characters telling jokes.
 
 I've found an avatar library/service called
-[DiceBear](https://www.dicebear.com/how-to-use/http-api/), that have a HTTP API.
+[DiceBear](https://www.dicebear.com/how-to-use/http-api/), that have an HTTP API.
 
-Find a [avatar style](https://www.dicebear.com/styles/) you like.
+Find an [avatar style](https://www.dicebear.com/styles/) you like.
 
 You can get a new avatar for each joke with:
 
@@ -247,14 +344,14 @@ Where `joke.id` is the id field from the DTO.
 Replace `pixel-art` with your preferred style.
 
 SVG is a nice format since it looks crisp no matter the size.
-However Flutter out-of-the-box doesn't easily allow you to draw SVGs.
+However, Flutter doesn't easily allow you to draw SVGs out-of-the-box.
 But that can easily be fixed just by adding another package.
 
 ```sh
 flutter pub add flutter_svg
 ```
 
-Now you can add an avatar to the UI with following widget:
+You can now show an avatar with the following widget:
 
 ```dart
 SvgPicture.network("https://api.dicebear.com/7.x/adventurer/svg?seed=${joke?.id}")
@@ -271,11 +368,11 @@ website](https://jokeapi.dev/)?
 
 Wouldn't it be cool if your users could change the settings themselves?
 
-For that you need a couple things.
+For that you need a couple of things.
 
-1. an object to hold the settings
-2. (optionally) persistent storage of the settings
-3. another page to change the settings
+1. Some way to manage the settings state
+2. another page to change the settings
+3. (optionally) persistent storage of the settings
 4. update `DataSource` to use the settings
 
 #### 1. Object to hold settings
