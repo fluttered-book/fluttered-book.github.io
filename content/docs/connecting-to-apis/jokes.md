@@ -198,7 +198,7 @@ here](https://dart.dev/language/class-modifiers).
 
 The cubit is going to be really simple.
 
-```
+```dart
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jokes/data_source.dart';
 
