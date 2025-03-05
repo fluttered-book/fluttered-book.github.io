@@ -297,3 +297,6 @@ If your mappable class is defined in a file called `your_class.dart` then you
 need to put `part 'your_class.mapper.dart';` at the top of the file.
 It won't work without it.
 {{% /hint %}}
+
+Check out the [package page](https://pub.dev/packages/dart_mappable) for more
+information.
