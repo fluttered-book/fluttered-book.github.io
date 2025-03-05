@@ -10,7 +10,13 @@ weight: 3
 
 # Setup
 
-In this lesson we will be building on the [Building scrolling experiences in Flutter Workshop](https://old-dartpad-3ce3f.web.app/workshops.html?webserver=https%3A%2F%2Fdartpad-workshops-io2021.web.app%2Fgetting_started_with_slivers).
+In this lesson we will the solution from [Building scrolling experiences in Flutter Workshop](https://old-dartpad-3ce3f.web.app/workshops.html?webserver=https%3A%2F%2Fdartpad-workshops-io2021.web.app%2Fgetting_started_with_slivers).
+You can watch a video walk-through below.
+
+<figure>
+  <iframe width="720" height="400" src="https://www.youtube.com/embed/YY-_yrZdjGc?si=59GMpeuaIuqSrxKY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <figcaption><i> Building scrolling experiences in Flutter | Workshop </i></figcaption>
+</figure>
 
 Create a new project.
 
