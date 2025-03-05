@@ -308,9 +308,6 @@ Spend some time to make it pretty, before you head to the challenges.
 
 The following challenges can be completed independent of each other.
 
-You are not required to complete them all, but you should at least read the
-text.
-
 ### Challenge 1 - Add some graphics
 
 Without graphics the app looks pretty boring.
@@ -339,7 +336,7 @@ You can get a new avatar for each joke with:
 "https://api.dicebear.com/7.x/pixel-art/svg?seed=${joke.id}"
 ```
 
-Where `joke.id` is the id field from the DTO.
+Where `joke.id` is from the `JokeDTO`.
 
 Replace `pixel-art` with your preferred style.
 
@@ -368,103 +365,40 @@ website](https://jokeapi.dev/)?
 
 Wouldn't it be cool if your users could change the settings themselves?
 
-For that you need a couple of things.
+There is a package that makes it simple to create settings screens called
+[flutter_settings_screens](https://pub.dev/packages/flutter_settings_screens).
+It also takes care of persisting your settings.
 
-1. Some way to manage the settings state
-2. another page to change the settings
-3. (optionally) persistent storage of the settings
-4. update `DataSource` to use the settings
+Add the package with `flutter pub add flutter_settings_screens` and then add
+`Settings.init()` to you main method above `runApp(..)`.
 
-#### 1. Object to hold settings
+Check out the examples on the [package
+page](https://pub.dev/packages/flutter_settings_screens) to see how to use it.
 
-You can solve the first, by simply adding a `Settings` class with fields for the
-settings you want the user to be able to change.
-
-You can make the `Settings` class accessible across your application with a
-provider (just like DataSource).
-I suggest using a
-[MultiProvider](https://pub.dev/packages/provider#multiprovider) to cleanly
-provide both `DataSource` and your new settings object.
-
-#### 2. Persistence (optional)
-
-You can use the [localstorage](https://pub.dev/packages/localstorage) package to
-persist simple data in your app.
-
-One caveat, is that whatever data you try to persist, needs to be JSON
-serializable.
-Meaning, you can only use types like: int, double, bool, String List & Map.
-Also, you will have to cast the value you get back to the appropriate type.
-
-Add `load` and `save` methods to `Settings` and use `LocalStorage` to persist
-settings.
-
-**Important:** You need to wait for `LocalStorage` to be ready before you can use it:
-
-```dart
-final LocalStorage storage = LocalStorage('settings');
-await storage.ready
-```
-
-#### 3. Settings page
-
-Create a new `StatefulWidget` for the settings page.
-
-You can navigate to it with:
+You can navigate to a different page using `Navigator` like this:
 
 ```dart
 Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SettingsPage()));
 ```
 
-Which can be invoked from `onPressed` on a button.
-
-You can use the [settings_ui](https://pub.dev/packages/settings_ui) package to
-easily create a UI with toggles for various settings such as categories.
-
-Remember to call `setState(() {})` when you want the UI to update.
-
-You can use [PopScope](https://api.flutter.dev/flutter/widgets/PopScope-class.html)
-to save the settings before the widget is popped from the navigation stack.
+Remember to update your `DataSource` class to use the settings.
+You can get a setting with:
 
 ```dart
-Widget build(BuildContext context) {
-  return PopScope(
-    canPop: false,
-    onPopInvoked: (didPop) async {
-      final navigator = Navigator.of(context);
-      await settings.save(settings);
-      if (navigator.canPop()) navigator.pop();
-    },
-    child: Scaffold(
-      appBar: AppBar(title: const Text("Settings")),
-      body: SettingsList(sections: [
-        // your settings here
-      ]),
-    ),
-  );
-}
+Settings.getValue<bool>(cacheKey);
 ```
 
-#### 4. Use settings in DataSource
+Where `cacheKey` is the same key you use in your `CheckboxSettingsTile` or
+`SwitchSettingsTile` on the settings page.
 
-Update `DataSource` to use the settings:
-
-```dart
-class DataSource {
-  Future<JokeDto> getJoke(Settings settings) async {
-    final categories = settings.categories.isEmpty ? "Any" : settings.categories.map((e) => e.name).join(",");
-    final url = "https://v2.jokeapi.dev/joke/$categories";
-    final response = await http.get(Uri.parse(url));
-    final map = json.decode(response.body);
-    return JokeDto.fromJson(map);
-  }
-}
-```
-
-You can get the settings from within your widget using
-`context.read<Settings>()`.
+See if you can construct a `Uri` for jokes API based the settings.
 
 ### Challenge 3 - Read it out loud
+
+{{% hint danger %}}
+I haven't tested this in a while, so there could be changes to the packages, the
+cloud service or payment since the instructions were written.
+{{% /hint %}}
 
 Wouldn't it be cool if your app could read the jokes out loud?
 
