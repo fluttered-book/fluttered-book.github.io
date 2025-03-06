@@ -228,7 +228,8 @@ from the same method.
 
 ## UI
 
-In `main.dart`, wrap `MaterialApp` with a provider for `DataSource`:
+In `main.dart`, wrap `MaterialApp` with a provider for our cubit using
+`DataSource`:
 
 ```dart
 class MyApp extends StatelessWidget {
@@ -236,8 +237,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
-      create: (context) => DataSource(),
+    return BlocProvider(
+      create: (context) => JokeCubit(dataSource: DataSource()),
       child: MaterialApp(
         // ...
       ),
