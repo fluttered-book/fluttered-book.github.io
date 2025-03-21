@@ -99,7 +99,7 @@ It works both on iOS and Android.
 {{% hint error %}}
 On iOS you need to request access motions sensors through app metadata,
 otherwise the app will crash when attempting to read sensor values.
-Open `info.plist` and add the following:
+Open `ios/Runner/Info.plist` and add the following:
 
 ```xml
 <key>NSMotionUsageDescription</key>
@@ -189,7 +189,7 @@ Then you need to add following permission to `AndroidManifest.xml`:
 
 {{% tab iOS %}}
 
-Add the following to `Info.plist`:
+Add the following to `ios/Runner/Info.plist`:
 
 ```xml
 <key>NSLocationWhenInUseUsageDescription</key>
