@@ -32,8 +32,10 @@ bundles up a single package.
 Google is behind Flutter.
 They are also behind Firebase.
 So naturally Firebase and Flutter very well integrated.
-The problem with Firebase is that you need to sign-up with a credit card in
+The problem with Firebase is that you need to sign up with a credit card in
 order to use cloud functions.
+
+Firebase is a great BaaS btw, as long as you don't mind vendor locking.
 
 I've considered multiple alternatives.
 Among those are:
@@ -114,4 +116,3 @@ And you get a result like this:
   }
 ]
 ```
-
