@@ -13,6 +13,13 @@ Supabase.
 In this part we will work with authentication and build login and register
 pages.
 
+{{% hint info %}}
+This guide is based on [Flutter Tutorial: building a Flutter chat
+app](https://supabase.com/blog/flutter-tutorial-building-a-chat-app).
+I'm making my own version to better fit the narrative I want to convey in this
+book.
+{{% /hint %}}
+
 ## Supabase setup
 
 We will start with setting up tables and authentication provider in Supabase.
@@ -54,7 +61,7 @@ reset.
 Supabase is built on top of Postgres.
 It means that schemas can be created with PostgreSQL DDL.
 
-Supabase already have a build in `users` table used for authentication.
+Supabase already have a built-in `users` table used for authentication.
 If we need additional fields associate with a user then we need to create an
 additional table to store it.
 In our chat app we also want to store a username for a user.
@@ -71,6 +78,10 @@ create table if not exists public.profiles (
 );
 comment on table public.profiles is 'Holds all of users profile information';
 ```
+
+_NOTE: Supabase has a table editor that gives you a GUI to create schema for
+your database.
+It's just simpler when writing instructions like this to provide the DDL_
 
 We can create user defined functions (UDF) directly in the database.
 These functions can be executed by triggers.
@@ -98,6 +109,8 @@ create trigger on_auth_user_created
 
 ## Flutter setup
 
+### New project
+
 Moving over to the Flutter side.
 Let's create a new project.
 
@@ -107,97 +120,282 @@ cd chat
 flutter pub add supabase_flutter
 ```
 
-Create Supabase project.
+### Theme
 
-Tables:
+Many of the apps we have worked on so far looks very similar.
+Why don't we change things up a bit with a custom theme.
 
-`lib/constants.dart`
+Add a file `lib/theme.dart` with:
 
 ```dart
 import 'package:flutter/material.dart';
-  import 'package:supabase_flutter/supabase_flutter.dart';
 
-  /// Supabase client
-  final supabase = Supabase.instance.client;
-
-  /// Simple preloader inside a Center widget
-  const preloader =
-      Center(child: CircularProgressIndicator(color: Colors.orange));
-
-  /// Simple sized box to space out form elements
-  const formSpacer = SizedBox(width: 16, height: 16);
-
-  /// Some padding for all the forms to use
-  const formPadding = EdgeInsets.symmetric(vertical: 20, horizontal: 16);
-
-  /// Error message to display the user when unexpected error occurs.
-  const unexpectedErrorMessage = 'Unexpected error occurred.';
-
-  /// Basic theme to change the look and feel of the app
-  final appTheme = ThemeData.light().copyWith(
-    primaryColorDark: Colors.orange,
-    appBarTheme: const AppBarTheme(
-      elevation: 1,
-      backgroundColor: Colors.white,
-      iconTheme: IconThemeData(color: Colors.black),
-      titleTextStyle: TextStyle(
-        color: Colors.black,
-        fontSize: 18,
-      ),
+/// Basic theme to change the look and feel of the app
+final theme = ThemeData.light().copyWith(
+  primaryColorDark: Colors.orange,
+  appBarTheme: const AppBarTheme(
+    elevation: 1,
+    backgroundColor: Colors.white,
+    iconTheme: IconThemeData(color: Colors.black),
+    titleTextStyle: TextStyle(color: Colors.black, fontSize: 18),
+  ),
+  primaryColor: Colors.orange,
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(foregroundColor: Colors.orange),
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      foregroundColor: Colors.white,
+      backgroundColor: Colors.orange,
     ),
-    primaryColor: Colors.orange,
-    textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(
-        foregroundColor: Colors.orange,
-      ),
+  ),
+  inputDecorationTheme: InputDecorationTheme(
+    floatingLabelStyle: const TextStyle(color: Colors.orange),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(color: Colors.grey, width: 2),
     ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.orange,
-      ),
+    focusColor: Colors.orange,
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(color: Colors.orange, width: 2),
     ),
-    inputDecorationTheme: InputDecorationTheme(
-      floatingLabelStyle: const TextStyle(
-        color: Colors.orange,
-      ),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(
-          color: Colors.grey,
-          width: 2,
-        ),
-      ),
-      focusColor: Colors.orange,
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(
-          color: Colors.orange,
-          width: 2,
-        ),
-      ),
-    ),
-  );
-
-  /// Set of extension methods to easily display a snackbar
-  extension ShowSnackBar on BuildContext {
-    /// Displays a basic snackbar
-    void showSnackBar({
-      required String message,
-      Color backgroundColor = Colors.white,
-    }) {
-      ScaffoldMessenger.of(this).showSnackBar(SnackBar(
-        content: Text(message),
-        backgroundColor: backgroundColor,
-      ));
-    }
-
-    /// Displays a red snackbar indicating error
-    void showErrorSnackBar({required String message}) {
-      showSnackBar(message: message, backgroundColor: Colors.red);
-    }
-  }
+  ),
+);
 ```
+
+To further make sure our app looks consistent we'll create a couple of small
+re-useable widgets.
+
+Put these in `lib/common/widgets.dart`.
+
+```dart
+import 'package:flutter/material.dart';
+
+class Spinner extends StatelessWidget {
+  const Spinner({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: CircularProgressIndicator(color: Colors.orange));
+  }
+}
+
+class FormSpacer extends StatelessWidget {
+  const FormSpacer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(width: 16, height: 16);
+  }
+}
+
+/// Some padding for all the forms to use
+const formPadding = EdgeInsets.symmetric(vertical: 20, horizontal: 16);
+```
+
+### Login layout
+
+Before we get too much into the Supabase functionality.
+Maybe we should create a couple of screens/pages to try out our theme.
+
+It `lib/account/login/login_page.dart` put:
+
+```dart
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
+
+  static Route<void> route() {
+    return MaterialPageRoute(builder: (context) => const LoginPage());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Sign In')),
+      body: Form(
+        child: ListView(
+          padding: formPadding,
+          children: [
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Email'),
+              keyboardType: TextInputType.emailAddress,
+            ),
+            FormSpacer(),
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
+            FormSpacer(),
+            ElevatedButton(onPressed: () {}, child: const Text('Login')),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+Change `lib/main.dart` so we can see it in action.
+
+```dart
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'My Chat App',
+      theme: theme,
+      home: LoginPage(),
+    );
+  }
+}
+```
+
+![Login page](../images/chat-login.png)
+
+### Register layout
+
+In `lib/account/register/register_page.dart` put:
+
+```dart
+class RegisterPage extends StatelessWidget {
+  const RegisterPage({super.key});
+
+  static Route<void> route() {
+    return MaterialPageRoute(builder: (context) => const RegisterPage());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Sign In')),
+      body: Form(
+          child: ListView(
+            padding: formPadding,
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(label: Text('Email')),
+                keyboardType: TextInputType.emailAddress,
+              ),
+              const FormSpacer(),
+              TextFormField(
+                obscureText: true,
+                decoration: const InputDecoration(label: Text('Password')),
+              ),
+              const FormSpacer(),
+              TextFormField(
+                decoration: const InputDecoration(label: Text('Username')),
+              ),
+              const FormSpacer(),
+              ElevatedButton(
+                onPressed: () {},
+                child: const Text('Register'),
+              ),
+              const FormSpacer(),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(LoginPage.route());
+                },
+                child: const Text('I already have an account'),
+              ),
+            ],
+          ),
+        )
+    );
+  }
+}
+```
+
+Change the page in `lib/main.dart` to see it in action.
+
+![Register page](../images/chat-register.png)
+
+{{% hint info %}}
+You can change the orange to something else if you don't like it.
+{{% /hint %}}
+
+## Architecture
+
+### Folder structure
+
+You might have noticed that there are a lot of sub-folders for the files.
+It can seem a bit excessive for the number of files current.
+The folder structure is just to prepare for several additional files being
+added.
+
+There are two main approaches people take when organizing files in projects.
+
+There is **layer first**, where all files of a certain conceptual type is
+put in the same folder.
+Example: `lib/models/` for all models, `lib/pages` for widgets, `lib/bloc` for
+BLoC/Cubit etc.
+
+Then there is the **feature first** approach, where the app is divided into
+vertical slices based on feature.
+Example: `lib/account/login/login_page.dart`,
+`lib/account/login/login_cubit.dart`,
+`lib/account/register/register_page.dart`,
+`lib/account/register/register_cubit` etc.
+In app using this approach you will (at some point) have files that are needed
+by several features and don't naturally belong in any of them.
+What to do with those files?
+A simple solution is just to throw them in a folder called `common` or
+`shared`.
+
+As you can tell we are using the **feature first** approach here.
+It means creating a lot of folders in the beginning, but has the advantage of
+scaling better as the app grows.
+
+You are not locked to the approach you chose in the beginning, as you can
+always restructure your app along the way.
+Just make sure to get the rest of your development team in on the
+restructuring.
+
+When I write apps I often start with **layer first**, then restructure when I
+figure out roughly what features my app is going to have and how they naturally
+cluster.
+
+You can read more about how to architect your application in the
+[Quality](../../quality) chapter.
+
+### Abstractions
+
+Testing is important for any real world app, as the last thing you want is to
+find out about bugs in your app from bad reviews in the app store.
+
+How you write your application determines how easy it is to write tests for.
+The golden rule is to create an abstraction around anything external or
+anything IO.
+If you are making a network request or reading a file then you need an
+abstraction.
+It is also good practice to create abstractions for services and 3rd party
+libraries since it gives you the agility to chance vendor without having to
+rewrite your entire app.
+
+Even if you don't plan to write test or switch libraries it can still be a good
+idea to make abstractions for certain things since it makes the development of
+your app future-proof.
+Also following the principles for creating good abstractions regardless will
+make your code cleaner by separating concerns.
+
+For this app it means that since Supabase is an external service we should
+create an abstraction around it.
+Therefore, we are going to create an abstract `ChatService` to act as an interface.
+We will make an implementation of it called `SupabaseChatService` that uses
+Supabase.
+It allows us to easily swap out the concrete implementation for something else
+if needed.
+We could swap it for a mock implementation when writing widget or BLoC tests.
+Or maybe even to change the BaaS provider completely.
+
+## Authentication
 
 Replace `lib/main.dart` but with your own `SUPABASE_URL` and
 `SUPABASE_ANON_KEY` and `SUPABASE_ANON_KEY`.
