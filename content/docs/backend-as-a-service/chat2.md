@@ -4,6 +4,10 @@ description: Chat 2 - Messages
 weight: 4
 ---
 
+{{% hint warning %}}
+This section is still work-in-progress.
+{{% /hint %}}
+
 # Chat - Messages
 
 ## Schema

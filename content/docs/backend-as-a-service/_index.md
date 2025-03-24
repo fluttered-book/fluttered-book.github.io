@@ -11,4 +11,5 @@ weight: 9
 - [Supabase](Supabase)
 - **Chat**
   - [Part 1 - Authentication](chat1)
+  - [Part 2 - Messages](chat2)
 - [Challenges](challenges)
