@@ -1,5 +1,5 @@
 ---
-title: Chat - Part 2
+title: Outdated Chat - Part 2
 description: >-
   Expand chat app with rooms and authorization using Row Level Security
 weight: 4
@@ -108,4 +108,3 @@ Want to try out the deep link from confirmation email?
 
 Go to [Supabase dashboard](https://supabase.com/dashboard/) > Authentication >
 Providers > Auth Providers > Email and enable "Confirm email".
-

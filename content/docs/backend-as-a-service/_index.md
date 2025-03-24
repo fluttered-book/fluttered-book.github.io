@@ -9,6 +9,6 @@ weight: 9
 
 - [Introduction](introduction)
 - [Supabase](Supabase)
-- [Chat - part 1](chat1)
-- [Chat - part 2](chat2)
+- **Chat**
+  - [Part 1 - Authentication](chat1)
 - [Challenges](challenges)
