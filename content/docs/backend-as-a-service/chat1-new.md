@@ -326,7 +326,7 @@ You can change the orange to something else if you don't like it.
 ### Folder structure
 
 You might have noticed that there are a lot of sub-folders for the files.
-It can seem a bit excessive for the number of files current.
+It can seem a bit excessive given the current number of files.
 The folder structure is just to prepare for several additional files being
 added.
 
@@ -337,14 +337,14 @@ put in the same folder.
 Example: `lib/models/` for all models, `lib/pages` for widgets, `lib/bloc` for
 BLoC/Cubit etc.
 
-Then there is the **feature first** approach, where the app is divided into
-vertical slices based on feature.
+Then there is the **feature first** approach.
+Where the app is divided into vertical slices based on feature.
 Example: `lib/account/login/login_page.dart`,
 `lib/account/login/login_cubit.dart`,
 `lib/account/register/register_page.dart`,
 `lib/account/register/register_cubit` etc.
-In app using this approach you will (at some point) have files that are needed
-by several features and don't naturally belong in any of them.
+In an app using the feature first approach you will (at some point) have files
+that are needed by several features and don't naturally belong in any of them.
 What to do with those files?
 A simple solution is just to throw them in a folder called `common` or
 `shared`.
@@ -358,62 +358,100 @@ always restructure your app along the way.
 Just make sure to get the rest of your development team in on the
 restructuring.
 
-When I write apps I often start with **layer first**, then restructure when I
-figure out roughly what features my app is going to have and how they naturally
-cluster.
+When I write apps I often start with **layer first**, then transition to
+**feature first** once I roughly figure out what it will have and how they
+naturally cluster.
 
 You can read more about how to architect your application in the
 [Quality](../../quality) chapter.
 
 ### Abstractions
 
-Testing is important for any real world app, as the last thing you want is to
-find out about bugs in your app from bad reviews in the app store.
+Testing is important for any real world app.
+As the last thing you want is to find out about bugs in your app from bad
+reviews in the app store.
 
-How you write your application determines how easy it is to write tests for.
+The way you write your application determines how easy it is to write tests
+for.
 The golden rule is to create an abstraction around anything external or
-anything IO.
+anything <abbr title="Input/Output">IO</abbr>.
 If you are making a network request or reading a file then you need an
 abstraction.
+
 It is also good practice to create abstractions for services and 3rd party
-libraries since it gives you the agility to chance vendor without having to
+libraries, since it gives you the agility to chance vendor without having to
 rewrite your entire app.
 
 Even if you don't plan to write test or switch libraries it can still be a good
 idea to make abstractions for certain things since it makes the development of
 your app future-proof.
-Also following the principles for creating good abstractions regardless will
+Also, following the principles for creating good abstractions (regardless) will
 make your code cleaner by separating concerns.
 
-For this app it means that since Supabase is an external service we should
-create an abstraction around it.
+For this app, it means that we should create an interaction around Supabase.
 Therefore, we are going to create an abstract `ChatService` to act as an interface.
 We will make an implementation of it called `SupabaseChatService` that uses
 Supabase.
 It allows us to easily swap out the concrete implementation for something else
 if needed.
 We could swap it for a mock implementation when writing widget or BLoC tests.
-Or maybe even to change the BaaS provider completely.
+Or maybe even change the BaaS provider completely.
 
 ## Authentication
 
-Replace `lib/main.dart` but with your own `SUPABASE_URL` and
-`SUPABASE_ANON_KEY` and `SUPABASE_ANON_KEY`.
+### Configure Supabase client library
+
+We are going to add Supabase to our project before writing the abstraction, so
+we can make the concrete implementation at the same time.
+
+```sh
+flutter pub add supabase_flutter flutter_dotenv
+```
+
+Secrets such as API-keys shouldn't committed to Git.
+We will therefore store the Supabase settings in `.env` file that we gitignore.
+
+1. Go to [Supabase Dashboard](https://supabase.com/dashboard/)
+2. Click "Project Settings" (gear icon) in the menu to the left.
+3. Go to the "Date API" section.
+4. Copy "Project URL" and "Project API Keys (anon public)"
+
+![Supabase project keys](../images/supabse-project-keys.png)
+
+Create a `.env` file in the root of you flutter project folder.
+Paste the Supabase URL and anon key into the file as shown.
+
+```sh
+SUPABASE_URL=https://xxxxxxxxxxxxxxxxxxxx.supabase.co
+SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+Before you do anything else you need to add `.env` to `.gitignore`, so you
+don't accidentally commit it.
+
+In a terminal (git-bash on Windows) within the project folder, do:
+
+```sh
+echo ".env" >> .gitignore
+```
+
+Replace `lib/main.dart` with the following to configure Supabase client.
 
 ```dart
-import 'package:chat/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'pages/splash_page.dart';
+import 'account/register/register_page.dart';
+import 'theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load();
 
   await Supabase.initialize(
-    // TODO: Replace credentials with your own
-    url: 'SUPABASE_URL',
-    anonKey: 'SUPABASE_ANON_KEY',
+    url: dotenv.env['SUPABASE_URL']!,
+    anonKey: dotenv.env['SUPABASE_KEY']!,
   );
   runApp(const MyApp());
 }
@@ -427,176 +465,518 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'My Chat App',
       theme: appTheme,
-      home: const SplashPage(),
+      home: RegisterPage(),
     );
   }
 }
 ```
 
-`lib/pages/splash_page.dart`
+`dotenv.load()` from flutter_dotenv package loads the variables you just
+configured from `.env`.
+
+### Implement abstraction
+
+Create `lib/common/chat_service.dart` with:
 
 ```dart
-import 'package:chat/constants.dart';
-import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-/// Page to redirect users to the appropriate page depending on the initial auth state
-class SplashPage extends StatefulWidget {
-  const SplashPage({Key? key}) : super(key: key);
-
-  @override
-  SplashPageState createState() => SplashPageState();
+abstract class ChatService {
+  String? get userId;
+  Future<void> login({required String email, required String password});
+  Future<void> register({
+    required String email,
+    required String password,
+    required String username,
+  });
+  Future<void> logout();
 }
 
-class SplashPageState extends State<SplashPage> {
+class SupabaseChatService extends ChatService {
+  final _supabase = Supabase.instance.client;
   @override
-  void initState() {
-    super.initState();
-    _redirect();
+  String? get userId => _supabase.auth.currentUser?.id;
+
+  @override
+  Future<void> login({required String email, required String password}) async {
+    await _supabase.auth.signInWithPassword(email: email, password: password);
   }
 
-  Future<void> _redirect() async {
-    // await for for the widget to mount
-    await Future.delayed(Duration.zero);
+  @override
+  Future<void> register({
+    required String email,
+    required String password,
+    required String username,
+  }) async {
+    await _supabase.auth.signUp(
+      email: email,
+      password: password,
+      data: {'username': username},
+    );
+  }
 
-    final session = supabase.auth.currentSession;
-    // TODO redirect pages
+  @override
+  Future<void> logout() async {
+    await _supabase.auth.signOut();
+  }
+}
+```
+
+`Supabase.instance.client` allows us to access a client object.
+For convenience, we've assigned it to an instance variable.
+
+{{% hint info %}}
+`Supabase.instance` is an example of the use of the [singleton
+pattern](https://en.wikipedia.org/wiki/Singleton_pattern).
+{{% /hint %}}
+
+Our `SupabaseChatService` implementation simply forwards the calls to the
+client instance.
+
+The in `register()` method body, we have a map for `data:` parameter with
+`username`.
+The username gets picked up by the user defined function in Postgres we had in
+the beginning (see [Schema section](#schema)).
+
+We can use the [provider](https://pub.dev/packages/provider) package to make an
+instance of `ChatService` accessible throughout the app.
+
+```sh
+flutter pub add provider
+```
+
+Then open `main.dart` and change the build method of `MyApp` to:
+
+```dart
+final session = Supabase.instance.client.auth.currentSession;
+return Provider<ChatService>(
+  create: (_) => SupabaseChatService(),
+  child: MaterialApp(
+    debugShowCheckedModeBanner: false,
+    title: 'My Chat App',
+    theme: theme,
+    home: session == null ? RegisterPage() : ChatPage(),
+  ),
+);
+```
+
+A `Provider` is similar to `BlocProvider` but for objects that aren't
+Blocs/Cubits.
+
+### Registration
+
+We can now start to implement the registration and login.
+We will start with registration.
+Even though there isn't much logic involved we are still going to use a cubit.
+
+`lib/account/register/register_state.dart`
+
+```dart
+import 'package:flutter/foundation.dart';
+
+@immutable
+abstract class RegisterState {}
+
+class RegisterReady extends RegisterState {}
+
+class RegisterLoading extends RegisterState {}
+
+class RegisterError extends RegisterState {
+  final String message;
+  RegisterError(this.message);
+}
+
+class Registered extends RegisterState {}
+```
+
+`lib/account/register/register_cubit.dart`
+
+```dart
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../common/common.dart';
+import 'register_state.dart';
+
+class RegisterCubit extends Cubit<RegisterState> {
+  final ChatService service;
+  RegisterCubit(this.service) : super(RegisterReady());
+
+  Future<void> register({
+    required String email,
+    required String password,
+    required String username,
+  }) async {
+    emit(RegisterLoading());
+    try {
+      await service.register(
+        email: email,
+        password: password,
+        username: username,
+      );
+      emit(Registered());
+    } on AuthException catch (error) {
+      emit(RegisterError(error.message));
+    } catch (error) {
+      emit(RegisterError(unexpectedErrorMessage));
+    }
+  }
+}
+```
+
+`RegisterCubit` manages the states and delegates the registration to
+`ChatService`.
+
+To use it change `lib/account/register/register_page.dart` to:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../chat/chat_page.dart';
+import '../../common/common.dart';
+import 'register_cubit.dart';
+import 'register_form.dart';
+import 'register_state.dart';
+
+class RegisterPage extends StatelessWidget {
+  const RegisterPage({super.key});
+
+  static Route<void> route() {
+    return MaterialPageRoute(builder: (context) => const RegisterPage());
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: preloader);
+    return BlocProvider(
+      create: (context) => RegisterCubit(context.read<ChatService>()),
+      child: BlocListener<RegisterCubit, RegisterState>(
+        listener: (context, state) {
+          if (state is Registered) {
+            Navigator.of(
+              context,
+            ).pushAndRemoveUntil(ChatPage.route(), (route) => false);
+          } else if (state is RegisterError) {
+            context.showErrorSnackBar(message: state.message);
+          }
+        },
+        child: Scaffold(
+          appBar: AppBar(title: const Text('Register')),
+          body: RegisterForm(),
+        ),
+      ),
+    );
   }
 }
 ```
 
-`lib/pages/register_page.dart`
+It has a `BlocProvider` and will navigate to `ChatPage` when state changes to
+`Registered`.
 
-````
+Create a placeholder `ChatPage` widget in `lib/chat/chat_page.dart` to avoid
+compiler errors.
+
+As you can see, we are creating a new `RegisterForm` widget for the form
+fields.
+It is because, in order to access a value from a Provider/BlocProvider you will
+need to do it through a child context of the provider.
+The `RegisterCubit` will be accessed through `context.read<RegisterCubit>()`
+when "Register" button is tapped.
+So we need a child context for it.
+We could either wrap the form in a `BlocBuilder` or extract it into its own
+widget.
+I prefer having small widgets, so extracting the form into its own widget is my
+preferred option here.
+
+Now for the form widget itself.
+Create `lib/account/register/register_form.dart` with:
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key, required this.isRegistering}) : super(key: key);
+import '../../common/widgets.dart';
+import '../login/login_page.dart';
+import 'register_cubit.dart';
+import 'register_state.dart';
+import 'validators.dart';
 
-  static Route<void> route({bool isRegistering = false}) {
-    return MaterialPageRoute(
-      builder: (context) => RegisterPage(isRegistering: isRegistering),
-    );
-  }
-
-  final bool isRegistering;
+class RegisterForm extends StatefulWidget {
+  const RegisterForm({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<RegisterForm> createState() => _RegisterFormState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
-  final bool _isLoading = false;
-
+class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _usernameController = TextEditingController();
 
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _usernameController.dispose();
+    super.dispose();
+  }
+
   Future<void> _signUp() async {
-    final isValid = _formKey.currentState!.validate();
-    if (!isValid) {
-      return;
-    }
-    final email = _emailController.text;
-    final password = _passwordController.text;
-    final username = _usernameController.text;
-    try {
-      await supabase.auth.signUp(
-        email: email,
-        password: password,
-        data: {'username': username},
-      );
-      // TODO uncomment navigation
-      //Navigator.of(
-      //  context,
-      //).pushAndRemoveUntil(ChatPage.route(), (route) => false);
-    } on AuthException catch (error) {
-      context.showErrorSnackBar(message: error.message);
-    } catch (error) {
-      context.showErrorSnackBar(message: unexpectedErrorMessage);
-    }
+    if (!_formKey.currentState!.validate()) return;
+    context.read<RegisterCubit>().register(
+      email: _emailController.text,
+      password: _passwordController.text,
+      username: _usernameController.text,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Register')),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: formPadding,
-          children: [
-            TextFormField(
-              controller: _emailController,
-              decoration: const InputDecoration(label: Text('Email')),
-              validator: (val) {
-                if (val == null || val.isEmpty) {
-                  return 'Required';
-                }
-                return null;
-              },
-              keyboardType: TextInputType.emailAddress,
+    return BlocBuilder<RegisterCubit, RegisterState>(
+      builder: (context, state) {
+        return Form(
+          key: _formKey,
+          child: ListView(
+            padding: formPadding,
+            children: [
+              TextFormField(
+                controller: _emailController,
+                decoration: const InputDecoration(label: Text('Email')),
+                keyboardType: TextInputType.emailAddress,
+              ),
+              const FormSpacer(),
+              TextFormField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(label: Text('Password')),
+              ),
+              const FormSpacer(),
+              TextFormField(
+                controller: _usernameController,
+                decoration: const InputDecoration(label: Text('Username')),
+              ),
+              const FormSpacer(),
+              ElevatedButton(
+                onPressed: state is RegisterLoading ? null : _signUp,
+                child: const Text('Register'),
+              ),
+              const FormSpacer(),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(LoginPage.route());
+                },
+                child: const Text('I already have an account'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+```
+
+It checks that the form is valid with `_formKey.currentState!.validate()`.
+Speaking of validation, we should probably add some validation rules.
+We are going to add those in a separate file, so we don't pollute `RegisterForm`.
+
+`lib/account/register/validators.dart`
+
+```dart
+String? emailValidator(String? value) =>
+    value == null || value.isEmpty ? 'Required' : null;
+
+String? passwordValidator(String? value) {
+  if (value == null || value.isEmpty) return 'Required';
+  if (value.length < 8) return '8 characters minimum';
+  return null;
+}
+
+String? usernameValidator(String? value) {
+  if (value == null || value.isEmpty) return 'Required';
+  if (!RegExp(r'^[A-Za-z0-9_]{3,24}$').hasMatch(value)) {
+    return '3-24 long with alphanumeric or underscore';
+  }
+  return null;
+}
+```
+
+To use the validators, you need to change `_RegisterFormState` so that each of the `TextFormField` receive a reference to the corresponding validation function as `validator` parameter.
+Example:
+
+```dart
+TextFormField(
+  controller: _emailController,
+  validator: emailValidator,
+  // ...
+),
+```
+
+### Login
+
+We are simply principle as for registration.
+Create the files as listed below, but take some time to make sure you
+understand what is going on.
+
+`lib/account/login/login_state.dart`
+
+```dart
+import 'package:flutter/foundation.dart';
+
+@immutable
+abstract class LoginState {}
+
+class LoginReady extends LoginState {}
+
+class LoginLoading extends LoginState {}
+
+class LoginError extends LoginState {
+  final String message;
+  LoginError(this.message);
+}
+
+class LoggedIn extends LoginState {}
+```
+
+`lib/account/login/login_cubit.dart`
+
+```dart
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../common/common.dart';
+import 'login_state.dart';
+
+class LoginCubit extends Cubit<LoginState> {
+  final ChatService service;
+
+  LoginCubit(this.service) : super(LoginReady());
+
+  Future<void> login({required String email, required String password}) async {
+    emit(LoginLoading());
+    try {
+      await service.login(email: email, password: password);
+      emit(LoggedIn());
+    } on AuthException catch (error) {
+      emit(LoginError(error.message));
+    } catch (_) {
+      emit(LoginError(unexpectedErrorMessage));
+    }
+  }
+}
+```
+
+`lib/account/login/login_page.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../chat/chat_page.dart';
+import '../../common/common.dart';
+import 'login_cubit.dart';
+import 'login_form.dart';
+import 'login_state.dart';
+
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
+
+  static Route<void> route() {
+    return MaterialPageRoute(builder: (context) => const LoginPage());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => LoginCubit(context.read<ChatService>()),
+      child: BlocConsumer<LoginCubit, LoginState>(
+        listener: (context, state) {
+          if (state is LoggedIn) {
+            Navigator.of(
+              context,
+            ).pushAndRemoveUntil(ChatPage.route(), (route) => false);
+          } else if (state is LoginError) {
+            context.showErrorSnackBar(message: state.message);
+          }
+        },
+        builder:
+            (context, state) => Scaffold(
+              appBar: AppBar(title: const Text('Sign In')),
+              body: LoginForm(),
             ),
-            formSpacer,
-            TextFormField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(label: Text('Password')),
-              validator: (val) {
-                if (val == null || val.isEmpty) {
-                  return 'Required';
-                }
-                if (val.length < 6) {
-                  return '6 characters minimum';
-                }
-                return null;
-              },
-            ),
-            formSpacer,
-            TextFormField(
-              controller: _usernameController,
-              decoration: const InputDecoration(label: Text('Username')),
-              validator: (val) {
-                if (val == null || val.isEmpty) {
-                  return 'Required';
-                }
-                final isValid = RegExp(r'^[A-Za-z0-9_]{3,24}$').hasMatch(val);
-                if (!isValid) {
-                  return '3-24 long with alphanumeric or underscore';
-                }
-                return null;
-              },
-            ),
-            formSpacer,
-            ElevatedButton(
-              onPressed: _isLoading ? null : _signUp,
-              child: const Text('Register'),
-            ),
-            formSpacer,
-            TextButton(
-              onPressed: () {
-                // TODO uncomment navigation
-                //Navigator.of(context).push(LoginPage.route());
-              },
-              child: const Text('I already have an account'),
-            ),
-          ],
-        ),
       ),
     );
   }
 }
-````
+```
+
+`lib/account/login/login_form.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../common/common.dart';
+import 'login_cubit.dart';
+import 'login_state.dart';
+
+class LoginForm extends StatefulWidget {
+  const LoginForm({super.key});
+
+  @override
+  State<LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  void _login() {
+    context.read<LoginCubit>().login(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginCubit, LoginState>(
+      builder:
+          (context, state) => Form(
+            child: ListView(
+              padding: formPadding,
+              children: [
+                TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(labelText: 'Email'),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                FormSpacer(),
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: const InputDecoration(labelText: 'Password'),
+                  obscureText: true,
+                ),
+                FormSpacer(),
+                ElevatedButton(
+                  onPressed: state is LoginLoading ? null : _login,
+                  child: const Text('Login'),
+                ),
+              ],
+            ),
+          ),
+    );
+  }
+}
+```
 
 `lib/pages/login_page.dart`
 
@@ -683,239 +1063,50 @@ class _LoginPageState extends State<LoginPage> {
 }
 ```
 
-`lib/pages/chat_page.dart`
+## Wrapping up
+
+In a moment I'll encourage you to try it out by creating a couple of different
+users.
+But, before you do that, it would be really convenient if you had a way to log
+out.
+
+Create/change `lib/chat/chat_page.dart` to:
 
 ```dart
-import 'dart:async';
-
-import 'package:chat/constants.dart';
-import 'package:chat/models/massage.dart';
-import 'package:chat/models/profile.dart';
-import 'package:flutter/material.dart';
-
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:timeago/timeago.dart';
-
-/// Page to chat with someone.
-///
-/// Displays chat bubbles as a ListView and TextField to enter new chat.
-class ChatPage extends StatefulWidget {
-  const ChatPage({Key? key}) : super(key: key);
+class ChatPage extends StatelessWidget {
+  const ChatPage({super.key});
 
   static Route<void> route() {
     return MaterialPageRoute(builder: (context) => const ChatPage());
   }
 
   @override
-  State<ChatPage> createState() => _ChatPageState();
-}
-
-class _ChatPageState extends State<ChatPage> {
-  late final Stream<List<Message>> _messagesStream;
-  final Map<String, Profile> _profileCache = {};
-
-  @override
-  void initState() {
-    final myUserId = supabase.auth.currentUser!.id;
-    _messagesStream = supabase
-        .from('messages')
-        .stream(primaryKey: ['id'])
-        .order('created_at')
-        .map(
-          (maps) =>
-              maps
-                  .map(
-                    (map) => MessageMapper.fromMap(
-                      map..putIfAbsent("profileId", () => myUserId),
-                    ),
-                  )
-                  .toList(),
-        );
-    super.initState();
-  }
-
-  Future<void> _loadProfileCache(String profileId) async {
-    if (_profileCache[profileId] != null) {
-      return;
-    }
-    final data =
-        await supabase.from('profiles').select().eq('id', profileId).single();
-    final profile = ProfileMapper.fromMap(data);
-    setState(() {
-      _profileCache[profileId] = profile;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Chat')),
-      body: StreamBuilder<List<Message>>(
-        stream: _messagesStream,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final messages = snapshot.data!;
-            return Column(
-              children: [
-                Expanded(
-                  child:
-                      messages.isEmpty
-                          ? const Center(
-                            child: Text('Start your conversation now :)'),
-                          )
-                          : ListView.builder(
-                            reverse: true,
-                            itemCount: messages.length,
-                            itemBuilder: (context, index) {
-                              final message = messages[index];
-
-                              /// I know it's not good to include code that is not related
-                              /// to rendering the widget inside build method, but for
-                              /// creating an app quick and dirty, it's fine 😂
-                              _loadProfileCache(message.profileId);
-
-                              return _ChatBubble(
-                                message: message,
-                                profile: _profileCache[message.profileId],
-                              );
-                            },
-                          ),
-                ),
-                const _MessageBar(),
-              ],
-            );
-          } else {
-            return preloader;
-          }
-        },
-      ),
-    );
-  }
-}
-
-/// Set of widget that contains TextField and Button to submit message
-class _MessageBar extends StatefulWidget {
-  const _MessageBar({Key? key}) : super(key: key);
-
-  @override
-  State<_MessageBar> createState() => _MessageBarState();
-}
-
-class _MessageBarState extends State<_MessageBar> {
-  late final TextEditingController _textController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.grey[200],
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  keyboardType: TextInputType.text,
-                  maxLines: null,
-                  autofocus: true,
-                  controller: _textController,
-                  decoration: const InputDecoration(
-                    hintText: 'Type a message',
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    contentPadding: EdgeInsets.all(8),
-                  ),
-                ),
-              ),
-              TextButton(
-                onPressed: () => _submitMessage(),
-                child: const Text('Send'),
-              ),
-            ],
-          ),
+    return BlocProvider(
+      create: (_) => ChatCubit(context.read<ChatService>())..listenForMessage(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Chat'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                context.read<ChatService>().logout();
+                Navigator.of(
+                  context,
+                ).pushAndRemoveUntil(RegisterPage.route(), (route) => false);
+              },
+              icon: Icon(Icons.logout),
+            ),
+          ],
         ),
-      ),
-    );
-  }
-
-  @override
-  void initState() {
-    _textController = TextEditingController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _textController.dispose();
-    super.dispose();
-  }
-
-  void _submitMessage() async {
-    final text = _textController.text;
-    final myUserId = supabase.auth.currentUser!.id;
-    if (text.isEmpty) {
-      return;
-    }
-    _textController.clear();
-    try {
-      await supabase.from('messages').insert({
-        'profile_id': myUserId,
-        'content': text,
-      });
-    } on PostgrestException catch (error) {
-      context.showErrorSnackBar(message: error.message);
-    } catch (_) {
-      context.showErrorSnackBar(message: unexpectedErrorMessage);
-    }
-  }
-}
-
-class _ChatBubble extends StatelessWidget {
-  const _ChatBubble({Key? key, required this.message, required this.profile})
-    : super(key: key);
-
-  final Message message;
-  final Profile? profile;
-
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> chatContents = [
-      if (!message.isMine)
-        CircleAvatar(
-          child:
-              profile == null
-                  ? preloader
-                  : Text(profile!.username.substring(0, 2)),
-        ),
-      const SizedBox(width: 12),
-      Flexible(
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-          decoration: BoxDecoration(
-            color:
-                message.isMine
-                    ? Theme.of(context).primaryColor
-                    : Colors.grey[300],
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Text(message.content),
-        ),
-      ),
-      const SizedBox(width: 12),
-      Text(format(message.createdAt, locale: 'en_short')),
-      const SizedBox(width: 60),
-    ];
-    if (message.isMine) {
-      chatContents = chatContents.reversed.toList();
-    }
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 18),
-      child: Row(
-        mainAxisAlignment:
-            message.isMine ? MainAxisAlignment.end : MainAxisAlignment.start,
-        children: chatContents,
+        body: Center(child: Text("Chat placeholder")),
       ),
     );
   }
 }
 ```
+
+Since we have "Confirm Email" disabled it doesn't matter what address you type,
+as long as it is formatted like a valid email.
+
+Go ahead and try it out!
