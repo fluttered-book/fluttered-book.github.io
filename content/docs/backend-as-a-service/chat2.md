@@ -218,3 +218,350 @@ And implement them in `SupabaseChatService`.
     return ProfileMapper.fromMap(data);
   }
 ```
+
+### Cubit
+
+You've guessed it.
+We are going to use a cubit again.
+
+This will be the state.
+
+`lib/chat/chat_state.dart`
+
+```dart
+import '../models/models.dart';
+
+class ChatState {
+  final List<Message> messages;
+  final Map<String, Profile> profileCache;
+  final String? error;
+
+  ChatState({required this.messages, required this.profileCache, this.error});
+
+  ChatState.empty() : messages = [], profileCache = {}, error = null;
+
+  ChatState copyWith({
+    List<Message>? messages,
+    Map<String, Profile>? profileCache,
+    String? error,
+  }) => ChatState(
+    messages: messages ?? this.messages,
+    profileCache: profileCache ?? this.profileCache,
+    error: error ?? this.error,
+  );
+
+  Profile? profileFor(Message message) => profileCache[message.profileId];
+}
+```
+
+A message reference the profile that have sent the message.
+In a conversation you will have many messages send from the same profile.
+You can easily join a message with a profile in a query.
+But, you can not use join when streaming changes from a table.
+We therefore have a cache of profiles in the state object.
+That way, profiles can be lazy loaded as new messages arrive.
+We can also check the cache to avoid loading the same profile multiple times.
+Smart, right?
+
+`lib/chat/chat_cubit.dart`
+
+```dart
+import 'dart:async';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../common/chat_service.dart';
+import '../common/widgets.dart';
+import '../models/models.dart';
+import 'chat_state.dart';
+
+class ChatCubit extends Cubit<ChatState> {
+  final ChatService service;
+  StreamSubscription<List<Message>>? _messageSubscription;
+
+  ChatCubit(this.service) : super(ChatState.empty());
+
+  void listenForMessage() {
+    service.messageStream().listen((messages) {
+      emit(state.copyWith(messages: messages));
+      for (var message in messages) {
+        _loadProfileCache(message.profileId);
+      }
+    }, onError: (e) => state.copyWith(error: e.toString()));
+  }
+
+  void submitMessage(String text) async {
+    if (text.isEmpty) return;
+    try {
+      service.submitMessage(text);
+    } on Exception catch (error) {
+      emit(state.copyWith(error: error.toString()));
+    } catch (_) {
+      emit(state.copyWith(error: unexpectedErrorMessage));
+    }
+  }
+
+  @override
+  Future<void> close() {
+    _messageSubscription?.cancel();
+    return super.close();
+  }
+
+  Future<void> _loadProfileCache(String profileId) async {
+    if (state.profileCache[profileId] != null) return;
+    final profile = await service.fetchProfile(profileId);
+    emit(
+      state.copyWith(profileCache: {...state.profileCache, profileId: profile}),
+    );
+  }
+}
+```
+
+`listenForMessage()` will subscribe to messages using the ChatService.
+It returns a `StreamSubscription` object what we are supposed to clean up when
+the cubit gets closed.
+Otherwise, we create a memory leak.
+
+For each new message the cache is checked for a profile.
+If none is found, then it will fetch the profile and append it to the cache.
+The cache is really just a map of profile ID to profile.
+We create a new instance of the map each time a new profile is fetched, because
+states are supposed to be immutable.
+There is a slight overhead to creating new map instances, so this
+implementation is not viable if there are millions of people chatting at the
+same time.
+Premature optimization is the enemy of quick progress.
+So lets just assume the app won't get millions of users overnight and move on.
+
+## Widgets
+
+The time has finally come where we are ready to make an actual implementation
+of the `ChatPage`.
+Aiming for a layout like on the picture.
+
+![Chat page displaying lyrics from Brojob - Tuff love](../images/chat-page.png)
+
+We need to create a couple of widgets to achieve it.
+
+### Chat bubble
+
+`lib/chat/chat_bubble.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:timeago/timeago.dart';
+
+import '../common/common.dart';
+import '../models/models.dart';
+
+class ChatBubble extends StatelessWidget {
+  const ChatBubble({super.key, required this.message, required this.profile});
+
+  final Message message;
+  final Profile? profile;
+
+  @override
+  Widget build(BuildContext context) {
+    final isMine = context.read<ChatService>().userId == message.profileId;
+    List<Widget> chatContents = [
+      if (!isMine)
+        CircleAvatar(
+          child:
+              profile == null
+                  ? Spinner()
+                  : Text(profile!.username.substring(0, 2)),
+        ),
+      const SizedBox(width: 12),
+      Flexible(
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+          decoration: BoxDecoration(
+            color: isMine ? Theme.of(context).primaryColor : Colors.grey[300],
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(message.content),
+        ),
+      ),
+      const SizedBox(width: 12),
+      Text(format(message.createdAt, locale: 'en_short')),
+      const SizedBox(width: 60),
+    ];
+    if (isMine) {
+      chatContents = chatContents.reversed.toList();
+    }
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 18),
+      child: Row(
+        mainAxisAlignment:
+            isMine ? MainAxisAlignment.end : MainAxisAlignment.start,
+        children: chatContents,
+      ),
+    );
+  }
+}
+```
+
+Show a spinner until it has the profile fetched, in which case an avatar is
+shown.
+
+Layout of the bubble is reverse if it is your own message.
+
+### Message bar
+
+`lib/chat/message_bar.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'chat_cubit.dart';
+
+/// Set of widget that contains TextField and Button to submit message
+class MessageBar extends StatefulWidget {
+  const MessageBar({super.key});
+
+  @override
+  State<MessageBar> createState() => _MessageBarState();
+}
+
+class _MessageBarState extends State<MessageBar> {
+  final _textController = TextEditingController();
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
+
+  void _submitMessage() async {
+    final text = _textController.text;
+    if (text.isEmpty) return;
+    _textController.clear();
+    context.read<ChatCubit>().submitMessage(text);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.grey[200],
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  keyboardType: TextInputType.text,
+                  maxLines: null,
+                  autofocus: true,
+                  controller: _textController,
+                  decoration: const InputDecoration(
+                    hintText: 'Type a message',
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    contentPadding: EdgeInsets.all(8),
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () => _submitMessage(),
+                child: const Text('Send'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+### Chat page
+
+`lib/chat/chat_page.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../account/register/register_page.dart';
+import '../common/common.dart';
+import 'chat_bubble.dart';
+import 'chat_cubit.dart';
+import 'chat_state.dart';
+import 'message_bar.dart';
+
+/// Page to chat with someone.
+///
+/// Displays chat bubbles as a ListView and TextField to enter new chat.
+class ChatPage extends StatelessWidget {
+  const ChatPage({super.key});
+
+  static Route<void> route() {
+    return MaterialPageRoute(builder: (context) => const ChatPage());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => ChatCubit(context.read<ChatService>())..listenForMessage(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Chat'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                context.read<ChatService>().logout();
+                Navigator.of(
+                  context,
+                ).pushAndRemoveUntil(RegisterPage.route(), (route) => false);
+              },
+              icon: Icon(Icons.logout),
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: BlocConsumer<ChatCubit, ChatState>(
+                listener: (context, state) {
+                  if (state.error != null) {
+                    context.showErrorSnackBar(message: state.error!);
+                  }
+                },
+                builder: (context, state) {
+                  if (state.messages.isEmpty) {
+                    return const Center(
+                      child: Text('Start your conversation now :)'),
+                    );
+                  }
+                  return ListView.builder(
+                    reverse: true,
+                    itemCount: state.messages.length,
+                    itemBuilder: (context, index) {
+                      final message = state.messages[index];
+                      return ChatBubble(
+                        message: message,
+                        profile: state.profileFor(message),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+            const MessageBar(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+In `create` function given to `BlocProvider`, we call `listenForMessage()`
+immediately using
+[cascade-notation](https://dart.dev/language/operators#cascade-notation).
+The `listenForMessage()` method is what makes the `ChatCubit` subscribe to messages.
+Without the call we would not see anything.
