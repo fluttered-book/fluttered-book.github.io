@@ -582,3 +582,7 @@ immediately using
 [cascade-notation](https://dart.dev/language/operators#cascade-notation).
 The `listenForMessage()` method is what makes the `ChatCubit` subscribe to messages.
 Without the call we would not see anything.
+
+{{% details "Reveal solution" %}}
+[Go to source](https://github.com/fluttered-book/chat/tree/messages)
+{{% /details %}}
