@@ -6,6 +6,13 @@ weight: 3
 
 # Chat - Authentication
 
+{{% hint info %}}
+This guide is based on [Flutter Tutorial: building a Flutter chat
+app](https://supabase.com/blog/flutter-tutorial-building-a-chat-app).
+I'm making my own version to better fit the narrative I want to convey in this
+book.
+{{% /hint %}}
+
 ## Introduction
 
 This is the first part in a small series where we make a chat app using
@@ -13,12 +20,8 @@ Supabase.
 In this part we will work with authentication and build login and register
 pages.
 
-{{% hint info %}}
-This guide is based on [Flutter Tutorial: building a Flutter chat
-app](https://supabase.com/blog/flutter-tutorial-building-a-chat-app).
-I'm making my own version to better fit the narrative I want to convey in this
-book.
-{{% /hint %}}
+![Screenshot of login page](../images/chat-login.png)
+![Screenshot of register page](../images/chat-register.png)
 
 ## Supabase setup
 

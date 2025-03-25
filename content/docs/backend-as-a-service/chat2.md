@@ -6,6 +6,14 @@ weight: 4
 
 # Chat - Messages
 
+{{% hint info %}}
+Again!
+This guide is based on [Flutter Tutorial: building a Flutter chat
+app](https://supabase.com/blog/flutter-tutorial-building-a-chat-app).
+I'm making my own version to better fit the narrative I want to convey in this
+book.
+{{% /hint %}}
+
 ## Introduction
 
 In the previous part of the chat app series we implemented password based
@@ -14,17 +22,11 @@ In this part we will extend the project, so you can send and receive messages
 from other users.
 You know, to make it an actual chat app.
 
+![Screenshot of chat page](../images/chat-messages.png)
+
 Open your project from last part or download the [reference
 solution](https://github.com/fluttered-book/chat/tree/authentication).
 Let's get started!
-
-{{% hint info %}}
-Again!
-This guide is based on [Flutter Tutorial: building a Flutter chat
-app](https://supabase.com/blog/flutter-tutorial-building-a-chat-app).
-I'm making my own version to better fit the narrative I want to convey in this
-book.
-{{% /hint %}}
 
 ## Supabase project
 
