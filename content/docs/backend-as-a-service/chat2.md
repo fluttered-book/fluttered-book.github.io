@@ -351,6 +351,13 @@ We need to create a couple of widgets to achieve it.
 
 ### Chat bubble
 
+We are going to add [timeago](https://pub.dev/packages/timeago) package, so we
+can easily show how long it has been since a message was submitted.
+
+```sh
+flutter pub add timeago
+```
+
 `lib/chat/chat_bubble.dart`
 
 ```dart
@@ -359,7 +366,8 @@ import 'package:provider/provider.dart';
 
 import 'package:timeago/timeago.dart';
 
-import '../common/common.dart';
+import '../common/chat_service.dart';
+import '../common/widgets.dart';
 import '../models/models.dart';
 
 class ChatBubble extends StatelessWidget {
@@ -489,11 +497,12 @@ class _MessageBarState extends State<MessageBar> {
 `lib/chat/chat_page.dart`
 
 ```dart
+import 'package:chat/common/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../account/register/register_page.dart';
-import '../common/common.dart';
+import '../common/chat_service.dart';
 import 'chat_bubble.dart';
 import 'chat_cubit.dart';
 import 'chat_state.dart';
