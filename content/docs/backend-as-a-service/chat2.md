@@ -4,11 +4,9 @@ description: Chat 2 - Messages
 weight: 4
 ---
 
-{{% hint warning %}}
-This section is still work-in-progress.
-{{% /hint %}}
-
 # Chat - Messages
+
+## Introduction
 
 In the previous part of the chat app series we implemented password based
 authentication with a login and a register page.
@@ -19,6 +17,14 @@ You know, to make it an actual chat app.
 Open your project from last part or download the [reference
 solution](https://github.com/fluttered-book/chat/tree/authentication).
 Let's get started!
+
+{{% hint info %}}
+Again!
+This guide is based on [Flutter Tutorial: building a Flutter chat
+app](https://supabase.com/blog/flutter-tutorial-building-a-chat-app).
+I'm making my own version to better fit the narrative I want to convey in this
+book.
+{{% /hint %}}
 
 ## Supabase project
 
