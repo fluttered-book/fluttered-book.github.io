@@ -347,7 +347,7 @@ The time has finally come where we are ready to make an actual implementation
 of the `ChatPage`.
 Aiming for a layout like on the picture.
 
-![Chat page displaying lyrics from Brojob - Tuff love](../images/chat-page.png)
+![Screenshot of chat page](../images/chat-messages.png)
 
 We need to create a couple of widgets to achieve it.
 
