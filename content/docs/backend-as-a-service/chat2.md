@@ -378,46 +378,42 @@ class ChatBubble extends StatelessWidget {
 
   const ChatBubble({super.key, required this.message, required this.profile});
 
-  static final padding = EdgeInsets.symmetric(horizontal: 8, vertical: 18);
-  static final space = SizedBox(width: 12);
-  static final sideSpace = SizedBox(width: 60);
+  static const space = SizedBox(width: 12);
+  static const sideSpace = SizedBox(width: 60);
 
   @override
   Widget build(BuildContext context) {
     final isMine = context.read<ChatService>().userId == message.profileId;
-    return isMine ? _buildMine(context) : _buildOther(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 18),
+      child: isMine ? _buildMine(context) : _buildOther(context),
+    );
   }
 
   Widget _buildMine(BuildContext context) {
-    return Padding(
-      padding: padding,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          sideSpace,
-          timeAgo,
-          space,
-          text(color: Theme.of(context).primaryColor),
-          space,
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        sideSpace,
+        timeAgo,
+        space,
+        text(color: Theme.of(context).primaryColor),
+        space,
+      ],
     );
   }
 
   Widget _buildOther(BuildContext context) {
-    return Padding(
-      padding: padding,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          avatar,
-          space,
-          text(color: Colors.grey[300]!),
-          space,
-          timeAgo,
-          sideSpace,
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        avatar,
+        space,
+        text(color: Colors.grey[300]!),
+        space,
+        timeAgo,
+        sideSpace,
+      ],
     );
   }
 
