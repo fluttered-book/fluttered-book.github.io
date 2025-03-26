@@ -26,6 +26,8 @@ You know, to make it an actual chat app.
 
 Open your project from last part or download the [reference
 solution](https://github.com/fluttered-book/chat/tree/authentication).
+If you use the reference solution then make sure you are on the
+"authentication" branch.
 Let's get started!
 
 ## Supabase project
