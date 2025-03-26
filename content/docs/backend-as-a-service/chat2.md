@@ -522,79 +522,78 @@ class _MessageBarState extends State<MessageBar> {
 `lib/chat/chat_page.dart`
 
 ```dart
+import 'package:chat/common/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:timeago/timeago.dart';
+import '../account/register/register_page.dart';
+import '../common/chat_service.dart';
+import 'chat_bubble.dart';
+import 'chat_cubit.dart';
+import 'chat_state.dart';
+import 'message_bar.dart';
 
-import '../common/common.dart';
-import '../models/models.dart';
+/// Page to chat with someone.
+///
+/// Displays chat bubbles as a ListView and TextField to enter new chat.
+class ChatPage extends StatelessWidget {
+  const ChatPage({super.key});
 
-class ChatBubble extends StatelessWidget {
-  final Message message;
-  final Profile? profile;
-
-  static final padding = EdgeInsets.symmetric(horizontal: 8, vertical: 18);
-  static final spacer = SizedBox(width: 12);
-  static final sideSpacer = SizedBox(width: 60);
-
-  const ChatBubble({super.key, required this.message, required this.profile});
+  static Route<void> route() {
+    return MaterialPageRoute(builder: (context) => const ChatPage());
+  }
 
   @override
   Widget build(BuildContext context) {
-    final isMine = context.read<ChatService>().userId == message.profileId;
-    return isMine ? _buildMineBubble(context) : _buildOtherBubble(context);
-  }
-
-  Widget _buildMineBubble(BuildContext context) {
-    return Padding(
-      padding: padding,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          sideSpacer,
-          _buildTimeAgo(),
-          spacer,
-          _buildTextBubble(color: Theme.of(context).primaryColor),
-          spacer,
-        ],
-      ),
-    );
-  }
-
-  Widget _buildOtherBubble(BuildContext context) {
-    return Padding(
-      padding: padding,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          CircleAvatar(
-            child:
-                profile == null
-                    ? Spinner()
-                    : Text(profile!.username.substring(0, 2)),
-          ),
-          spacer,
-          _buildTextBubble(color: Colors.grey[300]!),
-          const SizedBox(width: 12),
-          _buildTimeAgo(),
-          const SizedBox(width: 60),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTimeAgo() => Text(format(message.createdAt, locale: 'en_short'));
-
-  Widget _buildTextBubble({required Color color}) {
-    return Flexible(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(8),
+    return BlocProvider(
+      create: (_) => ChatCubit(context.read<ChatService>())..listenForMessage(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Chat'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                context.read<ChatService>().logout();
+                Navigator.of(
+                  context,
+                ).pushAndRemoveUntil(RegisterPage.route(), (route) => false);
+              },
+              icon: Icon(Icons.logout),
+            ),
+          ],
         ),
-        child: Text(message.content),
+        body: Column(
+          children: [
+            Expanded(
+              child: BlocConsumer<ChatCubit, ChatState>(
+                listener: (context, state) {
+                  if (state.error != null) {
+                    context.showErrorSnackBar(message: state.error!);
+                  }
+                },
+                builder: (context, state) {
+                  if (state.messages.isEmpty) {
+                    return const Center(
+                      child: Text('Start your conversation now :)'),
+                    );
+                  }
+                  return ListView.builder(
+                    reverse: true,
+                    itemCount: state.messages.length,
+                    itemBuilder: (context, index) {
+                      final message = state.messages[index];
+                      return ChatBubble(
+                        message: message,
+                        profile: state.profileFor(message),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+            const MessageBar(),
+          ],
+        ),
       ),
     );
   }
