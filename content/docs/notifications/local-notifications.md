@@ -22,7 +22,7 @@ It only supports iOS and Android (no web).
 ```sh
 flutter create awesome_notifications_demo --platforms=ios,android
 cd awesome_notifications_demo
-flutter pub add awesome_notifications_core:^0.9.3 awesome_notifications:any
+flutter pub add awesome_notifications_core awesome_notifications
 ```
 
 ### Android
@@ -51,7 +51,7 @@ Make the following changes to `android/app/build.gradle`.
          // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
 -        minSdkVersion flutter.minSdkVersion
 -        targetSdkVersion flutter.targetSdkVersion
-+        minSdkVersion 21
++        minSdkVersion 23
 +        targetSdkVersion 34
          versionCode flutterVersionCode.toInteger()
          versionName flutterVersionName
@@ -425,6 +425,13 @@ It is going to be really basic.
 
 ### Main
 
+Add the [provider](https://pub.dev/packages/provider) package.
+In terminal:
+
+```sh
+flutter pub add provider
+```
+
 Change the main method to initialize the plugin through our
 `NotificationService`.
 Then use `Provider` to allow other part of the app to access it.
@@ -446,7 +453,7 @@ something else when testing.
 ### MyApp
 
 Convert `MyApp` to a `StatefulWidget`.
-Then add an override for `initState`.
+Then add an override for `initState` to the widget state class (`_MyAppState`).
 
 ```dart
 @override
@@ -540,7 +547,7 @@ class _NotificationFormState extends State<NotificationForm> {
 const spacer = SizedBox(height: 8);
 ```
 
-Here is what it looks like.
+Here is what it will look like, when done.
 
 ![Notification form](../images/notification_form.png)
 
@@ -606,4 +613,3 @@ Try it out.
 The [Awesome Notifications](https://pub.dev/packages/awesome_notifications)
 plugin can do a lot more.
 Familiarize yourself with the documentation.
-
