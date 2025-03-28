@@ -80,6 +80,22 @@ We can just copy `android/app/src/main/res/mipmap-hdpi/ic_launcher.png` to
 
 [🍎 Configuring iOS for Awesome Notifications](https://pub.dev/packages/awesome_notifications#-configuring-ios-for-awesome-notifications)
 
+#### Workarounds
+
+If you get errors when building for iOS from Android Studio, you can sometimes
+see additional details in Xcode.
+
+When I was testing it I got an error that said:
+
+```
+Using bridging headers with module interfaces is unsupported
+```
+
+The workaround I found is to open `ios/Runner.xcworkspace` in Xcode.
+Then set "Build Libraries for Distribution" to "No" as shown on the screenshot.
+
+![Xcode workaround](../images/ios_workaround.png)
+
 ## Starting point
 
 ### Theming
