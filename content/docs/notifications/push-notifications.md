@@ -33,7 +33,7 @@ I will therefore just use FCM.
 3. Type "push-notification-demo" as project name and click "Continue"
 4. Turn off "Enable Google Analytics for this project" and click "Create project"
 
-we will need to add some dependencies to the Flutter project.
+We will need to add some dependencies to the Flutter project.
 Then we will install [FlutterFire CLI](https://firebase.flutter.dev/docs/cli)
 and use it to connect our Flutter project to the Firebase project we just
 created.
@@ -57,6 +57,15 @@ dart pub global activate flutterfire_cli
 flutterfire configure
 ```
 
+{{% hint warning %}}
+If you get the warning shown, just follow the instructions.
+
+```
+Pub installs executables into $HOME/.pub-cache/bin, which is not on your path.
+```
+
+{{% /hint %}}
+
 The last command will give you a menu.
 Use arrow keys to navigate and "Enter/Return" to select.
 Here is a walkthrough of the options you need.
@@ -77,7 +86,7 @@ void main() async {
 ```
 
 **Note:** `DefaultFirebaseOptions.currentPlatform` is imported from `lib/firebase_options.dart` and was created by `flutterfire configure`.
-It contains an API-key, so you might want to add it to `.gitignore`.
+It contains an API-key, so you should add it to `.gitignore`.
 
 See [FlutterFire Overview](https://firebase.flutter.dev/docs/overview/) for
 more.
@@ -104,10 +113,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:push_notification_demo/notification_controller.dart';
 
 class NotificationService {
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  final messaging = FirebaseMessaging.instance;
 
   Future<bool> requestPermission() async {
-    NotificationSettings settings = await messaging.requestPermission(
+    final settings = await messaging.requestPermission(
       alert: true,
       announcement: false,
       badge: true,
