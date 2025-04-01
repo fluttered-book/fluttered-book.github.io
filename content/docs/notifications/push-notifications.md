@@ -10,6 +10,28 @@ weight: 3
 ![Push notification screenshot 1](../images/push_notification_app1.png)
 ![Push notification screenshot 2](../images/push_notification_app2.png)
 
+{{% hint warning %}}
+**I have not tested this on iOS.**
+
+Making it work on iPhone requires some extra steps, including some configuration in Xcode.
+You will also need an APN key which requires you to be enrolled in Apple Developer Program with an annual fee of 99 USD.
+
+[iOS setup](https://firebase.google.com/docs/cloud-messaging/flutter/client#ios)
+{{% /hint %}}
+
+{{% hint warning %}}
+**Google Play on Android emulator**
+
+You need a virtual device with Google Play for push notifications to work in
+Android emulator.
+
+Here is how to create one.
+
+<video width="640" height="360" controls>
+  <source src="../images/google_play_emulator.mp4" type="video/mp4">
+</video>
+{{% /hint %}}
+
 ## Project Setup
 
 ```sh
@@ -28,10 +50,12 @@ I will therefore just use FCM.
 
 [Watch the commercial](https://www.youtube.com/watch?v=sioEY4tWmLI)
 
-1. Go to [Firebase Console](https://console.firebase.google.com/).
-2. Click "Add project"
-3. Type "push-notification-demo" as project name and click "Continue"
-4. Turn off "Enable Google Analytics for this project" and click "Create project"
+Go to [Firebase Console](https://console.firebase.google.com/) and create a
+Firebase project as shown.
+
+<video width="480" height="320" controls>
+  <source src="../images/firebase_project.mp4" type="video/mp4">
+</video>
 
 We will need to add some dependencies to the Flutter project.
 Then we will install [FlutterFire CLI](https://firebase.flutter.dev/docs/cli)
@@ -57,8 +81,8 @@ dart pub global activate flutterfire_cli
 flutterfire configure
 ```
 
-{{% hint warning %}}
-If you get the warning shown, just follow the instructions.
+{{% hint info %}}
+If you get the warning like below, just follow the instructions.
 
 ```
 Pub installs executables into $HOME/.pub-cache/bin, which is not on your path.
@@ -258,7 +282,7 @@ class NotificationController {
 }
 ```
 
-[See more](https://firebase.flutter.dev/docs/messaging/usage/)
+[Learn more](https://firebase.flutter.dev/docs/messaging/usage/)
 
 Complete the rest of the application on your own.
 You should:
@@ -271,24 +295,19 @@ You should:
 
 ### Send test message
 
-Open [Firebase Console](https://console.firebase.google.com/).
-Find "Messaging" (might be hidden under Engage).
-Then click "Create your first campaign".
+1. Click on your project in [Firebase Console](https://console.firebase.google.com/).
+   Find "Cloud Messaging".
+2. Click "Create your first campaign".
+3. Select "Firebase Notification messages".
+   Then click "Create"
+4. Fill in "Notification title" and "Notification text".
+   Click "Send test message".
+5. Add the FCM token from your device.
+   Then click "Test".
 
-![FCM test](../images/fcm_test1.png)
-
-Select "Firebase Notification messages".
-Then click "Create"
-
-![FCM test message](../images/fcm_test2.png)
-
-Fill in "Notification title" and "Notification text".
-Click "Send test messages".
-
-![FCM test payload.png](../images/fcm_test3.png)
-
-Add the FCM token from your device.
-Then click "Test".
+<video width="640" height="344" controls>
+  <source src="../images/send_test_notification.mp4" type="video/mp4">
+</video>
 
 Check your phone.
 If your app was in the foreground then you should see NavigationScreen.
