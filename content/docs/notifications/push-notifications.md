@@ -324,7 +324,7 @@ Send a message the the app from a .NET backend.
 First you need to add FirebaseAdmin SDK to your .NET project.
 
 ```sh
-dotnet add package FirebaseAdmin --version 2.4.0
+dotnet add package FirebaseAdmin --version 3.1.0
 ```
 
 Then follow the steps
