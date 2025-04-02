@@ -292,6 +292,7 @@ You should:
 3. Add a way to call `requestPermissions()`
 4. Implement `NotificationScreen`
 5. Show the FCM token from `NotificationService.tokenStream`
+   - Hint: use [StreamBuilder](https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html)
 
 ### Send test message
 
