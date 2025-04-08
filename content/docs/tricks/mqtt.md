@@ -13,15 +13,27 @@ weight: 12
 Doesn't work with MQTT v5
 {{< /hint >}}
 
- <video width="100%" controls>
-  <source src="../images/mqtt_light_demo.webm" type="video/webm">
+Here is how to control a device over MQTT from Flutter.
+It can be used as a starting point for creating apps to control [IoT
+devices](https://en.wikipedia.org/wiki/Internet_of_things).
+
+**"Smart" light simulator written in Dart**
+
+<video width="100%" controls>
+  <source src="../images/mqtt_dart_demo.webm" type="video/webm">
+</video>
+
+**Controlling ESP32 board**
+
+<video controls>
+  <source src="../images/mqtt_esp32_demo.mp4" type="video/webm">
 </video>
 
 ## Project
 
 ### [Link](https://github.com/fluttered-book/flutter_mqtt)
 
-There are 3 projects in the repository.
+There are 4 projects in the repository.
 
 **smart_light_dart**
 
