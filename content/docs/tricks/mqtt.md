@@ -19,17 +19,22 @@ Doesn't work with MQTT v5
 
 ## Project
 
-### [Link](https://github.com/rpede/flutter_mqtt)
+### [Link](https://github.com/fluttered-book/flutter_mqtt)
 
 There are 3 projects in the repository.
 
-**iot_light**
+**smart_light_dart**
 
-Simulates a IoT "smart" light that can be turned on an off.
+Simulates a IoT "smart" light that can be turned on and off.
 It prints an ASCII art representation of the light each time its power state
 changes.
 
 Program exits when you hit <kdb>Enter</kdb>.
+
+**smart_light_esp32**
+
+Arduino sketch for IoT "smart" light allowing you to turn a LED on and off from
+the controller app.
 
 **light_controller**
 
@@ -44,14 +49,14 @@ _Emojis might look different depending on the font_
 
 **light_protocol**
 
-Contains protocol code shared between **iot_light** and **light_controller**.
+Contains protocol code shared between **smart_light_dart** and **light_controller**.
 
 ---
 
 ## Getting started
 
-The setup requires that you run broker, iot_light and light_controller at the
-same time.
+The setup requires that you run a broker, light_controller and then either
+smart_light_dart or smart_light_esp32 at the same time.
 
 ### MQTT broker
 
@@ -66,16 +71,20 @@ Repository contains a configuration file for it.
 mosquitto -c mosquitto.conf
 ```
 
-### IoT Light
+### Smart Light (Dart)
 
 If you use a different broker you need to adjust server, port and credentials in
-`iot_light/bin/iot_light.dart`.
+`smart_light_dart/bin/iot_light.dart`.
 
 ```sh
-cd iot_light
+cd smart_light_dart
 dart pub get
 dart run
 ```
+
+### Smart Light ESP32
+
+[Instructions](https://github.com/fluttered-book/flutter_mqtt/blob/main/smart_light_esp32/README.md)
 
 ### Light controller
 
@@ -127,9 +136,9 @@ IoT light responds to commands with a status on another topic.
 ![MQTT protocol for controlling light](../images/mqtt_light_protocol.drawio.svg)
 
 The messages are defined
-[here](https://github.com/rpede/flutter_mqtt/blob/main/light_protocol/lib/src/messages.dart)
+[here](https://github.com/fluttered-book/flutter_mqtt/blob/main/light_protocol/lib/src/messages.dart)
 and the application protocol is defined
-[here](https://github.com/rpede/flutter_mqtt/blob/main/light_protocol/lib/src/protocol.dart).
+[here](https://github.com/fluttered-book/flutter_mqtt/blob/main/light_protocol/lib/src/protocol.dart).
 
 ### MQTT library
 
@@ -163,13 +172,13 @@ Enabling logging can be useful for debugging:
 mqttClient.logging(on: true);
 ```
 
-Auto-reconnect can be enables with:
+Auto-reconnect can be enabled with:
 
 ```dart
 mqttClient.autoReconnect = true;
 ```
 
-You need to connect before subscripting to topics.
+You need to connect before subscribing to topics.
 
 ```dart
 await mqttClient.connect();
@@ -197,7 +206,8 @@ For more complex scenarios you might want to consider using
 [json_serializable](https://pub.dev/packages/json_serializable) to generate the
 code.
 
-To work with JSON over MQTT you need to serialize when publishing and deserialize updates from subscribed topics.
+To work with JSON over MQTT you need to serialize when publishing and
+deserialize updates from subscribed topics.
 I wrote some [extension methods](https://dart.dev/language/extension-methods)
 that might help.
 
