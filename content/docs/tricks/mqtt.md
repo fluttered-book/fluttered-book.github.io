@@ -29,6 +29,8 @@ devices](https://en.wikipedia.org/wiki/Internet_of_things).
   <source src="../images/mqtt_esp32_demo.mp4" type="video/webm">
 </video>
 
+_Green LED simulates light-bulb._
+
 ## Project
 
 ### [Link](https://github.com/fluttered-book/flutter_mqtt)
@@ -145,7 +147,7 @@ In this project we are using JSON to structure messages.
 The controller sends commands to the Light on one topic.
 IoT light responds to commands with a status on another topic.
 
-![MQTT protocol for controlling light](../images/mqtt_light_protocol.drawio.svg)
+![MQTT protocol for controlling light](../images/mqtt-light.drawio.svg)
 
 The messages are defined
 [here](https://github.com/fluttered-book/flutter_mqtt/blob/main/light_protocol/lib/src/messages.dart)
