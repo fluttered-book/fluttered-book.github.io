@@ -11,6 +11,7 @@ A collection on recopies that doesn't fit anywhere else.
 
 ## Learn more
 
+- [CLI](cli)
 - [Deepen your understanding](understanding)
 
 ## Platforms
@@ -23,7 +24,7 @@ A collection on recopies that doesn't fit anywhere else.
 ## Development
 
 - [Flutter Inspector](inspector)
-- [DevOps](devops)
+- [Mock API](mock-api)
 
 ## Look and feel
 
@@ -34,3 +35,4 @@ A collection on recopies that doesn't fit anywhere else.
 
 - [WebSocket](websocket)
 - [MQTT](mqtt)
+- [DevOps](devops)
