@@ -11,9 +11,9 @@ Example of using WebSocket with BLoC pattern.
 
 ![Screenshot of example app](../images/websocket_demo_screenshot.png)
 
-# Project
+## Project
 
-## [Link](https://github.com/rpede/MiniProjectSolution/)
+**[Link](https://github.com/rpede/MiniProjectSolution/)**
 
 The project is based on an example project provided by my colleague Alex.
 You can find his original [here](https://github.com/uldahlalex/MiniProjectSolution).
@@ -22,28 +22,15 @@ I've reimplemented the frontend in Flutter using
 [BLoC](https://bloclibrary.dev/) to manage state changes based on events send
 from the backend.
 
-## Backend
-
-The backend is a .NET application.
-You can find the code in `Api/`.
-
-I've made a couple of changes to the original source code.
-
-1. Remove Azure services.
-2. Get `JWT_KEY` and `PG_CONN` from `IConfiguration` instead of `Environment`.
-
-The changes are just to make it simpler to get started.
-
 ## Flutter frontend
 
 Code is found in `flutter_frontend`.
 
-[freezed](https://pub.dev/packages/freezed) is used to enhance model classes
-through code generation.
-It helps create immutable classes, combining features from
-[equatable](https://pub.dev/packages/equatable) and
-[json_serializable](https://pub.dev/packages/json_serializable)
-with a `copyWith` method added.
+[dart_mappable](https://pub.dev/packages/dart_mappable) is used to enhance
+model classes through code generation. It helps create immutable classes,
+combining features from [equatable](https://pub.dev/packages/equatable) and
+[json_serializable](https://pub.dev/packages/json_serializable) with a
+`copyWith` method added.
 
 Code generation can be run with:
 
@@ -51,9 +38,7 @@ Code generation can be run with:
 dart run build_runner build
 ```
 
----
-
-# Getting started
+## Getting started
 
 If you have docker then you can start a database by running `sh setup.sh`.
 Otherwise, adjust `PG_CONN` in `Api/appsettings.Development.json`.
@@ -80,23 +65,21 @@ npm install
 npm start
 ```
 
-## Emulator
+### Emulator
 
-To connect to the websocket running on your own machine from Android
-emulator, you will need to change the address to `10.0.2.2`.
+To connect to the websocket running on your own machine from Android emulator,
+you will need to change the address to `10.0.2.2`.
 That is because the emulator is running a full OS, therefore _localhost_
-indside the emulator is different from _localhost_ on you host OS.
+inside the emulator is different from _localhost_ on you host OS.
 
 See [Set up Android Emulator networking](https://developer.android.com/studio/run/emulator-networking).
 
----
+## How it works
 
-# How it works
+### Websocket
 
-## Websocket
-
-The [web_socket_channel](https://pub.dev/packages/web_socket_channel) package is
-used to connect to the backend.
+The [web_socket_channel](https://pub.dev/packages/web_socket_channel) package
+is used to connect to the backend.
 
 You connect to a WebSocket with the WebSocketChannel class.
 It provides an interface that resembles a StreamController.
@@ -109,16 +92,46 @@ A message here is just a String.
 Read more on how to [Communicate with WebSockets](https://docs.flutter.dev/cookbook/networking/web-sockets).
 
 The WebSocket protocol for the chat app is based on JSON events.
-Each event has an `eventType`.
+Each event has a `eventType`.
 Events send from client start with `"ClientWants"`
 Events from server starts with `"Server"`.
 All events are defined in `flutter_frontend/lib/models/events.dart`.
-So, to communicate with the server we need serialized events to have
+
+When sending events to the server we need the serialized events to have
 `eventType`.
 When deserializing events from server, the `eventType` is used to determine
 which class to user.
 
-## BLoC
+We can achieve this by adding a `discriminatorKey` to a shared base class for
+all events.
+
+```dart
+@MappableClass(discriminatorKey: 'eventType')
+abstract class BaseEvent with BaseEventMappable {}
+```
+
+Each event type is a subclass with a `discriminatorValue`.
+
+```dart
+@MappableClass(discriminatorValue: ClientWantsToSignIn.name)
+class ClientWantsToSignIn extends BaseEvent with ClientWantsToSignInMappable {
+  static const String name = "ClientWantsToSignIn";
+  // ...
+}
+```
+
+It allows the generated mapper to be able to deserialize to the correct
+subclass based on the value of `eventType`.
+
+If we have the following:
+
+```dart
+final event = BaseEventMapper.fromJson('{"eventType": "ClientWantsToSignIn"}');
+```
+
+Then `event` will have the runtime type `ClientWantsToSignIn`.
+
+### BLoC
 
 The protocol and state changes are implemented in
 `flutter_frontend/lib/bloc/chat_bloc.dart`.
@@ -144,34 +157,34 @@ Here is an example:
   }
 ```
 
-Adding events trigger event handler for the corresponding event type.
-All events of type ClientEvent is handled by the same method.
+Adding events triggers the handler for the corresponding event type.
 
 ```dart
-    // Handler for client events
-    on<ClientEvent>(_onClientEvent);
+    on<ClientWantsToSignIn>(_onClientEvent);
 ```
 
-The handler method serializes events to JSON, before they are send to the
+When the BLoC receives `ClientWantsToSignIn` event then `_onClientEvent` will
+be invoked to handle the event.
+
+The handler method serializes events to JSON, before they are sent to the
 server.
 Sending to server is done by adding messages to the channels sink.
 
 ```dart
   FutureOr<void> _onClientEvent(ClientEvent event, Emitter<ChatState> emit) {
-    _channel.sink.add(jsonEncode(event.toJson()));
+    _channel.sink.add(event.toJson());
   }
 ```
 
 ### Server events
 
 The constructor listens to messages from server.
-It deserializes messages to the correct subclass of ServerEvent.
+It deserializes messages to the correct subclass based on `eventType`.
 Then trigger the corresponding event handler, by passing the event to `add`.
 
 ```dart
     // Feed deserialized events from server into this bloc
     _channelSubscription = _channel.stream
-        .map((event) => jsonDecode(event))
         .map((event) => ServerEvent.fromJson(event))
         .listen(add, onError: addError);
 ```
@@ -208,42 +221,44 @@ Here is an example for when client has authenticated:
 _Note: The JWT is in ChatState because it is a secret value that shouldn't be
 shown in UI._
 
-## Models
+### Models
 
-[Freezed](https://pub.dev/packages/freezed) is used to enhance the model
+[dart_mappable](https://pub.dev/packages/dart_mappable) is used to enhance the model
 classes.
 
 Here is an example:
 
 ```dart
-// This file is "person.dart"
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter/foundation.dart';
+// This file is "model.dart"
+import 'package:dart_mappable/dart_mappable.dart';
 
-// required: associates our `person.dart` with the code generated by Freezed
-part 'person.freezed.dart';
-// optional: Since our Person class is serializable, we must add this line.
-// But if Person was not serializable, we could skip it.
-part 'person.g.dart';
+// Will be generated by dart_mappable
+part 'model.mapper.dart';
 
-@freezed
-class Person with _$Person {
-  const factory Person({
-    required String firstName,
-    required String lastName,
-    required int age,
-  }) = _Person;
+@MappableClass()
+class MyClass with MyClassMappable {
+  final int myValue;
 
-  factory Person.fromJson(Map<String, Object?> json)
-      => _$PersonFromJson(json);
+  MyClass(this.myValue);
 }
 ```
 
-It is important that you follow the conventions shown.
-Otherwise, things will break.
-Every symbol start with `_$` is code that will be generated.
-Pay attention to `part` in top of the files.
-Without those, it won't generate the code.
+{{% hint warning %}}
 
-When ever you change the model with freezed, you need to re-run `dart run
-build_runner build`.
+When using **dart_mappable**, make sure you have `part 'model.mapper.dart'`,
+`@MappableClass()` and `with MyClassMappable` in your code.
+The code generation won't work correctly without it and you will get errors
+that can be difficult to figure out.
+
+It needs to follow the naming of the code you are writing.
+So if your file is named `x.dart` then you need `part 'x.mapper.dart`.
+Likewise, if your class is named `X` then you need `with XMappable`.
+
+**Note** `XMappable` won't exist before you have executed the code generation.
+You can run code generation with:
+
+```sh
+dart run build_runner build
+```
+
+{{% /hint %}}
