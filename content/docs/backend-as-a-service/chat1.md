@@ -25,7 +25,7 @@ pages.
 
 ## Supabase setup
 
-We will start with setting up tables and authentication provider in Supabase.
+We will start by setting up tables and authentication provider in Supabase.
 
 Head over to [Supabase Dashboard](https://supabase.com/dashboard).
 Login or create a new account.
@@ -40,13 +40,14 @@ Make sure the **free plan** is selected.
 
 ![Create a project](../images/supabase-create-project.png)
 
-Choose a region near where you are located and take note of the password.
+Choose a region near your location.
+Take note of the password.
 
 ### Disable email confirmation
 
 By default, our users will need to confirm their email address when creating a
 new account.
-This is normally good practice for security as it makes sure they can access
+This is normally a good practice for security, as it makes sure they can access
 the email address they have written.
 It ensures they are who they claim, and that email can be used for password
 reset.
@@ -67,7 +68,7 @@ It means that schemas can be created with PostgreSQL DDL.
 
 Supabase already have a built-in `users` table that is used for authentication.
 If we need additional fields associate with a user then we can create our own
-additional table to store it.
+table to store it.
 In our chat app we are going to create an additional table to store a username
 for a user.
 
@@ -91,17 +92,18 @@ comment on table public.profiles is 'Holds all of users profile information';
 ![Supabase SQL Editor](../images/supabase-sql-editor.png)
 
 {{% hint info %}}
-Supabase also has a table editor that gives you a GUI to create schema
-for your database. However, when writing instructions like this it is simpler
-just to provide the DDL.
+Supabase also has a table editor that gives you a GUI to create the schema for
+your database.
+However, when writing instructions like this it is simpler just to provide the
+DDL.
 {{% /hint %}}
 
-### User defined function
+### User defined functions
 
 We can create user defined functions (UDF) directly in the database.
 These functions can be executed by triggers.
-A trigger that automatically executes some code in the database when certain
-changes happens to a row in a table.
+A trigger is something that automatically executes some code in the database
+when certain changes happen to a row in a table.
 
 Execute the SQL shown here:
 
@@ -126,15 +128,15 @@ create trigger on_auth_user_created
 
 ## Flutter setup
 
+Moving over to the Flutter side.
+
 ### New project
 
-Moving over to the Flutter side.
-Let's create a new project.
+Let's create a new project Flutter project.
 
 ```sh
 flutter create chat
 cd chat
-flutter pub add supabase_flutter
 ```
 
 If you want Android support, you need to open
@@ -192,8 +194,8 @@ final theme = ThemeData.light().copyWith(
 );
 ```
 
-To further make sure our app looks consistent we'll create a couple of small
-re-useable widgets.
+To make sure our app looks consistent we'll create a couple of small re-useable
+widgets and other helpers.
 
 Put these in `lib/common/widgets.dart`.
 
@@ -369,7 +371,7 @@ Change the page in `lib/main.dart` to see it in action.
 ![Register page](../images/chat-register.png)
 
 {{% hint info %}}
-You can change the orange to something if you want.
+You can change the orange to something else if you want.
 {{% /hint %}}
 
 ## Architecture
@@ -394,20 +396,21 @@ Example: `lib/account/login/login_page.dart`,
 `lib/account/login/login_cubit.dart`,
 `lib/account/register/register_page.dart`,
 `lib/account/register/register_cubit` etc.
-In an app using the feature first approach, you will (at some point) have files
-that are needed by several features and don't naturally belong in any of them.
-What to do with those files?
-A simple solution is just to throw them in a folder called `common` or
+In an app using the feature-first approach, you will (at some point) have files
+that are needed by several features and therefore don't naturally belong in any
+of them.
+What do we do with those files?
+A simple solution is just to throw them in a folder named `common` or
 `shared`.
 
-As you can tell we are using the **feature first** approach here.
+As you can tell, we are using the **feature first** approach for this app.
 It means creating a lot of folders in the beginning.
 However down the line, it has the advantage of scaling better as the app
-grows.
+continues to grow.
 
 When I write apps, I often start with **layer first**.
-Then transition to **feature first** once I've roughly figured out what it will
-have and how they naturally cluster.
+Then transition to **feature first** once I've roughly figured out what
+functionality it will have and how they naturally cluster.
 
 You can read more about how to architect your application in the
 [Quality](../../quality) chapter.
@@ -435,14 +438,31 @@ makes the development of your app future-proof.
 Also, following the principles for creating good abstractions (regardless) will
 make your code cleaner by separating concerns.
 
-For this app, it means that we should create an interaction around Supabase.
-Therefore, we are going to create an abstract `ChatService` to act as an interface.
+For this app, it means that we should create an abstraction around Supabase.
+We will therefore create an abstract `ChatService` to act as an interface.
 We will make an implementation of it called `SupabaseChatService` that uses
 (drum roll) Supabase.
 It allows us to easily swap out the concrete implementation for something else
 if needed.
-We could swap it for a mock implementation when writing widget or BLoC tests.
+We could swap it for a mock implementation when writing tests.
 Or maybe even change the BaaS provider completely.
+
+Create `lib/common/chat_service.dart` with:
+
+```dart
+abstract class ChatService {
+  String? get userId;
+  Future<void> login({required String email, required String password});
+  Future<void> register({
+    required String email,
+    required String password,
+    required String username,
+  });
+  Future<void> logout();
+}
+```
+
+We will add the implementation in a moment.
 
 ## Authentication
 
@@ -533,21 +553,10 @@ configured from `.env`.
 
 ### Implement abstraction
 
-Create `lib/common/chat_service.dart` with:
+Add an implementation of `ChatService` in `lib/common/chat_service.dart` as shown:
 
 ```dart
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-abstract class ChatService {
-  String? get userId;
-  Future<void> login({required String email, required String password});
-  Future<void> register({
-    required String email,
-    required String password,
-    required String username,
-  });
-  Future<void> logout();
-}
 
 class SupabaseChatService extends ChatService {
   final _supabase = Supabase.instance.client;
@@ -593,7 +602,7 @@ client instance.
 The only thing worth mentioning is that in the `register()` method body, we
 have a map for `data:` parameter with `username`.
 The username gets picked up by the user defined function in Postgres we had in
-the beginning (see [User defined function](#user-defined-function)).
+the beginning (see [User defined functions](#user-defined-functions)).
 
 We can use the [provider](https://pub.dev/packages/provider) package to make an
 instance of `ChatService` accessible throughout the app.
@@ -1066,8 +1075,8 @@ class _LoginFormState extends State<LoginForm> {
 
 ## Wrapping up
 
-In a moment I'll encourage you to try it out by creating a couple of different
-users.
+In a moment I'll encourage you to try out the app and create a couple of
+different users.
 Before you do that, it would be really convenient if you had a way to log out.
 
 Create/change `lib/chat/chat_page.dart` to:
@@ -1110,7 +1119,7 @@ class ChatPage extends StatelessWidget {
 ```
 
 Since we have "Confirm Email" disabled it doesn't matter what address you type,
-as long as it is formatted like a valid email.
+just as long as it is formatted like a valid email.
 
 Go ahead and try it out!
 
