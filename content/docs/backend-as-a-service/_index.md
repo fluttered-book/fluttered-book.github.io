@@ -8,7 +8,6 @@ weight: 9
 # Backend as a service (BaaS)
 
 - [Introduction](introduction)
-- [Supabase](Supabase)
 - **Chat**
   - [Part 1 - Authentication](chat1)
   - [Part 2 - Messages](chat2)
