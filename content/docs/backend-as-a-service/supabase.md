@@ -22,7 +22,8 @@ cd chat_supabase
 flutter pub add supabase_flutter
 ```
 
-If you want Android support you need to open `android/app/src/main/AndroidManifest.xml` and add internet permission:
+If you want Android support you need to open
+`android/app/src/main/AndroidManifest.xml` and add internet permission:
 
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
@@ -34,7 +35,8 @@ If you want Android support you need to open `android/app/src/main/AndroidManife
 
 ### Setup a Supabase account
 
-Go to [supabase.com - sign-up](https://supabase.com/dashboard/sign-up) and created an account.
+Go to [supabase.com - sign-up](https://supabase.com/dashboard/sign-up) and
+created an account.
 
 ![Supabase - signup](../images/supabase_signup.png)
 
@@ -99,10 +101,11 @@ You can restrict what can be done with the API Key by enabling Row Level
 Security (RLS) for your tables and configure policies.
 More on that later.
 
-You can run app now to verify that everything works so far.
+You can run the app now to verify that everything works so far.
 
 ### Create a database schema
 
+On Supabase dashboard.
 Navigate to the SQL Editor.
 Paste [this schema](../supabase_profile.sql) and click the green "Run" button.
 
@@ -110,8 +113,8 @@ Paste [this schema](../supabase_profile.sql) and click the green "Run" button.
 
 ## Setup deep links
 
-The authentication method we will use requires setting up deep links in order to
-bring the user back into the app after they have logged in.
+The authentication method we will use - requires setting up deep links in order
+to bring the user back into the app after they have logged in.
 
 First, add `io.supabase.flutterquickstart://login-callback/` as a new [redirect
 URL](https://supabase.com/dashboard/project/_/auth/url-configuration) in the
@@ -180,7 +183,8 @@ intent-filter as shown.
 
 ## Build a User Management
 
-Continue from the "Set up splash screen" section of the Build a "User Management App with Flutter" tutorial on Supabase site.
+Continue from the "Set up splash screen" section of the Build a "User
+Management App with Flutter" tutorial on Supabase site.
 (Link below)
 
 Notice that some settings are platform specific.
@@ -195,5 +199,8 @@ Completing the "Bonus: Profile photos" part is optional.
 
 Most of it is explained in the video below.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/r7ysVtZ5Row?si=EEhlwteM75JdFa9Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
+<iframe width="560" height="315"
+  src="https://www.youtube.com/embed/r7ysVtZ5Row?si=EEhlwteM75JdFa9Y"
+  title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
+  clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
