@@ -25,19 +25,22 @@ These services commonly include:
 Although there are similarities between services from various BasS providers they
 are not interoperable.
 Each provider has their own SDK which gives you access to everything they offer
-bundles up a single package.
+bundled up a single package.
 
 ## Choosing a provider
 
-Google is behind Flutter.
+Flutter is backed by Google.
 They are also behind Firebase.
-So naturally Firebase and Flutter very well integrated.
-The problem with Firebase is that you need to sign up with a credit card in
+So naturally Firebase and Flutter works very well together.
+The problem with Firebase is that you need to sign up with a payment card in
 order to use cloud functions.
+It is fine if you are building a product, but it might not be something you
+want to do if you are just making projects to learn.
 
-Firebase is a great BaaS btw, as long as you don't mind vendor locking.
-
-I've considered multiple alternatives.
+Firebase is a great BaaS, as long as you don't mind vendor locking and
+entering your payment card info.
+Because that could be a roadblock for some, I've considered multiple
+alternatives.
 Among those are:
 
 - [AWS Amplify](https://aws.amazon.com/amplify/)
@@ -72,9 +75,10 @@ In addition, it provides the following features:
 - Auto-generated API for clients.
 - Realtime changes.
 - Authentication/Authorization with social media login and SSO (single sign-on).
-- Edge functions (aka cloud or serverless functions) give you backend like
-  functionality without writing a full-blown backend or managing servers.
-- Storage for hosting blobs like images, videos etc.
+- Edge functions (aka cloud or serverless functions), which allows you to write
+  server code without writing a full-blown backend or managing servers.
+- Storage for hosting [blobs](https://en.wikipedia.org/wiki/Object_storage)
+  like images, videos etc.
 
 Given that Supabase is built on PostgreSQL, you might be tempted to want to
 write SQL directly in your Flutter app.
@@ -84,6 +88,9 @@ Your frontend is not supposed to talk directly to the database.
 Flutter apps should use the auto-generated API.
 
 The auto-generated API simplifies writing queries for the database.
+And avoids the need to expose the database directly in your app, which would
+otherwise have some serious security implications.
+
 Consider the schema below:
 
 ![Supabase countries schema](../images/supabase_countries_schema.png)
