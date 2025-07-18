@@ -15,9 +15,9 @@ book.
 
 ## Introduction
 
-This is the first part in a small series where we make a chat app using
+This is the first part in a small series, where we make a chat app using
 Supabase.
-In this part we will work with authentication and build login and register
+In this part, we will work with authentication and build login and register
 pages.
 
 ![Screenshot of login page](../images/chat-login.png)
@@ -25,7 +25,8 @@ pages.
 
 ## Supabase setup
 
-We will start by setting up tables and authentication provider in Supabase.
+We will start by setting up the database tables and authentication provider in
+Supabase.
 
 Head over to [Supabase Dashboard](https://supabase.com/dashboard).
 Login or create a new account.
@@ -47,15 +48,18 @@ Take note of the password.
 
 By default, our users will need to confirm their email address when creating a
 new account.
-This is normally a good practice for security, as it makes sure they can access
-the email address they have written.
-It ensures they are who they claim, and that email can be used for password
-reset.
-We simply disable it because it makes early stages of development easier.
+It means that an email is sent to an account with a link that the user has to
+click.
+Confirming emails this way is normally a good practice for security, as it
+makes sure the user can access the email address they have written.
+Verifying the email account allows us to use it for password reset.
+However, having to juggle several email accounts for test users makes early
+stages of development more cumbersome.
+We will therefore disable it for now.
 
-1. Select "Authentication" in left menu
+1. Select "Authentication" in left menu on Supabase dashboard
 2. "Sign In / Up"
-3. Click arrow "Email" provider
+3. Click "Email" under "Auth Providers" section
 4. Disable "Confirm email" and click "Save"
 
 ![Auth Provider Email](../images/supabase_remove_email_confirmation1.png)
@@ -64,10 +68,10 @@ We simply disable it because it makes early stages of development easier.
 ### Schema
 
 Supabase is built on top of Postgres.
-It means that schemas can be created with PostgreSQL DDL.
+It means that schemas can be created with PostgreSQL [DDL](https://en.wikipedia.org/wiki/Data_definition_language).
 
 Supabase already have a built-in `users` table that is used for authentication.
-If we need additional fields associate with a user then we can create our own
+If we need additional fields associate with a user, then we can create our own
 table to store it.
 In our chat app we are going to create an additional table to store a username
 for a user.
@@ -94,7 +98,7 @@ comment on table public.profiles is 'Holds all of users profile information';
 {{% hint info %}}
 Supabase also has a table editor that gives you a GUI to create the schema for
 your database.
-However, when writing instructions like this it is simpler just to provide the
+However, when writing instructions like this, it is simpler just to provide the
 DDL.
 {{% /hint %}}
 
@@ -153,7 +157,7 @@ If you want Android support, you need to open
 ### Theme
 
 Many of the apps we have worked on so far looks very similar.
-Why don't we change things up a bit with a custom theme.
+Why don't we change things up a bit with a custom theme?
 
 Add a file `lib/theme.dart` with:
 
@@ -428,8 +432,9 @@ anything <abbr title="Input/Output">I/O</abbr>.
 If you are making a network request or reading a file - then you need an
 abstraction.
 
-It is also good practice to create abstractions for services and 3rd party
-libraries, since it gives you the agility to chance vendor without having to
+It is also good practice in general to create abstractions for services and
+3rd party libraries.
+Since it gives you the agility to chance vendor without having to
 rewrite the entire app.
 
 Even if you don't plan to write tests or switch libraries.
@@ -479,15 +484,20 @@ We also add the [flutter_dotenv](https://pub.dev/packages/flutter_dotenv)
 package.
 Since secrets such as API-keys shouldn't committed to Git.
 We will therefore store the Supabase settings in `.env` file that we gitignore.
-
-1. Go to [Supabase Dashboard](https://supabase.com/dashboard/)
-2. Click "Project Settings" (gear icon) in the menu to the left.
-3. Go to the "Date API" section.
-4. Copy "Project URL" and "Project API Keys (anon public)"
-
-![Supabase project keys](../images/supabse-project-keys.png)
-
 Create a `.env` file in the root of you flutter project folder.
+
+1. Go to [Supabase Dashboard](https://supabase.com/dashboard/).
+2. Select your project.
+3. Click "Project Settings" (gear icon) in the menu to the left.
+4. Go to the "Date API" section.
+5. Copy "Project URL" and paste it in your `.env` (example below).
+6. Then go to "API Keys" section.
+7. Copy "Project API Keys (anon public)" and paste it in your `.env` file
+   (example below).
+
+![Supabase project URL](../images/supabase-project-url.png)
+![Supabase project keys](../images/supabase-anon-key.png)
+
 Paste the Supabase URL and anon key into the file as shown.
 
 ```sh
@@ -548,7 +558,7 @@ class MyApp extends StatelessWidget {
 }
 ```
 
-`dotenv.load()` from flutter_dotenv package loads the variables you just
+`dotenv.load()` from `flutter_dotenv` package loads the variables you just
 configured from `.env`.
 
 ### Implement abstraction
@@ -601,8 +611,8 @@ client instance.
 
 The only thing worth mentioning is that in the `register()` method body, we
 have a map for `data:` parameter with `username`.
-The username gets picked up by the user defined function in Postgres we had in
-the beginning (see [User defined functions](#user-defined-functions)).
+The username gets picked up by the user defined function in Postgres that we
+had in the beginning (see [User defined functions](#user-defined-functions)).
 
 We can use the [provider](https://pub.dev/packages/provider) package to make an
 instance of `ChatService` accessible throughout the app.
@@ -625,6 +635,9 @@ return Provider<ChatService>(
   ),
 );
 ```
+
+Notice that we determine what page to show based on whether a session exists.
+Meaning whether the user has authenticated or not.
 
 Create a placeholder `ChatPage` widget in `lib/chat/chat_page.dart` to avoid
 compiler errors.
@@ -650,15 +663,12 @@ class ChatPage extends StatelessWidget {
 A `Provider` is similar to `BlocProvider`, but for objects that aren't
 Blocs/Cubits.
 
-Notice that we determine what page to show based on whether a session exists.
-Meaning whether the user has authenticated or not.
-
 ### Registration
 
-We can now start to implement the registration and login.
+We can now begin to implement the actual registration and login functionality.
 We will start with registration.
-Even though there isn't much logic involved, we are still going to create a
-cubit for it.
+Even though there isn't much logic involved, we will still create a cubit for
+it.
 
 Add [flutter_bloc](https://pub.dev/packages/flutter_bloc) package.
 
@@ -766,16 +776,19 @@ class RegisterPage extends StatelessWidget {
 }
 ```
 
-It has a `BlocProvider` and will navigate to `ChatPage` when state changes to
+We are using a `BlocListener` to navigate to `ChatPage` when state changes to
 `Registered`.
 
 As you can see, we are creating a new `RegisterForm` widget for the form
 fields.
-It is because, in order to access a value from a Provider/BlocProvider you will
-need a child context of the provider.
+It is because that in order to access a value from a Provider/BlocProvider you
+will need a child context of the provider.
 The `RegisterCubit` will be accessed through `context.read<RegisterCubit>()`
 when "Register" button is tapped.
-So we need a child context for it.
+
+![Register page](../images/chat-register.png)
+
+So we need a child context for `context.read...`.
 We could either wrap the form in a `BlocBuilder` or extract it into its own
 widget.
 I prefer having small widgets, so extracting the form into its own widget is my
@@ -873,7 +886,8 @@ class _RegisterFormState extends State<RegisterForm> {
 
 It checks that the form is valid with `_formKey.currentState!.validate()`.
 Speaking of validation, we should probably add some validation rules.
-We are going to add those in a separate file, so we don't pollute `RegisterForm`.
+We are going to add those in a separate file.
+Such that we don't pollute `RegisterForm`.
 
 `lib/account/register/validators.dart`
 
@@ -896,7 +910,9 @@ String? usernameValidator(String? value) {
 }
 ```
 
-To use the validators, you need to change `_RegisterFormState` so that each of the `TextFormField` receive a reference to the corresponding validation function as `validator` parameter.
+To use the validators, you need to change `_RegisterFormState` so that each of
+the `TextFormField` receive a reference to the corresponding validation
+function as `validator` parameter.
 Example:
 
 ```dart
@@ -1006,6 +1022,13 @@ class LoginPage extends StatelessWidget {
 }
 ```
 
+A
+[BlocConsumer](https://pub.dev/documentation/flutter_bloc/latest/flutter_bloc/BlocConsumer-class.html)
+is simply a combination of
+[BlocBuilder](https://pub.dev/documentation/flutter_bloc/latest/flutter_bloc/BlocBuilder-class.html)
+and
+[BlocListener](https://pub.dev/documentation/flutter_bloc/latest/flutter_bloc/BlocListener-class.html).
+
 `lib/account/login/login_form.dart`
 
 ```dart
@@ -1075,9 +1098,10 @@ class _LoginFormState extends State<LoginForm> {
 
 ## Wrapping up
 
-In a moment I'll encourage you to try out the app and create a couple of
+Soon I'll encourage you to try out the app and create a couple of
 different users.
-Before you do that, it would be really convenient if you had a way to log out.
+But before you do that, it would be really convenient if you had a way to log
+out.
 
 Create/change `lib/chat/chat_page.dart` to:
 
