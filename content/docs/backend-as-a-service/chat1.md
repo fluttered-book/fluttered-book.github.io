@@ -102,12 +102,26 @@ However, when writing instructions like this, it is simpler just to provide the
 DDL.
 {{% /hint %}}
 
-### User defined functions
+### Database function
 
-We can create user defined functions (UDF) directly in the database.
-These functions can be executed by triggers.
+Postgres allows us to expand its "vocabulary" custom functions directly in the
+database.
+They are called [Database
+functions](https://supabase.com/docs/guides/database/functions?queryGroups=language&language=dart)
+in Supabase terminology.
+In the Postgres world these functions are also sometimes referred to as user
+defined functions (UDF).
+These kind functions can be executed by triggers.
 A trigger is something that automatically executes some code in the database
 when certain changes happen to a row in a table.
+It all means that we can write our own custom functions in the databases that
+is automatically being executed when a certain event happens, such as insert on
+`auth.users` table.
+
+We will use that to insert a new row in profiles table whenever a user is
+created.
+It allows us to store additional fields for a user than what is defined in the
+built-in users table, such as a username.
 
 Execute the SQL shown here:
 
@@ -129,6 +143,14 @@ create trigger on_auth_user_created
     for each row
     execute function handle_new_user();
 ```
+
+Writing DDL like this on your own can be daunting if you are not that used to
+it.
+Supabase got an AI tool that might be able to help you out.
+To access it, click on the icon next to you avatar in top right corner of the
+page.
+
+![Button to access Supabase AI Assistant](../images/supabase-ai.png)
 
 ## Flutter setup
 
