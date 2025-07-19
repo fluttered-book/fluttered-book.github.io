@@ -16,7 +16,7 @@ book.
 
 ## Introduction
 
-In the previous part of the chat app series we implemented password based
+In the previous part of the chat app series, we've implemented password based
 authentication with a login and a register page.
 In this part we will extend the project, so you can send and receive messages
 from other users.
@@ -26,13 +26,13 @@ You know, to make it an actual chat app.
 
 Open your project from last part or download the [reference
 solution](https://github.com/fluttered-book/chat/tree/authentication).
-If you use the reference solution then make sure you are on the
-"authentication" branch.
+For the reference solution make sure you are on the "authentication" branch.
+
 Let's get started!
 
 ## Supabase project
 
-Before writing any new Flutter code there are just a couple of small changes to
+Before writing any new Flutter code - there are just a couple of small changes to
 be made to the project in Supabase.
 
 ### Change the schema
@@ -64,8 +64,8 @@ It allows clients to listen for changes on query result, so it gets notified
 when a row in the result change.
 No more hitting refresh or periodic polling for your app to fetch fresh data as
 you would with plain HTTP.
-Just listen on a result set and changes will automatically get pushed to your
-app.
+Just listen on a result set and then changes will automatically get pushed to
+your app.
 
 To use the real-time functionality we need to first enable it.
 This is done on a per-table basis.
@@ -89,7 +89,7 @@ Open up your project.
 ### Models and mapping
 
 We need to add a couple of model classes that match the database tables.
-I think the simplest way is to use
+I think the simplest way is to do it is to use
 [dart_mappable](https://pub.dev/packages/dart_mappable).
 
 Add the package.
@@ -164,8 +164,9 @@ const caseStyle = CaseStyle(
 );
 ```
 
-Now we are at it, we could also add some exports for the models which will
-allow us to import both with just a single `import` statement in other files.
+Now that we are at it.
+We could also add some exports for the models which will
+allow us to import both with just a single `import` statement.
 Just add these two lines to the top of the file.
 
 ```dart
@@ -177,6 +178,7 @@ Now you can import both models with just `import
 'package:chat/models/models.dart';`, instead of `import
 'package:chat/models/massage.dart';` and `import
 'package:chat/models/profile.dart';`.
+Neat, right?
 
 Replace `@MappableClass()` in each of the models with
 `@MappableClass(caseStyle: caseStyle)`, so it will use our newly defined case
@@ -264,7 +266,7 @@ class ChatState {
 }
 ```
 
-A message reference the profile that have sent the message.
+A message references the profile that sent it.
 In a conversation you will have many messages send from the same profile.
 You can easily join a message with a profile in a query.
 But, you can not use join when streaming changes from a table.
@@ -328,9 +330,9 @@ class ChatCubit extends Cubit<ChatState> {
 ```
 
 `listenForMessage()` will subscribe to messages using the ChatService.
-It returns a `StreamSubscription` object what we are supposed to clean up when
-the cubit gets closed.
-Otherwise, we create a memory leak.
+It returns a `StreamSubscription` object.
+Note: We are supposed to cancel subscriptions when the cubit gets closed.
+If forgotten, it creates a memory leak.
 
 For each new message the cache is checked for a profile.
 If none is found, then it will fetch the profile and append it to the cache.
@@ -345,8 +347,8 @@ So lets just assume the app won't get millions of users overnight and move on.
 
 ## Widgets
 
-The time has finally come where we are ready to make an actual implementation
-of the `ChatPage`.
+The time has finally come where we can start the actual implementation of the
+`ChatPage`.
 Aiming for a layout like on the picture.
 
 ![Screenshot of chat page](../images/chat-messages.png)
@@ -516,6 +518,8 @@ class _MessageBarState extends State<MessageBar> {
 ```
 
 ### Chat page
+
+Now we'll build the screen/page that shows the chat bubbles.
 
 `lib/chat/chat_page.dart`
 
