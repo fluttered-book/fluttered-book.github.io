@@ -611,3 +611,9 @@ Without the call we would not see anything.
 {{% details "Reveal solution" %}}
 [Go to source](https://github.com/fluttered-book/chat/tree/messages)
 {{% /details %}}
+
+People can now use the app to write messages.
+But anyone can see messages from anyone.
+Publishing an app like that would quickly get a huge spam issue.
+In the next part we'll fix it by changing the app to support one-to-one
+communication via direct messages (DMs).

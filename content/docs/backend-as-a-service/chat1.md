@@ -1150,3 +1150,7 @@ Go ahead and try it out!
 {{% details "Reveal solution" %}}
 [Go to source](https://github.com/fluttered-book/chat/tree/authentication)
 {{% /details %}}
+
+We now have an app where users can register and login.
+In the next part, we'll expand the app, so users can write messages thereby
+turning it into a real chat app.
