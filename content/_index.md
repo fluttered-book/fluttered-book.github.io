@@ -9,13 +9,6 @@ description: >-
 Welcome to **_Fluttered_**, a free online, interactive, exercise-driven
 textbook on cross-platform mobile app development with Dart™ and Flutter™[\*](#disclaimer).
 
-![Screenshot of Quiz app](images/quiz-app.jpg "Quiz app")
-![Screenshot of Photos app](images/photos-app.jpg "Photos app")
-![Screenshot of Jokes app](images/jokes-app.jpg "Jokes app")
-![Screenshot of Weather-forecast app](images/weather-app.jpg "Weather app")
-
-_Example apps from the exercises in this book._
-
 ---
 
 <a id="disclaimer" style="color: grey;">Disclaimer</a>
@@ -24,6 +17,15 @@ _Dart and the related logo are trademarks of Google LLC. We are not endorsed by 
 </small>
 
 ---
+
+**Example apps from the exercises in this book**
+
+![Screenshot of RPN Calculator app](images/calculator-app.jpg "RPN Calculator app")
+![Screenshot of Quiz app](images/quiz-app.jpg "Quiz app")
+![Screenshot of Photos app](images/photos-app.jpg "Photos app")
+![Screenshot of Jokes app](images/jokes-app.jpg "Jokes app")
+![Screenshot of Weather-forecast app](images/weather-app.jpg "Weather app")
+![Screenshot of Chat app](images/chat-app.jpg "Chat app")
 
 ## What is Flutter?
 
@@ -60,7 +62,8 @@ Work with MQTT and websockets.
 Learn advanced state management techniques and how to architect maintainable
 apps.
 
-Elevate your frontend programming game with sophisticated techniques that can be adapted and applied across frameworks.
+Elevate your frontend programming game with sophisticated techniques that can
+be adapted and applied across frameworks.
 
 ## Approach to teaching
 
@@ -81,7 +84,8 @@ practices, patterns and architecture.
 
 ## System requirements
 
-To complete the exercises in this book, you need a computer with a recent version of either Windows, macOS or Linux.
+To complete the exercises in this book, you need a computer with a recent
+version of either Windows, macOS or Linux.
 
 8 GB of RAM is required as a minimum, however 16 GB or more is recommended.
 
@@ -92,7 +96,7 @@ Either Android (5.0+) or iOS (12+).
 {{< hint info >}}
 <b>Note:</b> You need a Mac to develop for iPhone.
 This limitation is unfortunately imposed by Apple.
-However as a workaround, you can <a href="docs/tricks/web" >deploy to web</a>
+However, as a workaround, you can <a href="docs/tricks/web" >deploy to web</a>
 to use your apps on iPhone.
 {{< /hint >}}
 
@@ -101,3 +105,17 @@ Android device (emulator).
 
 For most of the exercises you can also just use Chrome (web browser).
 
+## Contribute
+
+Even though I have put a lot of effort into writing this book, it is still far
+from perfect.</br>
+You 🫵 can be a bro and help me out improving the book.
+
+For simple fixes like correcting spelling errors, grammar and missing words;
+fork [the
+repository](https://github.com/fluttered-book/fluttered-book.github.io), make
+your changes and submit a pull request.
+For anything else please create an
+[issue](https://github.com/fluttered-book/fluttered-book.github.io/issues).
+
+Any help is greatly appreciated 💚!
