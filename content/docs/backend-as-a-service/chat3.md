@@ -25,30 +25,36 @@ Within long the chat would be flooded with horrible things.
 You know like scammers, drug dealers, bots and people posting what they had for
 lunch.
 
-What the app needs is private chat rooms.
-Such that people can discuss meaningful topic in peace.
-All the important stuff in life.
-Like how to defeat Gwyn, Lord of Cinder etc.
+You know what the app needs?
+Private chat rooms, so people have meaningful conversations in peace.
+All the important stuff in life, like how to defeat Gwyn in Dark Souls and so
+on.
 
-We create [Row Level
-Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security)
-policies to enforce that rooms are kept private.
-RLS allows you to make access rules directly in the database.
+To make sure anybody not invited can't access private rooms, we will utilize a
+feature in Supabase called [Row Level Security
+(RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security).
+It allows us to create policies for who can access what at the database level.
 
-Silly full-stack developers, spending so much time writing back-ends.
+To learn more about Row Level Security [**watch
+this**](https://www.youtube.com/watch?v=Ow_Uzedfohk).
+
+Those other silly full-stack developers, spending so much time writing
+back-ends.
 All they need is Postgres (and Supabase).
-If you think about it, most back-ends are just fancy wrappers around a
+If you think about it - most back-ends are just fancy wrappers around a
 database.
-And Supabase is a featureful generic wrapper, so it can be used for many
-different kinds of projects.
-🤯
+Supabase is a generic feature rich wrapper, that you can customize for many
+different kinds of projects 🤯.
 
-_♫ I'm all about the BaaS, no back-end ♫_
+_Of course, I'm kidding here.
+There is definitely a need for a back-end in many situations._
 
 ## Schema changes
 
+To make private chat rooms work, we need to customize the schema a bit.
 We need to introduce a new rooms table.
-Run the following from SQL Editor.
+Run the following from SQL Editor for your project in [Supabase
+Dashboard](https://supabase.com/dashboard/).
 
 ```sql
 -- *** Table definitions ***
@@ -68,7 +74,7 @@ create table if not exists public.room_participants (
 comment on table public.room_participants is 'Relational table of users and rooms.';
 ```
 
-Then alter messages so it references a room.
+Next, we need to alter messages table, so it references a room.
 If you have any existing messages in the database they won't have a `room_id`,
 so we need to delete those.
 
@@ -85,7 +91,9 @@ We also need to enable real-time changes for the new rooms table.
 alter publication supabase_realtime add table public.room_participants;
 ```
 
-Finally, we add a function to create a new room.
+Finally, we add a [database
+function](https://supabase.com/docs/guides/database/functions?queryGroups=language&language=dart)
+to create a new room with the current user another user as participants.
 
 ```sql
 -- Creates a new room with the user and another user in it.
@@ -129,8 +137,12 @@ $$ language plpgsql security definer;
 
 ## Authorization with Row Level Security (RLS)
 
+To make it writing our RLS policies a bit easier we are going to create a small
+helper function to check if the current signed-in users is a participant of the
+room.
+
 ```sql
--- Returns true if the signed in user is a participant of the room
+-- Returns true if the signed-in user is a participant of the room
 create or replace function is_room_participant(room_id uuid)
 returns boolean as $$
   select exists(
@@ -139,10 +151,12 @@ returns boolean as $$
     where room_id = is_room_participant.room_id and profile_id = auth.uid()
   );
 $$ language sql security definer;
+```
 
+Let's enable RLS for our tables and define policies for them.
 
--- *** Row level security polities ***
-
+```sql
+-- *** Row level security policies ***
 
 alter table public.profiles enable row level security;
 create policy "Public profiles are viewable by everyone."
@@ -165,3 +179,17 @@ create policy "Users can view messages on rooms they are in."
 create policy "Users can insert messages on rooms they are in."
   on public.messages for insert with check (is_room_participant(room_id) and profile_id = auth.uid());
 ```
+
+The syntax for creating policies is `create policy <description> on <table> for <action>
+<condition>`.
+Where `<description>` is a human-readable description of what the policy does.
+`<table>` is of cause the table that the policy should apply to.
+Action is SQL CRUD operation, so select, insert, update or delete.
+Last, `<condition>` specifies under what condition the action is allowed.
+
+{{< hint info >}}
+When enabling RLS for a table then all actions on any rows of that table are
+denied.
+You will need to explicitly define policies that allow certain actions again
+under certain conditions.
+{{< /hint >}}
