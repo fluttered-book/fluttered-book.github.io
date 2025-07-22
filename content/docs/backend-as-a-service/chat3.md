@@ -687,7 +687,7 @@ Find the code `ChatCubit(context.read<ChatService>())..listenForMessage()` and
 change it to `ChatCubit(context.read<ChatService>(), roomId:
 roomId)..listenForMessage()` so the `roomId` gets passed along.
 
-In `ChatCubit` change the constructor to:
+In `lib/chat/chat_cubit.dart` change the constructor to:
 
 ```dart
   ChatCubit(this.service, {required this.roomId}) : super(ChatState.empty());
@@ -699,7 +699,35 @@ Then add a field for `roomId`:
   final String roomId;
 ```
 
-And change `listenForMessage()` to:
+Find the `submitMessage()` method and change the call
+`service.submitMessage(text)` to `service.submitMessage(roomId: roomId, text:
+text);`.
+
+Open `lib/common/chat_service.dart`.
+Change the `Future<void> submitMessage(String text)` signature in `ChatService` to:
+
+```dart
+  Future<void> submitMessage({required String roomId, required String text});
+```
+
+Then replace `submitMessage()` method in `SupabaseChatService` with:
+
+```dart
+  @override
+  Future<void> submitMessage({
+    required String roomId,
+    required String text,
+  }) async {
+    final myUserId = _supabase.auth.currentUser!.id;
+    await _supabase.from('messages').insert({
+      'room_id': roomId,
+      'profile_id': myUserId,
+      'content': text,
+    });
+  }
+```
+
+Navigate back to `lib/chat/chat_cubit.dart` and change `listenForMessage()` to:
 
 ```dart
   void listenForMessage() {
