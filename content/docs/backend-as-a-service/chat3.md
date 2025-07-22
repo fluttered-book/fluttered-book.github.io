@@ -16,17 +16,16 @@ book.
 ## Introduction
 
 Currently, the chat is open for everyone.
-If you put an app like this on the app store, and people start using it.
-Within long the chat would be flooded with horrible things.
-You know like scammers, drug dealers, bots and people posting what they had for
-lunch.
+If you put an app like this on the app store then within long the chat would be
+flooded with horrible things.
+You know like scammers, drug dealers, bots and people writing about what they
+had for lunch.
 
-You know what the app needs?
-Private chat rooms, so people have meaningful conversations in peace.
+The app needs private chat rooms, so people have meaningful conversations in peace.
 All the important stuff in life, like how to defeat Gwyn in Dark Souls and so
 on.
 
-To make sure anybody not invited can't access private rooms, we will utilize a
+To make sure people not invited can't access private rooms, we will utilize a
 feature in Supabase called [Row Level Security
 (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security).
 It allows us to create policies for who can access what at the database level.
@@ -34,8 +33,7 @@ It allows us to create policies for who can access what at the database level.
 To learn more about Row Level Security [**watch
 this**](https://www.youtube.com/watch?v=Ow_Uzedfohk).
 
-Those other silly full-stack developers, spending so much time writing
-back-ends.
+Those silly full-stack developers, spending so much time coding back-ends.
 All they need is Postgres (and Supabase).
 If you think about it - most back-ends are just fancy wrappers around a
 database.
@@ -89,7 +87,8 @@ alter publication supabase_realtime add table public.room_participants;
 
 Finally, we add a [database
 function](https://supabase.com/docs/guides/database/functions?queryGroups=language&language=dart)
-to create a new room with the current user another user as participants.
+to create a new room with both the current user and another user as
+participants.
 
 ```sql
 -- Creates a new room with the user and another user in it.
@@ -133,7 +132,7 @@ $$ language plpgsql security definer;
 
 ## Authorization with Row Level Security (RLS)
 
-To make it writing our RLS policies a bit easier we are going to create a small
+To make writing our RLS policies a bit easier, we are going to create a small
 helper function to check if the current signed-in users is a participant of the
 room.
 
@@ -179,8 +178,8 @@ create policy "Users can insert messages on rooms they are in."
 The syntax for creating policies is `create policy <description> on <table> for <action>
 <condition>`.
 Where `<description>` is a human-readable description of what the policy does.
-`<table>` is of cause the table that the policy should apply to.
-Action is SQL CRUD operation, so select, insert, update or delete.
+`<table>` is of course the table that the policy should apply to.
+`<action>` is the SQL CRUD operation (select, insert, update or delete).
 Last, `<condition>` specifies under what condition the action is allowed.
 
 {{< hint info >}}
@@ -193,7 +192,7 @@ under certain conditions.
 ## Models
 
 Moving over to the Flutter side.
-Since we've added new tables to the database, we need to define a couple of
+Since we've added new tables to the database we also need to define a couple of
 more models to match.
 
 `lib/models/room.dart`
@@ -323,12 +322,12 @@ And add the following implementation to `SupabaseChatService`.
   }
 ```
 
-After login (or registration) the user will be presented with a list of rooms
+After login/registration the user will be presented with a list of rooms
 representing previous conversations they have had.
-They will also be given the ability to create a new room (start a new
-conversation) with another user by searching for their name.
+They will also be given the ability to start a new conversation (create a new
+room) with another user by searching for their name.
 
-The `participantStream()` method a stream of participants.
+The `participantStream()` method returns a stream of participants.
 The RLS policy restricts the result to only participants in rooms for which the
 current user is also a participant of.
 
@@ -337,15 +336,14 @@ been submitted in a given room.
 
 We can use `startConversation()` to start a new conversation calling the
 `create_new_room` database function.
+We will use `searchProfile()` to search for users to start a conversation with.
 
 {{< hint info >}}
 RPC is short for <a
   href="https://en.wikipedia.org/wiki/Remote_procedure_call">Remote Procedure
-Call</a> which is general term for calling a function (aka procedure) on
+Call</a>, which is general term for calling a function (aka procedure) on
 another computer or process in a distributed system.
 {{< /hint >}}
-
-We will use `searchProfile()` to search for users to start a conversation with.
 
 ## Overview of conversations
 
@@ -417,13 +415,13 @@ class RoomAggregate {
 }
 ```
 
-To build a nice UI we need information across multiple tables.
+To build a nice UX we need information across multiple tables.
 We use `RoomAggregate` to hold all this information.
 
 The `RoomLoaded` state has a helper method which will make a copy of the state,
-but with a change to a `RoomAggregate`.
-It just makes it slightly more convent when we get around to write the code to
-handle adding, removing and updating rooms.
+but with a change to a single `RoomAggregate`.
+It just makes it slightly more convenient when we get around to write the code
+to handle adding, removing and updating rooms.
 More on that later.
 
 ### Rooms cubit
@@ -522,11 +520,11 @@ For each room it will fetch the last message and profile (username) of the
 other user.
 Notice how the `.withRoomUpdate()` helper method is being used.
 
-Whenever working with subscriptions its very important that the cancel the
-subscription again when no longer needed.
-Otherwise, your application will have memory leaks.
-Here we cancel the subscription when the cubit is closed, which will happen
-when the `BlocProvider` for it is no longer part of the widget tree.
+Whenever working with subscriptions it is very important that we cancel it
+again when no longer needed.
+Otherwise, your application will leak resources over time.
+Here we cancel the subscription when the cubit is closed.
+This will happen when its `BlocProvider` is no longer part of the widget tree.
 
 ### Rooms page
 
@@ -615,7 +613,7 @@ class RoomsPage extends StatelessWidget {
 
 For the `RoomsLoaded` state it builds a `ListView` of rooms.
 To make it nice and user-friendly it shows an avatar for the username from
-profile table and the last messages for messages table.
+profile table, as well as the last messages for messages table.
 That's why we needed the `RoomAggregate` class.
 
 ### Logout
@@ -658,12 +656,13 @@ Finally, remove the existing logout button from the `AppBar` in
 
 ## Room specific chat
 
-When tapping on a room we want to show the chat messages for only that
-particular room.
+When tapping on a room we want the chat messages for only that particular room
+to be shown.
 
 ![Screenshot of ChatPage](../images/chat-chat-page.png)
 
-We therefore have to make some changes to the ChatPage and related classes.
+To accomplish this we need to make some changes to the ChatPage and related
+classes.
 
 Open `lib/chat/chat_page.dart` and change the beginning of the class to:
 
@@ -759,7 +758,7 @@ Replace the implementation of `messageStream()` in `SupabaseChatService` with:
 ```
 
 Go back to `lib/rooms/rooms_page.dart`.
-In the `ListTil` change `onTap` to:
+In the `ListTile` change `onTap` to:
 
 ```dart
 onTap: () => Navigator.of(context).push(ChatPage.route(roomId: room.roomId)),
@@ -771,15 +770,14 @@ Instead of going directly to the `ChatPage` when user is logged in, we will
 show the `RoomsPage`.
 For the files `login_page.dart` and `register_page.dart` we should
 change `ChatPage.route()` to `RoomsPage.route()`.
-Remember to change the imports also.
+Remember to change the imports too.
 
 Then in `main.dart`, change `session == null ? RegisterPage() : ChatPage()` to
 `session == null ? RegisterPage() : RoomsPage()`.
 
 ## Start a conversation
 
-The app needs a way to connect with another user in a room to start a
-conversation.
+The app needs a way to connect with another user to start a conversation.
 
 We will simply provide a way for the user to search for other users by their
 username, then connect with them to start a conversation.
@@ -863,21 +861,22 @@ users as we type their username without running a query for each keystroke.
 Debouncing is a throttling technique where you delay the execution of a
 function until after a certain amount of time has passed.
 It is a way to avoid triggering an action too many times in rapid succession.
+<br/>
 
-The term **debounce** comes from hardware engineering.
+The term <b>debounce</b> comes from electronics engineering.
 When a button is pressed it will sometimes physically bounce a bit of the
-contact plate, thereby registering a multiple presses.
-Debouncing is simply setting a short delay before another press can be
+contact plate, thereby registering as multiple presses.
+Debouncing is simply making a short delay before another press will be
 registered.
 {{< /hint >}}
 
 When `search()` is invoked it will wait 500 ms before actually hitting the
 database.
-If the method is called several times over a very short timespan then it will
-cancel the previous delays, such that it only emits a new state with the result
-for the last invocation.
+If the method is called several times over a very short timespan, then it will
+cancel the previous delays.
+Such that it only emits a new state with the result for the last invocation.
 
-If the user wants to find "Alice" then we don't want the app to make a new
+If the user wants to find "Alice", then we don't want the app to make a new
 query for each letter that the user types.
 Instead, we will way for a pause of 500 ms before making a query, which would
 hopefully mean that the user has finished typing.
@@ -885,8 +884,9 @@ hopefully mean that the user has finished typing.
 There are other ways to implement debouncing.
 If you want to be really fancy you could use something like
 [RxDart](https://pub.dev/packages/rxdart).
-However, I've found it to be excessive to add another library just for this
-small piece of functionality, so we use a
+However, I think it is excessive to add another library just for this small
+piece of functionality.
+Therefore, we use a
 [Timer](https://api.flutter.dev/flutter/dart-async/Timer-class.html) instead.
 
 ### Connect page
@@ -977,13 +977,12 @@ class ConnectPage extends StatelessWidget {
 At the top of the page there will be a `TextField` where the user can enter the
 username they want to search for.
 Under there will be a list of search results.
-As we are waiting for results will show a spinner.
+As we are waiting for results it will show a spinner.
+When the user taps on another user then we call `.startConversation()` method
+on provided `ChatService`.
+Then navigate to `ChatPage` for the room that gets created.
 
-When the user taps on another user the want to chat with then we call
-`.startConversation()` method the provided `ChatService` then navigate to
-`ChatPage` for the room that gets created.
-
-How do you get to the `ConnectPage`?
+How should the user get to the `ConnectPage`?
 Well, maybe we should add button for it on `RoomsPage`.
 
 Open `lib/rooms/rooms_page.dart` and add a floating action button inside the
@@ -1013,12 +1012,14 @@ Open `lib/rooms/rooms_page.dart` and add a floating action button inside the
 
 We are now done creating a simple chat app with Supabase instead of full-blown
 back-end.
-There is of cause many things that could still be improved.
+There is of course many things that could still be improved.
 I suggest you take some study all the code you wrote paying attention to how it
 all fits together.
 Do you have ideas for improvements?
 See if you can turn your ideas into code, as that would be an excellent
 exercise.
+
+You could also implement some of the [Chat - Challenges](../challenges).
 
 {{% details "Reveal solution" %}}
 [Go to source](https://github.com/fluttered-book/chat/tree/authorization)
