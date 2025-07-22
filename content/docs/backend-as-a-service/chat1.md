@@ -1164,10 +1164,12 @@ class ChatPage extends StatelessWidget {
 }
 ```
 
-Since we have "Confirm Email" disabled it doesn't matter what address you type,
-just as long as it is formatted like a valid email.
+## Outro
 
 Go ahead and try it out!
+
+Since we have "Confirm Email" disabled it doesn't matter what address you type,
+just as long as it is formatted like a valid email.
 
 {{% details "Reveal solution" %}}
 [Go to source](https://github.com/fluttered-book/chat/tree/authentication)

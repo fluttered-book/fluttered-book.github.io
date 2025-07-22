@@ -608,6 +608,8 @@ immediately using
 The `listenForMessage()` method is what makes the `ChatCubit` subscribe to messages.
 Without the call we would not see anything.
 
+## Outro
+
 {{% details "Reveal solution" %}}
 [Go to source](https://github.com/fluttered-book/chat/tree/messages)
 {{% /details %}}

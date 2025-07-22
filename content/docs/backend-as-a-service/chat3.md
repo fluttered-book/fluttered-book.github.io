@@ -1012,3 +1012,18 @@ Open `lib/rooms/rooms_page.dart` and add a floating action button inside the
     );
   }
 ```
+
+## Outro
+
+We are now done creating a simple chat app with Supabase instead of full-blown
+back-end.
+There is of cause many things that could still be improved.
+I suggest you take some study all the code you wrote paying attention to how it
+all fits together.
+Do you have ideas for improvements?
+See if you can turn your ideas into code, as that would be an excellent
+exercise.
+
+{{% details "Reveal solution" %}}
+[Go to source](https://github.com/fluttered-book/chat/tree/authorization)
+{{% /details %}}
