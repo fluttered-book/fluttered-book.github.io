@@ -9,7 +9,7 @@ weight: 5
 
 ## Profile
 
-Add functionality so a user can update their profile.
+Add functionality, so a user can update their profile.
 
 You can find hints in [Build a User Management App with
 Flutter](https://supabase.com/docs/guides/getting-started/tutorials/with-flutter)
@@ -29,7 +29,7 @@ Quickstart](https://supabase.com/docs/guides/storage/quickstart?language=dart)
 before you proceed.
 
 1. Add a "type" field to messages table that can have values "text", "photo".
-   - Use Supabase build-in AI to help you generate SQL to change the schema.
+   - Use Supabase built-in AI to help you generate SQL to change the schema.
 2. Take pictures with [camera plugin](https://pub.dev/packages/camera) like you did in the [photos app](../interactivity/photos).
 3. [Upload images to a storage bucket](https://supabase.com/docs/reference/dart/storage-from-upload).
 4. Change `ChatCubit.sendMessage` to save message with "type" field set to
@@ -37,23 +37,6 @@ before you proceed.
 
 Also, see [Storage Access
 Control](https://supabase.com/docs/guides/storage/security/access-control)
-
-## Refactor
-
-Some of the page widgets (RegisterPage & RoomsPage) are a bit long and contains
-lot of nesting.
-
-Use "Extract method" and "Extract Flutter Widget" to make code easier to read.
-
-Currently the code is organized by technical concern.
-All pages in one folder.
-All models are in another folder.
-And so on.
-It doesn't really scale when the app becomes the size of SnapChat.
-
-Therefore, reorganize the project so organized by feature instead of layer.
-
-[Read more](../quality/folder-structure)
 
 ## Presence
 
@@ -74,4 +57,3 @@ Assets are found
 
 Remove `response == ChannelResponse.rateLimited &&` from the while loop in
 `_GamePageState`.
-
