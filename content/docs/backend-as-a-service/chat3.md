@@ -4,10 +4,6 @@ description: Chat 3 - Authorization
 weight: 5
 ---
 
-{{% hint warning %}}
-Work-in-progress
-{{% /hint %}}
-
 # Chat - Authorization
 
 {{% hint info %}}
